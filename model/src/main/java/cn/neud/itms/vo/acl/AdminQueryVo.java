@@ -13,7 +13,7 @@ import java.io.Serializable;
  * 用户查询实体
  * </p>
  *
- * @author qy
+ * @author David
  * @since 2019-11-08
  */
 @Data

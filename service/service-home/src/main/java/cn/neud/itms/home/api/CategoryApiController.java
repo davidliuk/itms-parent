@@ -1,4 +1,4 @@
-package cn.neud.itms.home.controller;
+package cn.neud.itms.home.api;
 
 import cn.neud.itms.client.product.ProductFeignClient;
 import cn.neud.itms.common.result.Result;

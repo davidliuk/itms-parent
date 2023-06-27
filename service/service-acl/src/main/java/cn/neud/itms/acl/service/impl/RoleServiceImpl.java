@@ -63,10 +63,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         List<AdminRole> adminRoleList = adminRoleService.list(wrapper);
 
         //2.2 通过第一步返回集合，获取所有角色id的列表List<AdminRole> -- List<Long>
-        List<Long> roleIdsList =
-                adminRoleList.stream()
-                        .map(AdminRole::getRoleId)
-                        .collect(Collectors.toList());
+        List<Long> roleIdsList = adminRoleList.stream()
+                .map(AdminRole::getRoleId)
+                .collect(Collectors.toList());
 
         //2.3 创建新的list集合，用于存储用户配置角色
         List<Role> assignRoleList = new ArrayList<>();

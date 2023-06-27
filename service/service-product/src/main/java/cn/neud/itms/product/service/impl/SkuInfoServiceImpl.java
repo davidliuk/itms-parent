@@ -77,7 +77,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         //2 保存sku海报
         List<SkuPoster> skuPosterList = skuInfoVo.getSkuPosterList();
         if (!CollectionUtils.isEmpty(skuPosterList)) {
-            //遍历，向每个海报对象添加商品skuid
+            //遍历，向每个海报对象添加商品skuId
             for (SkuPoster skuPoster : skuPosterList) {
                 skuPoster.setSkuId(skuInfo.getId());
             }
@@ -88,7 +88,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         List<SkuImage> skuImagesList = skuInfoVo.getSkuImageList();
         if (!CollectionUtils.isEmpty(skuImagesList)) {
             for (SkuImage skuImage : skuImagesList) {
-                //设置商品skuid
+                //设置商品skuId
                 skuImage.setSkuId(skuInfo.getId());
             }
             skuImageService.saveBatch(skuImagesList);
@@ -98,7 +98,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         List<SkuAttrValue> skuAttrValueList = skuInfoVo.getSkuAttrValueList();
         if (!CollectionUtils.isEmpty(skuAttrValueList)) {
             for (SkuAttrValue skuAttrValue : skuAttrValueList) {
-                //设置商品skuid
+                //设置商品skuId
                 skuAttrValue.setSkuId(skuInfo.getId());
             }
             skuAttrValueService.saveBatch(skuAttrValueList);
@@ -146,7 +146,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
 
         List<SkuPoster> skuPosterList = skuInfoVo.getSkuPosterList();
         if (!CollectionUtils.isEmpty(skuPosterList)) {
-            //遍历，向每个海报对象添加商品skuid
+            //遍历，向每个海报对象添加商品skuId
             for (SkuPoster skuPoster : skuPosterList) {
                 skuPoster.setSkuId(skuId);
             }
@@ -158,7 +158,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         List<SkuImage> skuImagesList = skuInfoVo.getSkuImageList();
         if (!CollectionUtils.isEmpty(skuImagesList)) {
             for (SkuImage skuImage : skuImagesList) {
-                // 设置商品skuid
+                // 设置商品skuId
                 skuImage.setSkuId(skuId);
             }
             skuImageService.saveBatch(skuImagesList);
@@ -169,7 +169,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         List<SkuAttrValue> skuAttrValueList = skuInfoVo.getSkuAttrValueList();
         if (!CollectionUtils.isEmpty(skuAttrValueList)) {
             for (SkuAttrValue skuAttrValue : skuAttrValueList) {
-                //设置商品skuid
+                //设置商品skuId
                 skuAttrValue.setSkuId(skuId);
             }
             skuAttrValueService.saveBatch(skuAttrValueList);
@@ -286,9 +286,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         }
 
         //2 遍历skuStockLockVoList得到每个商品，验证库存并锁定库存，具备原子性
-        skuStockLockVoList.stream().forEach(skuStockLockVo -> {
-            this.checkLock(skuStockLockVo);
-        });
+        skuStockLockVoList.forEach(this::checkLock);
 
         //3 只要有一个商品锁定失败，所有锁定成功的商品都解锁
         boolean flag = skuStockLockVoList.stream()
@@ -332,15 +330,13 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
     private void checkLock(SkuStockLockVo skuStockLockVo) {
         //获取锁
         //公平锁
-        RLock rLock =
-                this.redissonClient.getFairLock(RedisConst.SKUKEY_PREFIX + skuStockLockVo.getSkuId());
+        RLock rLock = this.redissonClient.getFairLock(RedisConst.SKUKEY_PREFIX + skuStockLockVo.getSkuId());
         //加锁
         rLock.lock();
 
         try {
             //验证库存
-            SkuInfo skuInfo =
-                    baseMapper.checkStock(skuStockLockVo.getSkuId(), skuStockLockVo.getSkuNum());
+            SkuInfo skuInfo = baseMapper.checkStock(skuStockLockVo.getSkuId(), skuStockLockVo.getSkuNum());
             //判断没有满足条件商品，设置isLock值false，返回
             if (skuInfo == null) {
                 skuStockLockVo.setIsLock(false);
@@ -348,8 +344,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
             }
             //有满足条件商品
             //锁定库存:update
-            Integer rows =
-                    baseMapper.lockStock(skuStockLockVo.getSkuId(), skuStockLockVo.getSkuNum());
+            Integer rows = baseMapper.lockStock(skuStockLockVo.getSkuId(), skuStockLockVo.getSkuNum());
             if (rows == 1) {
                 skuStockLockVo.setIsLock(true);
             }

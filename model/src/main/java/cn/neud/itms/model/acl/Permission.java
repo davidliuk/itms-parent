@@ -16,7 +16,7 @@ import java.util.List;
  * 权限
  * </p>
  *
- * @author qy
+ * @author David
  * @since 2019-11-08
  */
 @Data
@@ -61,6 +61,5 @@ public class Permission extends BaseEntity {
 	@ApiModelProperty(value = "是否选中")
 	@TableField(exist = false)
 	private boolean isSelect;
-
 }
 

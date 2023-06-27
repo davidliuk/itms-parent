@@ -22,17 +22,16 @@ public class OrderReceiver {
 
     //订单支付成功，更新订单状态，扣减库存
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = MqConstant.QUEUE_ORDER_PAY,durable = "true"),
+            value = @Queue(value = MqConstant.QUEUE_ORDER_PAY, durable = "true"),
             exchange = @Exchange(value = MqConstant.EXCHANGE_PAY_DIRECT),
             key = {MqConstant.ROUTING_PAY_SUCCESS}
     ))
     public void orderPay(String orderNo,
                          Message message,
                          Channel channel) throws IOException {
-        if(!StringUtils.isEmpty(orderNo)) {
+        if (!StringUtils.isEmpty(orderNo)) {
             orderInfoService.orderPay(orderNo);
         }
-        channel.basicAck(message.getMessageProperties().getDeliveryTag(),
-                false);
+        channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
     }
 }

@@ -10,7 +10,7 @@ import lombok.Getter;
 @Getter
 public enum UserType {
     USER(0,"会员"),
-    LEADER(1,"配送员" );
+    COURIER(1,"配送员" );
 
     @EnumValue
     private Integer code ;

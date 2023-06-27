@@ -20,14 +20,14 @@ public class CartReceiver {
     private CartInfoService cartInfoService;
 
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = MqConstant.QUEUE_DELETE_CART,durable = "true"),
+            value = @Queue(value = MqConstant.QUEUE_DELETE_CART, durable = "true"),
             exchange = @Exchange(value = MqConstant.EXCHANGE_ORDER_DIRECT),
             key = {MqConstant.ROUTING_DELETE_CART}
     ))
     public void deleteCart(Long userId, Message message, Channel channel) throws IOException {
-        if(userId != null) {
+        if (userId != null) {
             cartInfoService.deleteCartChecked(userId);
         }
-        channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
+        channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
     }
 }

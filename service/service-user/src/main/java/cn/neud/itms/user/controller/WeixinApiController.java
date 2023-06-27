@@ -89,8 +89,7 @@ public class WeixinApiController {
         //5 根据userId查询提货点和配送员信息
         ////提货点  user表  user_delivery表
         ////配送员    courier表
-        CourierAddressVo courierAddressVo =
-                userService.getCourierAddressByUserId(user.getId());
+        CourierAddressVo courierAddressVo = userService.getCourierAddressByUserId(user.getId());
 
         //6 使用JWT工具根据userId和userName生成token字符串
         String token = JwtHelper.createToken(user.getId(), user.getNickName());

@@ -125,7 +125,7 @@ public class SkuServiceImpl implements SkuService {
     //上架
     @Override
     public void upperSku(Long skuId) {
-        //1 通过远程调用 ，根据skuid获取相关信息
+        //1 通过远程调用 ，根据skuId获取相关信息
         SkuInfo skuInfo = productFeignClient.getSkuInfo(skuId);
         if(skuInfo == null) {
             return;

@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/product")
-public class ProductInnnerController {
+public class ProductApiController {
 
     @Autowired
     private CategoryService categoryService;
@@ -25,11 +25,10 @@ public class ProductInnnerController {
     //根据分类id获取分类信息
     @GetMapping("inner/getCategory/{categoryId}")
     public Category getCategory(@PathVariable Long categoryId) {
-        Category category = categoryService.getById(categoryId);
-        return category;
+        return categoryService.getById(categoryId);
     }
 
-    //根据skuid获取sku信息
+    //根据skuId获取sku信息
     @GetMapping("inner/getSkuInfo/{skuId}")
     public SkuInfo getSkuInfo(@PathVariable Long skuId) {
         return skuInfoService.getById(skuId);
@@ -56,15 +55,13 @@ public class ProductInnnerController {
     //获取所有分类
     @GetMapping("inner/findAllCategoryList")
     public List<Category> findAllCategoryList() {
-        List<Category> categoryList = categoryService.list();
-        return categoryList;
+        return categoryService.list();
     }
 
     //获取新人专享商品
     @GetMapping("inner/findNewPersonSkuInfoList")
     public List<SkuInfo> findNewPersonSkuInfoList() {
-        List<SkuInfo> list = skuInfoService.findNewPersonSkuInfoList();
-        return list;
+        return skuInfoService.findNewPersonSkuInfoList();
     }
 
     //根据skuId获取sku信息
@@ -78,6 +75,6 @@ public class ProductInnnerController {
     @PostMapping("inner/checkAndLock/{orderNo}")
     public Boolean checkAndLock(@RequestBody List<SkuStockLockVo> skuStockLockVoList,
                                 @PathVariable String orderNo) {
-        return skuInfoService.checkAndLock(skuStockLockVoList,orderNo);
+        return skuInfoService.checkAndLock(skuStockLockVoList, orderNo);
     }
 }

@@ -9,7 +9,7 @@ import lombok.Data;
  * UserAddress
  * </p>
  *
- * @author qy
+ * @author David
  */
 @Data
 @ApiModel(description = "用户地址")
@@ -53,6 +53,4 @@ public class CourierAddressVo {
 
 	@ApiModelProperty(value = "门店照片")
 	private String storePath;
-
 }
-

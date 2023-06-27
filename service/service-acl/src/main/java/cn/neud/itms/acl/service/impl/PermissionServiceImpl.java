@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements PermissionService {
-    //查询所有菜单
+    // 查询所有菜单
     @Override
     public List<Permission> queryAllPermission() {
         //1 查询所有菜单
@@ -25,7 +25,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         return result;
     }
 
-    //递归删除菜单
+    // 递归删除菜单
     @Override
     public void removeChildById(Long id) {
         //1 创建list集合idList，封装所有要删除菜单id

@@ -25,6 +25,7 @@
     <properties>
         <skipTests>true</skipTests>
         <java.version>1.8</java.version>
+        <hutool.version>5.7.22</hutool.version>
         <cloud.version>Hoxton.SR8</cloud.version>
         <alibaba.version>2.2.2.RELEASE</alibaba.version>
         <mybatis-plus.version>3.4.1</mybatis-plus.version>

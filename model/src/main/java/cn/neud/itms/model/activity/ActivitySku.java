@@ -12,7 +12,7 @@ import lombok.Data;
  * ActivitySku
  * </p>
  *
- * @author qy
+ * @author David
  */
 @Data
 @ApiModel(description = "ActivitySku")

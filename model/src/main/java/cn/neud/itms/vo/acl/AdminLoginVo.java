@@ -20,5 +20,4 @@ public class AdminLoginVo implements Serializable {
 
 	@ApiModelProperty(value = "仓库id")
 	private Long wareId;
-
 }

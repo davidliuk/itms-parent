@@ -14,7 +14,7 @@ import lombok.Data;
  * 角色权限
  * </p>
  *
- * @author qy
+ * @author David
  * @since 2019-11-08
  */
 @Data
@@ -24,7 +24,7 @@ public class RolePermission extends BaseEntity {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@ApiModelProperty(value = "roleid")
+	@ApiModelProperty(value = "roleId")
 	@TableField("role_id")
 	private Long roleId;
 

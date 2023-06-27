@@ -15,7 +15,7 @@ import java.util.Map;
 public class IndexController {
 
     //   http://localhost:8201/admin/acl/index/login
-    //1 login登录
+    // 1 login登录
     @ApiOperation("登录")
     @PostMapping("login")
     public Result login() {

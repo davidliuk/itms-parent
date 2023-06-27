@@ -1,12 +1,15 @@
 package cn.neud.itms.user.service.impl;
 
-import cn.neud.itms.model.user.Courier;
+import cn.neud.itms.model.user.Address;
+import cn.neud.itms.model.user.CourierInfo;
 import cn.neud.itms.model.user.User;
 import cn.neud.itms.model.user.UserDelivery;
+import cn.neud.itms.user.mapper.AddressMapper;
 import cn.neud.itms.user.mapper.CourierMapper;
 import cn.neud.itms.user.mapper.UserDeliveryMapper;
 import cn.neud.itms.user.mapper.UserMapper;
 import cn.neud.itms.user.service.UserService;
+import cn.neud.itms.vo.user.AddressVo;
 import cn.neud.itms.vo.user.CourierAddressVo;
 import cn.neud.itms.vo.user.UserLoginVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -20,6 +23,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private UserDeliveryMapper userDeliveryMapper;
+
+    @Autowired
+    private AddressMapper addressMapper;
 
     @Autowired
     private CourierMapper courierMapper;
@@ -45,18 +51,43 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (userDelivery == null) {
             return null;
         }
+        //根据userId查询用户默认的配送员id
+        Address address = addressMapper.selectOne(
+                new LambdaQueryWrapper<Address>()
+                        .eq(Address::getUserId, userId)
+                        .eq(Address::getIsDefault, 1)
+        );
+        if (address == null) {
+            return null;
+        }
         //拿着上面查询配送员id查询courier表查询配送员其他信息
-        Courier courier = courierMapper.selectById(userDelivery.getCourierId());
+        CourierInfo courierInfo = courierMapper.selectById(userDelivery.getCourierId());
         //封装数据到CourierAddressVo
         CourierAddressVo courierAddressVo = new CourierAddressVo();
-        BeanUtils.copyProperties(courier, courierAddressVo);
+        BeanUtils.copyProperties(courierInfo, courierAddressVo);
         courierAddressVo.setUserId(userId);
-        courierAddressVo.setCourierId(courier.getId());
-        courierAddressVo.setCourierName(courier.getName());
-        courierAddressVo.setCourierPhone(courier.getPhone());
+        courierAddressVo.setCourierId(courierInfo.getId());
+        courierAddressVo.setCourierName(courierInfo.getName());
+        courierAddressVo.setCourierPhone(courierInfo.getPhone());
         courierAddressVo.setWareId(userDelivery.getWareId());
-        courierAddressVo.setStorePath(courier.getStorePath());
         return courierAddressVo;
+    }
+
+    @Override
+    public AddressVo getAddressByUserId(Long userId) {
+        // 根据userId查询用户默认的地址id
+        Address address = addressMapper.selectOne(
+                new LambdaQueryWrapper<Address>()
+                        .eq(Address::getUserId, userId)
+                        .eq(Address::getIsDefault, 1)
+        );
+        if (address == null) {
+            return null;
+        }
+        // 封装数据到 AddressVo
+        AddressVo addressVo = new AddressVo();
+        BeanUtils.copyProperties(address, addressVo);
+        return addressVo;
     }
 
     //7 获取当前登录用户信息，

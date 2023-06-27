@@ -13,7 +13,7 @@ import lombok.Data;
  * CouponRange
  * </p>
  *
- * @author qy
+ * @author David
  */
 @Data
 @ApiModel(description = "CouponRange")

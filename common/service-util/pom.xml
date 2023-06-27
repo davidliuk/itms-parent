@@ -14,14 +14,21 @@
     <dependencies>
         <dependency>
             <groupId>cn.neud</groupId>
+            <artifactId>model</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.neud</groupId>
             <artifactId>common-util</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
-        <!-- redis -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <groupId>cn.neud</groupId>
+            <artifactId>redis-util</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <!-- spring2.X集成redis所需common-pool2-->
@@ -31,24 +38,11 @@
             <version>2.6.0</version>
         </dependency>
 
-        <!-- redisson 分布式锁-->
-        <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
-            <version>3.11.2</version>
-        </dependency>
-
         <!--mybatis-plus-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>cn.neud</groupId>
-            <artifactId>model</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>

@@ -27,7 +27,7 @@ import java.util.Date;
  * @since 2023-04-18
  */
 @RestController
-@RequestMapping(value="/api/order")
+@RequestMapping(value = "/api/order")
 public class OrderInfoController {
 
     @Autowired
@@ -47,8 +47,8 @@ public class OrderInfoController {
         orderUserQueryVo.setUserId(userId);
 
         //分页查询条件
-        Page<OrderInfo> pageParam = new Page<>(page,limit);
-        IPage<OrderInfo> pageModel = orderInfoService.getOrderInfoByUserIdPage(pageParam,orderUserQueryVo);
+        Page<OrderInfo> pageParam = new Page<>(page, limit);
+        IPage<OrderInfo> pageModel = orderInfoService.getOrderInfoByUserIdPage(pageParam, orderUserQueryVo);
         return Result.ok(pageModel);
     }
 
@@ -58,8 +58,8 @@ public class OrderInfoController {
             @ApiParam(name = "orderNo", value = "订单No", required = true)
             @PathVariable("orderNo") String orderNo) {
         System.out.println(new Date().toLocaleString());
-        for (int i = 0; i <=3; i++) {
-            if(i==3) {
+        for (int i = 0; i <= 3; i++) {
+            if (i == 3) {
                 return Result.ok(ResultCodeEnum.SUCCESS);
             }
         }
@@ -82,7 +82,7 @@ public class OrderInfoController {
 
     @ApiOperation("获取订单详情")
     @GetMapping("auth/getOrderInfoById/{orderId}")
-    public Result getOrderInfoById(@PathVariable("orderId") Long orderId){
+    public Result getOrderInfoById(@PathVariable("orderId") Long orderId) {
         OrderInfo orderInfo = orderInfoService.getOrderInfoById(orderId);
         return Result.ok(orderInfo);
     }

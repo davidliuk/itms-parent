@@ -377,14 +377,14 @@ public class ActivityInfoServiceImpl extends ServiceImpl<ActivityInfoMapper, Act
         List<ActivityRule> activityRuleList = activityRuleMapper.selectList(wrapperActivityRule);
         result.put("activityRuleList",activityRuleList);
 
-        //2 根据活动id查询，查询使用规则商品skuid列表 activity_sku表
+        //2 根据活动id查询，查询使用规则商品skuId列表 activity_sku表
         List<ActivitySku> activitySkuList = activitySkuMapper.selectList(
                 new LambdaQueryWrapper<ActivitySku>().eq(ActivitySku::getActivityId, id)
         );
         //获取所有skuId
         List<Long> skuIdList =
                 activitySkuList.stream().map(ActivitySku::getSkuId).collect(Collectors.toList());
-        //2.1 通过远程调用 service-product模块接口，根据 skuid列表 得到商品信息
+        //2.1 通过远程调用 service-product模块接口，根据 skuId列表 得到商品信息
         List<SkuInfo> skuInfoList = new ArrayList<>();
         if(!CollectionUtils.isEmpty(skuIdList)) {
             skuInfoList = productFeignClient.findSkuInfoList(skuIdList);

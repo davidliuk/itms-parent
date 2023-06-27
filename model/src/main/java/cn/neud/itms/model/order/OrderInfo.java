@@ -54,12 +54,12 @@ public class OrderInfo extends BaseEntity {
 	private BigDecimal originalTotalAmount;
 
 	@ApiModelProperty(value = "运费")
-	@TableField("feight_fee")
-	private BigDecimal feightFee;
+	@TableField("freight_fee")
+	private BigDecimal freightFee;
 
 	@ApiModelProperty(value = "减免运费")
-	@TableField("feight_fee_reduce")
-	private BigDecimal feightFeeReduce;
+	@TableField("freight_fee_reduce")
+	private BigDecimal freightFeeReduce;
 
 	@ApiModelProperty(value = "可退款日期（签收后1天）")
 	@TableField("refundable_time")

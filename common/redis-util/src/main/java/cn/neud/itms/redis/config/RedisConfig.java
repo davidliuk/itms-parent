@@ -1,4 +1,4 @@
-package cn.neud.itms.common.config;
+package cn.neud.itms.redis.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

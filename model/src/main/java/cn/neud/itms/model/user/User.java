@@ -39,16 +39,16 @@ public class User extends BaseEntity {
     private String idNo;
 
     @ApiModelProperty(value = "性别")
-    @TableField("sex")
-    private String sex;
+    @TableField("gender")
+    private String gender;
 
     @ApiModelProperty(value = "电话号码")
     @TableField("phone")
     private String phone;
 
     @ApiModelProperty(value = "备注")
-    @TableField("memo")
-    private String memo;
+    @TableField("remark")
+    private String remark;
 
     @ApiModelProperty(value = "小程序open id")
     @TableField("open_id")

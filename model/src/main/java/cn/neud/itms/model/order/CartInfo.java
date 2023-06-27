@@ -30,7 +30,7 @@ public class CartInfo extends BaseEntity {
 	@ApiModelProperty(value = "sku名称 (冗余)")
 	private String skuName;
 
-	@ApiModelProperty(value = "skuid")
+	@ApiModelProperty(value = "skuId")
 	private Long skuId;
 
 	@ApiModelProperty(value = "放入购物车时价格")
@@ -64,5 +64,4 @@ public class CartInfo extends BaseEntity {
 
 	@ApiModelProperty(value = "当天已购买个数")
 	private Integer currentBuyNum = 0;
-
 }

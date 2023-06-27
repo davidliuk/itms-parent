@@ -1,4 +1,4 @@
-package cn.neud.itms.cart.controller;
+package cn.neud.itms.cart.api;
 
 import cn.neud.itms.activity.client.ActivityFeignClient;
 import cn.neud.itms.cart.service.CartInfoService;

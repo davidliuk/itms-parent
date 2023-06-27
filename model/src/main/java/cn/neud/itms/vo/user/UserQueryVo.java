@@ -13,10 +13,8 @@ public class UserQueryVo {
 	private String idNo;
 
 	@ApiModelProperty(value = "性别")
-	private String sex;
+	private String gender;
 
 	@ApiModelProperty(value = "电话号码")
 	private String phone;
-
 }
-

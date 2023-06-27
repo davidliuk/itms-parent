@@ -1,4 +1,4 @@
-package cn.neud.itms.common.config;
+package cn.neud.itms.redis.config;
 
 import lombok.Data;
 import org.redisson.Redisson;

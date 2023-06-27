@@ -84,7 +84,7 @@ public class CourierWithdraw extends BaseEntity {
 	private String taxAmount;
 
 	@ApiModelProperty(value = "备注")
-	@TableField("memo")
-	private String memo;
+	@TableField("remark")
+	private String remark;
 
 }

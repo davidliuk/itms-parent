@@ -15,5 +15,4 @@ public class WeixinVo implements Serializable {
 	private String encryptedData;
 	private String sessionKey;
 	private String openId;
-
 }

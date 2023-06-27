@@ -1,4 +1,4 @@
-package cn.neud.itms.common.constant;
+package cn.neud.itms.redis.constant;
 
 /**
  * Redis常量配置类

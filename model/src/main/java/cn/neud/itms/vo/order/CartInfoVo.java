@@ -13,7 +13,7 @@ import java.util.List;
  * OrderDetailActivity
  * </p>
  *
- * @author qy
+ * @author David
  */
 @Data
 public class CartInfoVo implements Serializable {
