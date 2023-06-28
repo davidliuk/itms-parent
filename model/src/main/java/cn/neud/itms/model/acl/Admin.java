@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户
@@ -46,7 +48,11 @@ public class Admin extends BaseEntity {
     @TableField("station_id")
     private Long stationId;
 
-    @ApiModelProperty(value = "角色名称")
+    @ApiModelProperty(value = "角色列表")
     @TableField(exist = false)
-    private String roleName;
+    private List<String> roleCodes;
+
+    @ApiModelProperty(value = "权限列表")
+    @TableField(exist = false)
+    private List<String> permissionCodes;
 }

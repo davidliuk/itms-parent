@@ -1,5 +1,6 @@
 package cn.neud.itms.user.controller;
 
+import cn.neud.itms.common.auth.StpUserUtil;
 import cn.neud.itms.common.exception.ItmsException;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.common.result.ResultCodeEnum;
@@ -7,6 +8,7 @@ import cn.neud.itms.common.utils.JwtHelper;
 import cn.neud.itms.common.utils.MD5;
 import cn.neud.itms.enums.UserType;
 import cn.neud.itms.model.acl.Admin;
+import cn.neud.itms.model.acl.Role;
 import cn.neud.itms.model.user.User;
 import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.user.service.UserService;
@@ -64,7 +66,7 @@ public class LoginController {
                         userLoginVo,
                         RedisConstant.USERKEY_TIMEOUT,
                         TimeUnit.DAYS);
-
+        StpUserUtil.login(user.getId());
         //8 需要数据封装到map返回
         Map<String, Object> map = new HashMap<>();
         map.put("user", user);
@@ -84,6 +86,14 @@ public class LoginController {
         user.setPassword(passwordMD5);
         //调用方法添加
         userService.save(user);
+        return Result.ok(null);
+    }
+
+    //4 修改用户(不能修改密码)，传入的密码值为null的时候不会改密码
+    @ApiOperation("修改用户")
+    @PutMapping("update")
+    public Result update(@RequestBody User user) {
+        userService.updateById(user);
         return Result.ok(null);
     }
 

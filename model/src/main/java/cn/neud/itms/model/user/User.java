@@ -46,6 +46,10 @@ public class User extends BaseEntity {
     @TableField("phone")
     private String phone;
 
+    @ApiModelProperty(value = "邮箱")
+    @TableField("email")
+    private String email;
+
     @ApiModelProperty(value = "备注")
     @TableField("remark")
     private String remark;

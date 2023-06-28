@@ -22,6 +22,7 @@
         <module>service-cart</module>
         <module>service-order</module>
         <module>service-payment</module>
+        <module>service-sms</module>
     </modules>
 
     <dependencies>

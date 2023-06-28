@@ -1,5 +1,6 @@
 package cn.neud.itms.acl.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.neud.itms.acl.service.AdminService;
 import cn.neud.itms.common.result.Result;
@@ -35,13 +36,27 @@ public class IndexController {
         if (admin == null || !Objects.equals(admin.getPassword(), MD5.encrypt(loginVo.getPassword()))) {
             return Result.fail(null);
         }
-        StpUtil.login(admin.getId(), "hiii");
-        System.out.println("--------");
-        System.out.println(StpUtil.getRoleList());
-        System.out.println("--------");
-        Map<String, String> map = new HashMap<>();
+        admin.setRoleCodes(StpUtil.getRoleList());
+        admin.setPermissionCodes(StpUtil.getPermissionList());
+        StpUtil.login(admin.getId());
+        Map<String, Object> map = new HashMap<>();
         map.put("token", "token-admin");
+        map.put("user", admin);
         return Result.ok(map);
+    }
+
+    @SaCheckLogin
+    @ApiOperation("获取角色")
+    @PostMapping("/roles")
+    public Result getRoleList() {
+        return Result.ok(StpUtil.getRoleList());
+    }
+
+    @SaCheckLogin
+    @ApiOperation("获取权限")
+    @PostMapping("/permissions")
+    public Result getPermissionList() {
+        return Result.ok(StpUtil.getPermissionList());
     }
 
     //    url: '/admin/acl/index/info',

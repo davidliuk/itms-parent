@@ -2,7 +2,7 @@ package cn.neud.itms.common.auth;
 
 import cn.neud.itms.vo.user.UserLoginVo;
 
-//ThreadLocal工具类
+// ThreadLocal工具类
 public class AuthContextHolder {
 
     //用户id
