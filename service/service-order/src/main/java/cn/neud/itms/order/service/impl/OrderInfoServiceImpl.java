@@ -7,11 +7,10 @@ import cn.neud.itms.cart.client.CartFeignClient;
 import cn.neud.itms.client.product.ProductFeignClient;
 import cn.neud.itms.client.user.UserFeignClient;
 import cn.neud.itms.common.auth.AuthContextHolder;
-import cn.neud.itms.common.constant.RedisConst;
+import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.common.exception.ItmsException;
 import cn.neud.itms.common.result.ResultCodeEnum;
 import cn.neud.itms.common.utils.DateUtil;
-import cn.neud.itms.enums.*;
 import cn.neud.itms.model.activity.CouponInfo;
 import cn.neud.itms.model.order.CartInfo;
 import cn.neud.itms.model.order.OrderInfo;
@@ -81,71 +80,70 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     //确认订单
     @Override
     public OrderConfirmVo confirmOrder() {
-        //获取用户id
+        // 获取用户id
         Long userId = AuthContextHolder.getUserId();
 
-        //获取用户对应配送员信息
+        // 获取用户对应配送员信息
         CourierAddressVo courierAddressVo = userFeignClient.getUserAddressByUserId(userId);
 
-        //获取购物车里面选中的商品
+        // 获取购物车里面选中的商品
         List<CartInfo> cartInfoList = cartFeignClient.getCartCheckedList(userId);
 
-        //唯一标识订单
+        // 唯一标识订单
         String orderNo = String.valueOf(System.currentTimeMillis());
-        redisTemplate.opsForValue().set(RedisConst.ORDER_REPEAT + orderNo, orderNo,
+        redisTemplate.opsForValue().set(RedisConstant.ORDER_REPEAT + orderNo, orderNo,
                 24, TimeUnit.HOURS);
 
-        //获取购物车满足条件活动和优惠卷信息
-        OrderConfirmVo orderConfirmVo =
-                activityFeignClient.findCartActivityAndCoupon(cartInfoList, userId);
-        //封装其他值
+        // 获取购物车满足条件活动和优惠卷信息
+        OrderConfirmVo orderConfirmVo = activityFeignClient.findCartActivityAndCoupon(cartInfoList, userId);
+        // 封装其他值
         orderConfirmVo.setCourierAddressVo(courierAddressVo);
         orderConfirmVo.setOrderNo(orderNo);
 
         return orderConfirmVo;
     }
 
-    //生成订单
+    // 生成订单
     @Override
     public Long submitOrder(OrderSubmitVo orderParamVo) {
-        //第一步 设置给哪个用户生成订单  设置orderParamVo的userId
+        // 第一步 设置给哪个用户生成订单  设置 orderParamVo 的 userId
         Long userId = AuthContextHolder.getUserId();
         orderParamVo.setUserId(userId);
 
-        //第二步 订单不能重复提交，重复提交验证
-        // 通过redis + lua脚本进行判断
-        //// lua脚本保证原子性操作
-        //1 获取传递过来的订单 orderNo
+        // 第二步 订单不能重复提交，重复提交验证
+        // 通过 redis + lua脚本进行判断
+        // lua 脚本保证原子性操作
+        // 1 获取传递过来的订单 orderNo
         String orderNo = orderParamVo.getOrderNo();
         if (StringUtils.isEmpty(orderNo)) {
             throw new ItmsException(ResultCodeEnum.ILLEGAL_REQUEST);
         }
 
-        //2 拿着orderNo 到 redis进行查询，
+        // 2 拿着orderNo 到 redis进行查询，
         String script = "if(redis.call('get', KEYS[1]) == ARGV[1]) then return redis.call('del', KEYS[1]) else return 0 end";
-        //3 如果redis有相同orderNo，表示正常提交订单，把redis的orderNo删除
+        // 3 如果redis有相同orderNo，表示正常提交订单，把redis的orderNo删除
         Boolean flag = (Boolean) redisTemplate
                 .execute(new DefaultRedisScript(script, Boolean.class),
-                        Arrays.asList(RedisConst.ORDER_REPEAT + orderNo), orderNo);
-        //4 如果redis没有相同orderNo，表示重复提交了，不能再往后进行
-        if (!flag) {
+                        Arrays.asList(RedisConstant.ORDER_REPEAT + orderNo), orderNo);
+        // 4 如果redis没有相同orderNo，表示重复提交了，不能再往后进行
+        if (Boolean.FALSE.equals(flag)) {
             throw new ItmsException(ResultCodeEnum.REPEAT_SUBMIT);
         }
 
-        //第三步 验证库存 并且 锁定库存
+        // 第三步 验证库存 并且 锁定库存
         // 比如仓库有10个西红柿，我想买2个西红柿
         // ** 验证库存，查询仓库里面是是否有充足西红柿
         // ** 库存充足，库存锁定 2 锁定（目前没有真正减库存）
-        //1、远程调用 service-cart 模块，获取当前用户购物车商品（选中的购物项）
+        // 1、远程调用 service-cart 模块，获取当前用户购物车商品（选中的购物项）
         List<CartInfo> cartInfoList = cartFeignClient.getCartCheckedList(userId);
 
-        //2、购物车有很多商品，商品不同类型，重点处理普通类型商品
+        // 2、购物车有很多商品，商品不同类型，重点处理普通类型商品
         List<CartInfo> commonSkuList = cartInfoList.stream()
                 .filter(cartInfo -> Objects.equals(cartInfo.getSkuType(), SkuType.COMMON.getCode()))
                 .collect(Collectors.toList());
 
-        //3、把获取购物车里面普通类型商品list集合，
-        // List<CartInfo>转换List<SkuStockLockVo>
+        // 3、把获取购物车里面普通类型商品list集合，
+        // List<CartInfo> 转换 List<SkuStockLockVo>
         if (!CollectionUtils.isEmpty(commonSkuList)) {
             List<SkuStockLockVo> commonStockLockVoList = commonSkuList.stream().map(item -> {
                 SkuStockLockVo skuStockLockVo = new SkuStockLockVo();
@@ -162,8 +160,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             }
         }
 
-        //第四步 下单过程
-        //1 向两张表添加数据
+        // 第四步 下单过程
+        // 1 向两张表添加数据
         // order_info 和 order_item
         Long orderId = this.saveOrder(orderParamVo, cartInfoList);
 
@@ -176,7 +174,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         return orderId;
     }
 
-    //1 向两张表添加数据
+    // 1 向两张表添加数据
     // order_info 和 order_item
     @Transactional(rollbackFor = {Exception.class})
     public Long saveOrder(OrderSubmitVo orderParamVo,
@@ -212,7 +210,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             orderItem.setSkuPrice(cartInfo.getCartPrice());
             orderItem.setImgUrl(cartInfo.getImgUrl());
             orderItem.setSkuNum(cartInfo.getSkuNum());
-            orderItem.setCourierId(orderParamVo.getCourierId());
+            orderItem.setCourierId(orderParamVo.getStationId());
             //营销活动金额
             BigDecimal activityAmount =
                     activitySplitAmount.get("activity:" + orderItem.getSkuId());
@@ -241,13 +239,13 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         //封装订单OrderInfo数据
         OrderInfo orderInfo = new OrderInfo();
         orderInfo.setUserId(userId);//用户id
-        orderInfo.setOrderNo(orderParamVo.getOrderNo()); //订单号 唯一标识
-        orderInfo.setOrderStatus(OrderStatus.UNPAID); //订单状态，生成成功未支付
-        orderInfo.setCourierId(orderParamVo.getCourierId());//配送员id
-        orderInfo.setCourierName(courierAddressVo.getCourierName());//配送员名称
+        orderInfo.setOrderNo(orderParamVo.getOrderNo()); // 订单号 唯一标识
+        orderInfo.setOrderStatus(OrderStatus.UNPAID); // 订单状态，生成成功未支付
+        orderInfo.setCourierId(orderParamVo.getStationId());// 配送员id
+        orderInfo.setCourierName(courierAddressVo.getCourierName()); // 配送员名称
 
         orderInfo.setCourierPhone(courierAddressVo.getCourierPhone());
-        orderInfo.setTakeName(courierAddressVo.getTakeName());
+//        orderInfo.setTakeName(courierAddressVo.getTakeName());
         orderInfo.setReceiverName(orderParamVo.getReceiverName());
         orderInfo.setReceiverPhone(orderParamVo.getReceiverPhone());
         orderInfo.setReceiverProvince(courierAddressVo.getProvince());
@@ -294,7 +292,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 
         //下单成功，记录用户购物商品数量，redis
         //hash类型   key(userId)  -  field(skuId)-value(skuNum)
-        String orderSkuKey = RedisConst.ORDER_SKU_MAP + orderParamVo.getUserId();
+        String orderSkuKey = RedisConstant.ORDER_SKU_MAP + orderParamVo.getUserId();
         BoundHashOperations<String, String, Integer> hashOperations = redisTemplate.boundHashOps(orderSkuKey);
         cartInfoList.forEach(cartInfo -> {
             if (hashOperations.hasKey(cartInfo.getSkuId().toString())) {

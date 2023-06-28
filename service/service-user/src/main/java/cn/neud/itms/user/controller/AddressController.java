@@ -3,6 +3,7 @@ package cn.neud.itms.user.controller;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.user.Address;
 import cn.neud.itms.user.service.AddressService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +28,12 @@ public class AddressController {
 
     //平台属性列表方法
     //根据平台属性分组id查询
-//    url: `${api_name}/${groupId}`,
+//    url: `${api_name}/${userId}`,
 //    method: 'get'
     @ApiOperation("根据用户id查询")
     @GetMapping("{userId}")
-    public Result list(@PathVariable Long groupId) {
-        List<Address> list = addressService.getAddressListByUserId(groupId);
+    public Result list(@PathVariable Long userId) {
+        List<Address> list = addressService.getAddressListByUserId(userId);
         return Result.ok(list);
     }
 
@@ -46,6 +47,9 @@ public class AddressController {
     @ApiOperation(value = "新增")
     @PostMapping("save")
     public Result save(@RequestBody Address address) {
+        if (addressService.count(new LambdaQueryWrapper<Address>().eq(Address::getUserId, address.getUserId())) == 0) {
+            address.setIsDefault(1);
+        }
         addressService.save(address);
         return Result.ok(null);
     }

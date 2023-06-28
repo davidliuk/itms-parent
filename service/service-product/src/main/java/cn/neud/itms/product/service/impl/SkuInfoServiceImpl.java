@@ -1,6 +1,6 @@
 package cn.neud.itms.product.service.impl;
 
-import cn.neud.itms.common.constant.RedisConst;
+import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.common.exception.ItmsException;
 import cn.neud.itms.common.result.ResultCodeEnum;
 import cn.neud.itms.model.product.SkuAttrValue;
@@ -304,7 +304,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
 
         //4 如果所有商品都锁定成功了，redis缓存相关数据，为了方便后面解锁和减库存
         redisTemplate.opsForValue()
-                .set(RedisConst.SROCK_INFO + orderNo, skuStockLockVoList);
+                .set(RedisConstant.SROCK_INFO + orderNo, skuStockLockVoList);
         return true;
     }
 
@@ -313,7 +313,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
     public void minusStock(String orderNo) {
         //从redis获取锁定库存信息
         List<SkuStockLockVo> skuStockLockVoList =
-                (List<SkuStockLockVo>) redisTemplate.opsForValue().get(RedisConst.SROCK_INFO + orderNo);
+                (List<SkuStockLockVo>) redisTemplate.opsForValue().get(RedisConstant.SROCK_INFO + orderNo);
         if (CollectionUtils.isEmpty(skuStockLockVoList)) {
             return;
         }
@@ -323,14 +323,14 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         });
 
         //删除redis数据
-        redisTemplate.delete(RedisConst.SROCK_INFO + orderNo);
+        redisTemplate.delete(RedisConstant.SROCK_INFO + orderNo);
     }
 
     //2 遍历skuStockLockVoList得到每个商品，验证库存并锁定库存，具备原子性
     private void checkLock(SkuStockLockVo skuStockLockVo) {
         //获取锁
         //公平锁
-        RLock rLock = this.redissonClient.getFairLock(RedisConst.SKUKEY_PREFIX + skuStockLockVo.getSkuId());
+        RLock rLock = this.redissonClient.getFairLock(RedisConstant.SKUKEY_PREFIX + skuStockLockVo.getSkuId());
         //加锁
         rLock.lock();
 

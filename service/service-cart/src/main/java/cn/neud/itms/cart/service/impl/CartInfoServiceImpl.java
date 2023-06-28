@@ -2,7 +2,7 @@ package cn.neud.itms.cart.service.impl;
 
 import cn.neud.itms.cart.service.CartInfoService;
 import cn.neud.itms.client.product.ProductFeignClient;
-import cn.neud.itms.common.constant.RedisConst;
+import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.common.exception.ItmsException;
 import cn.neud.itms.common.result.ResultCodeEnum;
 import cn.neud.itms.enums.SkuType;
@@ -31,13 +31,13 @@ public class CartInfoServiceImpl implements CartInfoService {
     @Autowired
     private ProductFeignClient productFeignClient;
 
-    //返回购物车在redis的key
+    // 返回购物车在redis的key
     private String getCartKey(Long userId) {
         // user:userId:cart
-        return RedisConst.USER_KEY_PREFIX + userId + RedisConst.USER_CART_KEY_SUFFIX;
+        return RedisConstant.USER_KEY_PREFIX + userId + RedisConstant.USER_CART_KEY_SUFFIX;
     }
 
-    //添加商品到购物车
+    // 添加商品到购物车
     @Override
     public void addToCart(Long userId, Long skuId, Integer skuNum) {
         //1 因为购物车数据存储到redis里面，
@@ -173,18 +173,18 @@ public class CartInfoServiceImpl implements CartInfoService {
     //1 根据skuId选中
     @Override
     public void checkCart(Long userId, Long skuId, Integer isChecked) {
-        //获取redis的key
+        // 获取redis的key
         String cartKey = this.getCartKey(userId);
-        //cartKey获取field-value
+        // cartKey获取field-value
         BoundHashOperations<String, String, CartInfo> boundHashOperations =
                 redisTemplate.boundHashOps(cartKey);
-        //根据field（skuId）获取value（CartInfo）
+        // 根据field（skuId）获取value（CartInfo）
         CartInfo cartInfo = boundHashOperations.get(skuId.toString());
         if (cartInfo != null) {
             cartInfo.setIsChecked(isChecked);
-            //更新
+            // 更新
             boundHashOperations.put(skuId.toString(), cartInfo);
-            //设置key过期时间
+            // 设置key过期时间
             this.setCartKeyExpire(cartKey);
         }
     }
@@ -259,6 +259,6 @@ public class CartInfoServiceImpl implements CartInfoService {
 
     //设置key 过期时间
     private void setCartKeyExpire(String key) {
-        redisTemplate.expire(key, RedisConst.USER_CART_EXPIRE, TimeUnit.SECONDS);
+        redisTemplate.expire(key, RedisConstant.USER_CART_EXPIRE, TimeUnit.SECONDS);
     }
 }

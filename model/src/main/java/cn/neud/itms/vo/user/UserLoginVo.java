@@ -27,8 +27,8 @@ public class UserLoginVo implements Serializable {
     @ApiModelProperty(value = "是否新用户")
     private Integer isNew;
 
-    @ApiModelProperty(value = "当前登录用户配送员id")
-    private Long courierId;
+    @ApiModelProperty(value = "当前登录用户分站id")
+    private Long stationId;
 
     @ApiModelProperty(value = "仓库id")
     private Long wareId;

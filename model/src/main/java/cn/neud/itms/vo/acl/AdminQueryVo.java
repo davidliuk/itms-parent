@@ -29,4 +29,3 @@ public class AdminQueryVo implements Serializable {
 	private String name;
 
 }
-

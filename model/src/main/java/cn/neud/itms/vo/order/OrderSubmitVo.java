@@ -12,8 +12,11 @@ public class OrderSubmitVo {
     @ApiModelProperty(value = "用户id")
     private Long userId;
 
-    @ApiModelProperty(value = "配送员id")
-    private Long courierId;
+    @ApiModelProperty(value = "库房id")
+    private Long wareId;
+
+    @ApiModelProperty(value = "分站id")
+    private Long stationId;
 
     @ApiModelProperty(value = "收货人姓名")
     private String receiverName;

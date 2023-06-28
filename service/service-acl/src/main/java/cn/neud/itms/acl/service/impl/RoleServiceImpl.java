@@ -39,7 +39,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
         //判断条件值是否为空，不为封装查询条件
         // rolename like ?
-        wrapper.like(!StringUtils.isEmpty(roleName), Role::getRoleName, roleName);
+        wrapper.like(!StringUtils.isEmpty(roleName), Role::getName, roleName);
 
         //调用方法实现条件分页查询
         IPage<Role> rolePage = baseMapper.selectPage(pageParam, wrapper);

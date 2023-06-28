@@ -27,3 +27,6 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+sa-token:
+  # jwt秘钥
+  jwt-secret-key: neud-itms

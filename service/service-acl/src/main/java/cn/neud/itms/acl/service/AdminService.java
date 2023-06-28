@@ -10,4 +10,6 @@ public interface AdminService extends IService<Admin> {
 
     //1 用户列表
     IPage<Admin> selectPageUser(Page<Admin> pageParam, AdminQueryVo adminQueryVo);
+
+    Admin getAdminByUserName(String username);
 }

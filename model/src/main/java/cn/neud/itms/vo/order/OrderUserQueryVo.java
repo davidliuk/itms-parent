@@ -13,4 +13,3 @@ public class OrderUserQueryVo {
 	private OrderStatus orderStatus;
 
 }
-

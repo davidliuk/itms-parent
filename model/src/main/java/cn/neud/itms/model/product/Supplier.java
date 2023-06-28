@@ -31,15 +31,15 @@ public class Supplier extends BaseEntity {
 
     @ApiModelProperty(value = "省")
     @TableField("province")
-    private Long province;
+    private String province;
 
     @ApiModelProperty(value = "城市")
     @TableField("city")
-    private Long city;
+    private String city;
 
     @ApiModelProperty(value = "区域")
     @TableField("district")
-    private Long district;
+    private String district;
 
     @ApiModelProperty(value = "详细地址")
     @TableField("detail_address")

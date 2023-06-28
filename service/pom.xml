@@ -31,11 +31,6 @@
             <artifactId>service-util</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>cn.neud</groupId>
-            <artifactId>redis-util</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <!--数据载体-->
         <dependency>
             <groupId>cn.neud</groupId>
@@ -77,6 +72,18 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot-starter</artifactId>
+            <version>1.34.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-jwt</artifactId>
+            <version>1.34.0</version>
         </dependency>
 
         <!--开发者工具-->

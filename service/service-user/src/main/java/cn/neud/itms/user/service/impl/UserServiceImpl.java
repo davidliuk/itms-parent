@@ -33,10 +33,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     // 判断是否是第一次使用微信授权登录：如何判断？openId
     @Override
     public User getUserByOpenId(String openid) {
-        User user = baseMapper.selectOne(
+        return baseMapper.selectOne(
                 new LambdaQueryWrapper<User>().eq(User::getOpenId, openid)
         );
-        return user;
+    }
+
+    @Override
+    public User getUserByUserName(String username) {
+        return baseMapper.selectOne(
+                new LambdaQueryWrapper<User>().eq(User::getUsername, username)
+        );
     }
 
     //5 根据userId查询提货点和配送员信息
@@ -101,15 +107,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userLoginVo.setIsNew(user.getIsNew());
         userLoginVo.setOpenId(user.getOpenId());
 
-        UserDelivery userDelivery = userDeliveryMapper.selectOne(
-                new LambdaQueryWrapper<UserDelivery>().eq(UserDelivery::getUserId, id)
-                        .eq(UserDelivery::getIsDefault, 1)
+//        UserDelivery userDelivery = userDeliveryMapper.selectOne(
+//                new LambdaQueryWrapper<UserDelivery>().eq(UserDelivery::getUserId, id)
+//                        .eq(UserDelivery::getIsDefault, 1)
+//        );
+        //根据userId查询用户默认的配送员id
+        Address address = addressMapper.selectOne(
+                new LambdaQueryWrapper<Address>()
+                        .eq(Address::getUserId, id)
+                        .eq(Address::getIsDefault, 1)
         );
-        if (userDelivery != null) {
-            userLoginVo.setCourierId(userDelivery.getCourierId());
-            userLoginVo.setWareId(userDelivery.getWareId());
+        if (address != null) {
+            userLoginVo.setStationId(address.getStationId());
+            userLoginVo.setWareId(address.getWareId());
         } else {
-            userLoginVo.setCourierId(1L);
+            userLoginVo.setStationId(1L);
             userLoginVo.setWareId(1L);
         }
         return userLoginVo;

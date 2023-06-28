@@ -2,8 +2,8 @@ package cn.neud.itms.user.controller;
 
 import cn.neud.itms.user.utils.HttpClientUtils;
 import com.alibaba.fastjson.JSONObject;
+import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.common.auth.AuthContextHolder;
-import cn.neud.itms.common.constant.RedisConst;
 import cn.neud.itms.common.exception.ItmsException;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.common.result.ResultCodeEnum;
@@ -97,9 +97,9 @@ public class WeixinApiController {
         //7 获取当前登录用户信息，放到Redis里面，设置有效时间
         UserLoginVo userLoginVo = userService.getUserLoginVo(user.getId());
         redisTemplate.opsForValue()
-                .set(RedisConst.USER_LOGIN_KEY_PREFIX + user.getId(),
+                .set(RedisConstant.USER_LOGIN_KEY_PREFIX + user.getId(),
                         userLoginVo,
-                        RedisConst.USERKEY_TIMEOUT,
+                        RedisConstant.USERKEY_TIMEOUT,
                         TimeUnit.DAYS);
 
         //8 需要数据封装到map返回

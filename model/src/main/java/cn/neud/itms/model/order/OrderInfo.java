@@ -93,10 +93,6 @@ public class OrderInfo extends BaseEntity {
 	@TableField("courier_phone")
 	private String courierPhone;
 
-	@ApiModelProperty(value = "提货点名称")
-	@TableField("take_name")
-	private String takeName;
-
 	@ApiModelProperty(value = "收货人姓名")
 	@TableField("receiver_name")
 	private String receiverName;
@@ -161,6 +157,10 @@ public class OrderInfo extends BaseEntity {
 	@ApiModelProperty(value = "仓库id")
 	@TableField("ware_id")
 	private Long wareId;
+
+	@ApiModelProperty(value = "分站id")
+	@TableField("station_id")
+	private Long stationId;
 
 	@ApiModelProperty(value = "配送员佣金")
 	@TableField("commission_amount")

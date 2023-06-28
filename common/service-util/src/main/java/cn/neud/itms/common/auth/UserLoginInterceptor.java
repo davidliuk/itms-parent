@@ -1,6 +1,6 @@
 package cn.neud.itms.common.auth;
 
-import cn.neud.itms.common.constant.RedisConst;
+import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.common.utils.JwtHelper;
 import cn.neud.itms.vo.user.UserLoginVo;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -36,7 +36,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
             Long userId = JwtHelper.getUserId(token);
             //根据userId到Redis获取用户信息
             UserLoginVo userLoginVo = (UserLoginVo) redisTemplate.opsForValue()
-                    .get(RedisConst.USER_LOGIN_KEY_PREFIX + userId);
+                    .get(RedisConstant.USER_LOGIN_KEY_PREFIX + userId);
             //获取数据放到ThreadLocal里面
             if (userLoginVo != null) {
                 AuthContextHolder.setUserId(userLoginVo.getUserId());

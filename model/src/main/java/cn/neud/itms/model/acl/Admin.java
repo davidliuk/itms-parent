@@ -43,7 +43,7 @@ public class Admin extends BaseEntity {
     private Long wareId;
 
     @ApiModelProperty(value = "分站id")
-    @TableField("ware_id")
+    @TableField("station_id")
     private Long stationId;
 
     @ApiModelProperty(value = "角色名称")

@@ -4,7 +4,7 @@ import cn.neud.itms.payment.service.PaymentInfoService;
 import cn.neud.itms.payment.service.WeixinService;
 import cn.neud.itms.payment.utils.ConstantPropertiesUtils;
 import cn.neud.itms.payment.utils.HttpClient;
-import cn.neud.itms.common.constant.RedisConst;
+import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.model.order.PaymentInfo;
 import cn.neud.itms.vo.user.UserLoginVo;
 import com.github.wxpay.sdk.WXPayUtil;
@@ -52,7 +52,7 @@ public class WeixinServiceImpl implements WeixinService {
 
         //openid
         UserLoginVo userLoginVo = (UserLoginVo) redisTemplate.opsForValue()
-                .get(RedisConst.USER_LOGIN_KEY_PREFIX + paymentInfo.getUserId());
+                .get(RedisConstant.USER_LOGIN_KEY_PREFIX + paymentInfo.getUserId());
         if (null != userLoginVo && !StringUtils.isEmpty(userLoginVo.getOpenId())) {
             paramMap.put("openid", userLoginVo.getOpenId());
         } else {
