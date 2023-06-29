@@ -16,20 +16,20 @@ import java.util.List;
  */
 @Data
 public class OrderMqVo implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "订单号")
-	private String orderNo;
+    private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "配送员id")
-	private Long courierId;
+    @ApiModelProperty(value = "订单号")
+    private String orderNo;
 
-	@ApiModelProperty(value = "配送员佣金")
-	private BigDecimal commissionAmount;
+    @ApiModelProperty(value = "配送员id")
+    private Long courierId;
 
-	@ApiModelProperty(value = "订单项列表")
-	private List<OrderItemMqVo> orderItemMqVoList;
+    @ApiModelProperty(value = "配送员佣金")
+    private BigDecimal commissionAmount;
+
+    @ApiModelProperty(value = "订单项列表")
+    private List<OrderItemMqVo> orderItemMqVoList;
 
 
 }

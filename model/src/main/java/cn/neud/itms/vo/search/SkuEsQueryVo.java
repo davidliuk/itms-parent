@@ -6,7 +6,8 @@ import lombok.Data;
 @Data
 public class SkuEsQueryVo {
 
-    private Long categoryId;;//三级分类id
+    private Long categoryId;
+    ;//三级分类id
 
     private String keyword;//检索的关键字
 

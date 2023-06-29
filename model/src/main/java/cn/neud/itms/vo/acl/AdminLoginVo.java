@@ -10,14 +10,14 @@ import java.io.Serializable;
 @ApiModel(description = "管理员登录信息")
 public class AdminLoginVo implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "管理员id")
-	private Long adminId;
+    @ApiModelProperty(value = "管理员id")
+    private Long adminId;
 
-	@ApiModelProperty(value = "姓名")
-	private String name;
+    @ApiModelProperty(value = "姓名")
+    private String name;
 
-	@ApiModelProperty(value = "仓库id")
-	private Long wareId;
+    @ApiModelProperty(value = "仓库id")
+    private Long wareId;
 }

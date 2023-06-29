@@ -16,7 +16,7 @@ public interface CartInfoService {
     void deleteAllCart(Long userId);
 
     //批量删除购物车 多个skuId
-    void batchDeleteCart(List<Long> skuIdList,Long userId);
+    void batchDeleteCart(List<Long> skuIdList, Long userId);
 
     //购物车列表
     List<CartInfo> getCartList(Long userId);

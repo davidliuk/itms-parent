@@ -1,9 +1,9 @@
 package cn.neud.itms.home.service.impl;
 
-import cn.neud.itms.home.service.HomeService;
 import cn.neud.itms.client.product.ProductFeignClient;
 import cn.neud.itms.client.search.SkuFeignClient;
 import cn.neud.itms.client.user.UserFeignClient;
+import cn.neud.itms.home.service.HomeService;
 import cn.neud.itms.model.product.Category;
 import cn.neud.itms.model.product.SkuInfo;
 import cn.neud.itms.model.search.SkuEs;

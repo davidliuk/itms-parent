@@ -1,8 +1,8 @@
 package cn.neud.itms.acl.controller;
 
-import cn.neud.itms.model.acl.Permission;
 import cn.neud.itms.acl.service.PermissionService;
 import cn.neud.itms.common.result.Result;
+import cn.neud.itms.model.acl.Permission;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

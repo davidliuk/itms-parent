@@ -3,8 +3,8 @@ package cn.neud.itms.product.controller;
 
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.product.AttrGroup;
-import cn.neud.itms.vo.product.AttrGroupQueryVo;
 import cn.neud.itms.product.service.AttrGroupService;
+import cn.neud.itms.vo.product.AttrGroupQueryVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;
@@ -29,7 +29,7 @@ public class AttrGroupController {
     @Autowired
     private AttrGroupService attrGroupService;
 
-//    url: `${api_name}/${page}/${limit}`,
+    //    url: `${api_name}/${page}/${limit}`,
 //    method: 'get',
 //    params: searchObj
     @ApiOperation("平台属性分组列表")
@@ -37,8 +37,8 @@ public class AttrGroupController {
     public Result list(@PathVariable Long page,
                        @PathVariable Long limit,
                        AttrGroupQueryVo attrGroupQueryVo) {
-        Page<AttrGroup> pageParam = new Page<>(page,limit);
-        IPage<AttrGroup> pageModel = attrGroupService.selectPageAttrGroup(pageParam,attrGroupQueryVo);
+        Page<AttrGroup> pageParam = new Page<>(page, limit);
+        IPage<AttrGroup> pageModel = attrGroupService.selectPageAttrGroup(pageParam, attrGroupQueryVo);
         return Result.ok(pageModel);
     }
 

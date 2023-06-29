@@ -1,10 +1,10 @@
 package cn.neud.itms.activity.controller;
 
 
+import cn.neud.itms.activity.service.CouponInfoService;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.activity.CouponInfo;
 import cn.neud.itms.vo.activity.CouponRuleVo;
-import cn.neud.itms.activity.service.CouponInfoService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +34,7 @@ public class CouponInfoController {
     public Result list(@PathVariable Long page,
                        @PathVariable Long limit) {
         IPage<CouponInfo> pageModel =
-                couponInfoService.selectPageCouponInfo(page,limit);
+                couponInfoService.selectPageCouponInfo(page, limit);
         return Result.ok(pageModel);
     }
 
@@ -62,7 +62,7 @@ public class CouponInfoController {
 //    method: 'get'
     @GetMapping("findCouponRuleList/{id}")
     public Result findCouponRuleList(@PathVariable Long id) {
-        Map<String,Object> map =
+        Map<String, Object> map =
                 couponInfoService.findCouponRuleList(id);
         return Result.ok(map);
     }

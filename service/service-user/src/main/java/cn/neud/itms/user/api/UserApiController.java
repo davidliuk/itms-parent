@@ -7,7 +7,6 @@ import cn.neud.itms.common.utils.JwtHelper;
 import cn.neud.itms.common.utils.MD5;
 import cn.neud.itms.common.utils.MailUtil;
 import cn.neud.itms.enums.UserType;
-import cn.neud.itms.model.user.Address;
 import cn.neud.itms.model.user.User;
 import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.user.service.AddressService;

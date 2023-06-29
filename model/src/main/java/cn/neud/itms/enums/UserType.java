@@ -9,15 +9,15 @@ import lombok.Getter;
 @JSONType(serializer = EnumSerializer.class, deserializer = EnumDeserializer.class, serializeEnumAsJavaBean = true)
 @Getter
 public enum UserType {
-    USER(0,"会员"),
-    COURIER(1,"配送员" );
+    USER(0, "会员"),
+    COURIER(1, "配送员");
 
     @EnumValue
-    private Integer code ;
-    private String comment ;
+    private Integer code;
+    private String comment;
 
-    UserType(Integer code, String comment ){
-        this.code=code;
-        this.comment=comment;
+    UserType(Integer code, String comment) {
+        this.code = code;
+        this.comment = comment;
     }
 }

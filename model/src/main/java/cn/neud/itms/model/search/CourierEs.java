@@ -3,14 +3,14 @@ package cn.neud.itms.model.search;
 import lombok.Data;
 import org.elasticsearch.common.geo.GeoPoint;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.FieldType;
-import org.springframework.data.elasticsearch.annotations.GeoPointField;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.GeoPointField;
 //import org.springframework.data.elasticsearch.annotations.*;
 
 @Data
-@Document(indexName = "courier_es" ,shards = 3,replicas = 1)
+@Document(indexName = "courier_es", shards = 3, replicas = 1)
 public class CourierEs {
 
     @Id

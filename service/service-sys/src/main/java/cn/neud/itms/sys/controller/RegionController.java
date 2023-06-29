@@ -72,6 +72,6 @@ public class RegionController {
         regionService.removeByIds(idList);
         return Result.ok(null);
     }
-    
+
 }
 

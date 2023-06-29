@@ -1,19 +1,19 @@
 package cn.neud.itms.activity.service.impl;
 
+import cn.neud.itms.activity.mapper.CouponInfoMapper;
+import cn.neud.itms.activity.mapper.CouponRangeMapper;
+import cn.neud.itms.activity.mapper.CouponUseMapper;
+import cn.neud.itms.activity.service.CouponInfoService;
 import cn.neud.itms.client.product.ProductFeignClient;
 import cn.neud.itms.enums.CouponRangeType;
 import cn.neud.itms.enums.CouponStatus;
 import cn.neud.itms.model.activity.CouponInfo;
 import cn.neud.itms.model.activity.CouponRange;
 import cn.neud.itms.model.activity.CouponUse;
-import cn.neud.itms.model.product.Category;
-import cn.neud.itms.vo.activity.CouponRuleVo;
-import cn.neud.itms.activity.mapper.CouponRangeMapper;
-import cn.neud.itms.activity.mapper.CouponUseMapper;
-import cn.neud.itms.activity.mapper.CouponInfoMapper;
-import cn.neud.itms.activity.service.CouponInfoService;
 import cn.neud.itms.model.order.CartInfo;
+import cn.neud.itms.model.product.Category;
 import cn.neud.itms.model.product.SkuInfo;
+import cn.neud.itms.vo.activity.CouponRuleVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -54,7 +54,7 @@ public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponI
 
         //根据条件查询：skuId + 分类id + userId
         List<CouponInfo> couponInfoList = baseMapper.selectCouponInfoList(skuInfo.getId(),
-                skuInfo.getCategoryId(),userId);
+                skuInfo.getCategoryId(), userId);
 
         return couponInfoList;
     }
@@ -67,7 +67,7 @@ public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponI
         //coupon_use  coupon_info
         List<CouponInfo> userAllCouponInfoList =
                 baseMapper.selectCartCouponInfoList(userId);
-        if(CollectionUtils.isEmpty(userAllCouponInfoList)) {
+        if (CollectionUtils.isEmpty(userAllCouponInfoList)) {
             return new ArrayList<CouponInfo>();
         }
 
@@ -79,27 +79,27 @@ public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponI
         //couponRangeList
         LambdaQueryWrapper<CouponRange> wrapper = new LambdaQueryWrapper<>();
         // id in (1,2,3)
-        wrapper.in(CouponRange::getCouponId,couponIdList);
+        wrapper.in(CouponRange::getCouponId, couponIdList);
         List<CouponRange> couponRangeList = couponRangeMapper.selectList(wrapper);
 
         //4 获取优惠卷id 对应skuId列表
         //优惠卷id进行分组，得到map集合
         //     Map<Long,List<Long>>
-        Map<Long,List<Long>> couponIdToSkuIdMap =
-                this.findCouponIdToSkuIdMap(cartInfoList,couponRangeList);
+        Map<Long, List<Long>> couponIdToSkuIdMap =
+                this.findCouponIdToSkuIdMap(cartInfoList, couponRangeList);
 
         //5 遍历全部优惠卷集合，判断优惠卷类型
         //全场通用  sku和分类
         BigDecimal reduceAmount = new BigDecimal(0);
         CouponInfo optimalCouponInfo = null;
-        for(CouponInfo couponInfo:userAllCouponInfoList) {
+        for (CouponInfo couponInfo : userAllCouponInfoList) {
             //全场通用
-            if(CouponRangeType.ALL == couponInfo.getRangeType()) {
+            if (CouponRangeType.ALL == couponInfo.getRangeType()) {
                 //全场通用
                 //判断是否满足优惠使用门槛
                 //计算购物车商品的总价
                 BigDecimal totalAmount = computeTotalAmount(cartInfoList);
-                if(totalAmount.subtract(couponInfo.getConditionAmount()).doubleValue() >= 0){
+                if (totalAmount.subtract(couponInfo.getConditionAmount()).doubleValue() >= 0) {
                     couponInfo.setIsSelect(1);
                 }
             } else {
@@ -111,7 +111,7 @@ public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponI
                         .filter(cartInfo -> skuIdList.contains(cartInfo.getSkuId()))
                         .collect(Collectors.toList());
                 BigDecimal totalAmount = computeTotalAmount(currentCartInfoList);
-                if(totalAmount.subtract(couponInfo.getConditionAmount()).doubleValue() >= 0){
+                if (totalAmount.subtract(couponInfo.getConditionAmount()).doubleValue() >= 0) {
                     couponInfo.setIsSelect(1);
                 }
             }
@@ -122,7 +122,7 @@ public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponI
 
         }
         //6 返回List<CouponInfo>
-        if(null != optimalCouponInfo) {
+        if (null != optimalCouponInfo) {
             optimalCouponInfo.setIsOptimal(1);
         }
         return userAllCouponInfoList;
@@ -134,7 +134,7 @@ public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponI
                                          Long couponId) {
         //根据优惠卷id基本信息查询
         CouponInfo couponInfo = baseMapper.selectById(couponId);
-        if(couponInfo == null) {
+        if (couponInfo == null) {
             return null;
         }
         //根据couponId查询对应CouponRange数据
@@ -173,7 +173,7 @@ public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponI
         BigDecimal total = new BigDecimal("0");
         for (CartInfo cartInfo : cartInfoList) {
             //是否选中
-            if(cartInfo.getIsChecked().intValue() == 1) {
+            if (cartInfo.getIsChecked().intValue() == 1) {
                 BigDecimal itemTotal = cartInfo.getCartPrice().multiply(new BigDecimal(cartInfo.getSkuNum()));
                 total = total.add(itemTotal);
             }
@@ -204,21 +204,21 @@ public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponI
 
             //创建集合 set
             Set<Long> skuIdSet = new HashSet<>();
-            for (CartInfo cartInfo:cartInfoList) {
-                for (CouponRange couponRange:rangeList) {
+            for (CartInfo cartInfo : cartInfoList) {
+                for (CouponRange couponRange : rangeList) {
                     //判断
-                    if(couponRange.getRangeType() == CouponRangeType.SKU
-                       && couponRange.getRangeId().longValue() == cartInfo.getSkuId().longValue()) {
+                    if (couponRange.getRangeType() == CouponRangeType.SKU
+                            && couponRange.getRangeId().longValue() == cartInfo.getSkuId().longValue()) {
                         skuIdSet.add(cartInfo.getSkuId());
-                    } else if(couponRange.getRangeType() == CouponRangeType.CATEGORY
-                     && couponRange.getRangeId().longValue() == cartInfo.getCategoryId().longValue()) {
+                    } else if (couponRange.getRangeType() == CouponRangeType.CATEGORY
+                            && couponRange.getRangeId().longValue() == cartInfo.getCategoryId().longValue()) {
                         skuIdSet.add(cartInfo.getSkuId());
                     } else {
 
                     }
                 }
             }
-            couponIdToSkuIdMap.put(couponId,new ArrayList<>(skuIdSet));
+            couponIdToSkuIdMap.put(couponId, new ArrayList<>(skuIdSet));
         }
         return couponIdToSkuIdMap;
     }
@@ -226,13 +226,13 @@ public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponI
     //1 优惠卷分页查询
     @Override
     public IPage<CouponInfo> selectPageCouponInfo(Long page, Long limit) {
-        Page<CouponInfo> pageParam = new Page<>(page,limit);
+        Page<CouponInfo> pageParam = new Page<>(page, limit);
         IPage<CouponInfo> couponInfoPage = baseMapper.selectPage(pageParam, null);
         List<CouponInfo> couponInfoList = couponInfoPage.getRecords();
         couponInfoList.stream().forEach(item -> {
             item.setCouponTypeString(item.getCouponType().getComment());
             CouponRangeType rangeType = item.getRangeType();
-            if(rangeType != null) {
+            if (rangeType != null) {
                 item.setRangeTypeString(rangeType.getComment());
             }
         });
@@ -244,7 +244,7 @@ public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponI
     public CouponInfo getCouponInfo(Long id) {
         CouponInfo couponInfo = baseMapper.selectById(id);
         couponInfo.setCouponTypeString(couponInfo.getCouponType().getComment());
-        if(couponInfo.getRangeType() != null) {
+        if (couponInfo.getRangeType() != null) {
             couponInfo.setRangeTypeString(couponInfo.getRangeType().getComment());
         }
         return couponInfo;
@@ -266,21 +266,21 @@ public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponI
         List<Long> randIdList =
                 couponRangeList.stream().map(CouponRange::getRangeId).collect(Collectors.toList());
 
-        Map<String,Object> result = new HashMap();
+        Map<String, Object> result = new HashMap();
         //第三步 分别判断封装不同数据
-        if(!CollectionUtils.isEmpty(randIdList)) {
-            if(couponInfo.getRangeType() == CouponRangeType.SKU) {
+        if (!CollectionUtils.isEmpty(randIdList)) {
+            if (couponInfo.getRangeType() == CouponRangeType.SKU) {
                 //// 如果规则类型是SKU ，得到skuId，
                 // 远程调用根据多个skuId值获取对应sku信息
                 List<SkuInfo> skuInfoList =
                         productFeignClient.findSkuInfoList(randIdList);
-                result.put("skuInfoList",skuInfoList);
+                result.put("skuInfoList", skuInfoList);
 
-            } else if(couponInfo.getRangeType() == CouponRangeType.CATEGORY) {
+            } else if (couponInfo.getRangeType() == CouponRangeType.CATEGORY) {
                 //// 如果规则类型是分类，得到分类Id，远程调用根据多个分类Id值获取对应分类信息
                 List<Category> categoryList =
                         productFeignClient.findCategoryList(randIdList);
-                result.put("categoryList",categoryList);
+                result.put("categoryList", categoryList);
             }
         }
         return result;
@@ -291,7 +291,7 @@ public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponI
     public void saveCouponRule(CouponRuleVo couponRuleVo) {
         //根据优惠卷id删除规则数据
         couponRangeMapper.delete(
-                new LambdaQueryWrapper<CouponRange>().eq(CouponRange::getCouponId,couponRuleVo.getCouponId())
+                new LambdaQueryWrapper<CouponRange>().eq(CouponRange::getCouponId, couponRuleVo.getCouponId())
         );
 
         //更新优惠卷基本信息
@@ -305,7 +305,7 @@ public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponI
 
         //添加优惠卷新规则数据
         List<CouponRange> couponRangeList = couponRuleVo.getCouponRangeList();
-        for (CouponRange couponRange:couponRangeList) {
+        for (CouponRange couponRange : couponRangeList) {
             //设置优惠卷id
             couponRange.setCouponId(couponRuleVo.getCouponId());
             //添加

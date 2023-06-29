@@ -1,6 +1,5 @@
 package cn.neud.itms.sys.service.impl;
 
-import cn.neud.itms.model.product.Attr;
 import cn.neud.itms.model.sys.RegionStation;
 import cn.neud.itms.sys.mapper.RegionStationMapper;
 import cn.neud.itms.sys.service.RegionStationService;

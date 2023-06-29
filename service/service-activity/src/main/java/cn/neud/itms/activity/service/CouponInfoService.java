@@ -1,8 +1,8 @@
 package cn.neud.itms.activity.service;
 
 import cn.neud.itms.model.activity.CouponInfo;
-import cn.neud.itms.vo.activity.CouponRuleVo;
 import cn.neud.itms.model.order.CartInfo;
+import cn.neud.itms.vo.activity.CouponRuleVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 

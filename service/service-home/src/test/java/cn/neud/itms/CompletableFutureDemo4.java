@@ -15,20 +15,20 @@ public class CompletableFutureDemo4 {
         //1 任务1 返回结果 1024
         CompletableFuture<Integer> futureA = CompletableFuture.supplyAsync(() -> {
             int value = 1024;
-            System.out.println("任务1："+value);
+            System.out.println("任务1：" + value);
             return value;
         }, executorService);
 
         //2 任务2 获取任务1返回结果
         CompletableFuture<Integer> futureB = futureA.thenApplyAsync((res) -> {
-            System.out.println("任务2："+res);
+            System.out.println("任务2：" + res);
             return res;
         }, executorService);
 
         //3 任务3 往下执行
         CompletableFuture<Void> futureC = futureA.thenRunAsync(() -> {
             System.out.println("任务3： ");
-        },executorService);
+        }, executorService);
 
     }
 

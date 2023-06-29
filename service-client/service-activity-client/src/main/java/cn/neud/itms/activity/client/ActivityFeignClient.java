@@ -24,8 +24,8 @@ public interface ActivityFeignClient {
 
     @ApiOperation("根据skuID获取营销数据和优惠卷")
     @GetMapping("/api/activity/inner/findActivityAndCoupon/{skuId}/{userId}")
-    public Map<String,Object> findActivityAndCoupon(@PathVariable("skuId") Long skuId,
-                                                    @PathVariable("userId") Long userId);
+    public Map<String, Object> findActivityAndCoupon(@PathVariable("skuId") Long skuId,
+                                                     @PathVariable("userId") Long userId);
 
     @PostMapping("/api/activity/inner/findActivity")
     public Map<Long, List<String>> findActivity(@RequestBody List<Long> skuIdList);

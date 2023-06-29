@@ -9,7 +9,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.util.List;
 
 @Data
-@Document(indexName = "skues" ,shards = 3,replicas = 1)
+@Document(indexName = "skues", shards = 3, replicas = 1)
 public class SkuEs {
 
     // 商品Id= skuId

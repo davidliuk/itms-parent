@@ -3,8 +3,8 @@ package cn.neud.itms.product.controller;
 
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.product.Category;
-import cn.neud.itms.vo.product.CategoryQueryVo;
 import cn.neud.itms.product.service.CategoryService;
+import cn.neud.itms.vo.product.CategoryQueryVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;
@@ -38,8 +38,8 @@ public class CategoryController {
     public Result list(@PathVariable Long page,
                        @PathVariable Long limit,
                        CategoryQueryVo categoryQueryVo) {
-        Page<Category> pageParam = new Page<>(page,limit);
-        IPage<Category> pageModel = categoryService.selectPageCategory(pageParam,categoryQueryVo);
+        Page<Category> pageParam = new Page<>(page, limit);
+        IPage<Category> pageModel = categoryService.selectPageCategory(pageParam, categoryQueryVo);
         return Result.ok(pageModel);
     }
 

@@ -1,13 +1,13 @@
 package cn.neud.itms.vo.sys;
 
-import lombok.Data;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 @Data
 public class RegionWareQueryVo {
-	
-	@ApiModelProperty(value = "关键字")
-	private String keyword;
+
+    @ApiModelProperty(value = "关键字")
+    private String keyword;
 
 }
 

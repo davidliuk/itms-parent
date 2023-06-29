@@ -1,8 +1,6 @@
 package cn.neud.itms.common.config;
 
 import cn.dev33.satoken.jwt.StpLogicJwtForMixin;
-import cn.dev33.satoken.jwt.StpLogicJwtForSimple;
-import cn.dev33.satoken.jwt.StpLogicJwtForStateless;
 import cn.dev33.satoken.stp.StpLogic;
 import cn.dev33.satoken.strategy.SaStrategy;
 import org.springframework.beans.factory.annotation.Autowired;

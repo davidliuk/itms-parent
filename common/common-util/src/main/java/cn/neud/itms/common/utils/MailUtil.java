@@ -14,10 +14,6 @@ import java.util.Properties;
  */
 public class MailUtil {
 
-    public static void main(String[] args) {
-        sendMail("l729641074@163.com");
-    }
-
     private static final Properties prop = new Properties() {{
         // 开启debug调试，以便在控制台查看
         this.setProperty("mail.debug", "true");

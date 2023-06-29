@@ -12,18 +12,18 @@ import lombok.Data;
 @TableName("region")
 public class Region extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "上级id")
-	@TableField("parent_id")
-	private Long parentId;
+    @ApiModelProperty(value = "上级id")
+    @TableField("parent_id")
+    private Long parentId;
 
-	@ApiModelProperty(value = "名称")
-	@TableField("name")
-	private String name;
+    @ApiModelProperty(value = "名称")
+    @TableField("name")
+    private String name;
 
-	@ApiModelProperty(value = "是否包含子节点")
-	@TableField(exist = false)
-	private boolean hasChildren;
+    @ApiModelProperty(value = "是否包含子节点")
+    @TableField(exist = false)
+    private boolean hasChildren;
 
 }

@@ -26,7 +26,8 @@
                create_time,
                update_time,
                is_deleted
-        from sku_info, sku_ware
+        from sku_info,
+             sku_ware
         where sku_info.id = sku_ware.sku_id
           and sku_info.id = #{skuId}
           and stock - lock_stock > #{skuNum} for

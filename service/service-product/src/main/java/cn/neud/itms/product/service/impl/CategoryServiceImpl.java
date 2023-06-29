@@ -1,9 +1,9 @@
 package cn.neud.itms.product.service.impl;
 
 import cn.neud.itms.model.product.Category;
-import cn.neud.itms.vo.product.CategoryQueryVo;
 import cn.neud.itms.product.mapper.CategoryMapper;
 import cn.neud.itms.product.service.CategoryService;
+import cn.neud.itms.vo.product.CategoryQueryVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -28,8 +28,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
                                               CategoryQueryVo categoryQueryVo) {
         String name = categoryQueryVo.getName();
         LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
-        if(!StringUtils.isEmpty(name)) {
-            wrapper.like(Category::getName,name);
+        if (!StringUtils.isEmpty(name)) {
+            wrapper.like(Category::getName, name);
         }
         IPage<Category> categoryPage = baseMapper.selectPage(pageParam, wrapper);
         return categoryPage;

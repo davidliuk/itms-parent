@@ -1,6 +1,5 @@
 package cn.neud.itms.search.service.impl;
 
-import cn.neud.itms.search.service.SkuService;
 import cn.neud.itms.activity.client.ActivityFeignClient;
 import cn.neud.itms.client.product.ProductFeignClient;
 import cn.neud.itms.common.auth.AuthContextHolder;
@@ -9,6 +8,7 @@ import cn.neud.itms.model.product.Category;
 import cn.neud.itms.model.product.SkuInfo;
 import cn.neud.itms.model.search.SkuEs;
 import cn.neud.itms.search.repository.SkuRepository;
+import cn.neud.itms.search.service.SkuService;
 import cn.neud.itms.vo.search.SkuEsQueryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,7 +46,7 @@ public class SkuServiceImpl implements SkuService {
         //redis保存数据，每次+1
         Double hotScore = redisTemplate.opsForZSet().incrementScore(key, "skuId:" + skuId, 1);
         //规则
-        if(hotScore%10==0) {
+        if (hotScore % 10 == 0) {
             //更新es
             Optional<SkuEs> optional = skuRepository.findById(skuId);
             SkuEs skuEs = optional.get();
@@ -61,7 +61,7 @@ public class SkuServiceImpl implements SkuService {
         //find  read  get开头
         //关联条件关键字
         // 0代表第一页
-        Pageable pageable = PageRequest.of(0,10);
+        Pageable pageable = PageRequest.of(0, 10);
         Page<SkuEs> pageModel = skuRepository.findByOrderByHotScoreDesc(pageable);
         List<SkuEs> skuEsList = pageModel.getContent();
         return skuEsList;
@@ -77,7 +77,7 @@ public class SkuServiceImpl implements SkuService {
         //2 调用SkuRepository方法，根据springData命名规则定义方法，进行条件查询
         //// 判断keyword是否为空，如果为空 ，根据仓库id + 分类id查询
         String keyword = skuEsQueryVo.getKeyword();
-        if(StringUtils.isEmpty(keyword)) {
+        if (StringUtils.isEmpty(keyword)) {
             pageModel =
                     skuRepository
                             .findByCategoryIdAndWareId(
@@ -96,7 +96,7 @@ public class SkuServiceImpl implements SkuService {
         //3 查询商品参加优惠活动
         List<SkuEs> skuEsList = pageModel.getContent();
 
-        if(!CollectionUtils.isEmpty(skuEsList)) {
+        if (!CollectionUtils.isEmpty(skuEsList)) {
             //遍历skuEsList，得到所有skuId
             List<Long> skuIdList =
                     skuEsList.stream()
@@ -110,10 +110,10 @@ public class SkuServiceImpl implements SkuService {
             ////// 比如有活动：中秋节满减活动
             ////// 一个活动可以有多个规则：
             ////// 中秋节满减活动有两个规则：满20元减1元，满58元减5元
-            Map<Long,List<String>> skuIdToRuleListMap =
+            Map<Long, List<String>> skuIdToRuleListMap =
                     activityFeignClient.findActivity(skuIdList);//远程调用
             //封装获取数据到skuEs里面 ruleList属性里面
-            if(skuIdToRuleListMap != null) {
+            if (skuIdToRuleListMap != null) {
                 skuEsList.forEach(skuEs -> {
                     skuEs.setRuleList(skuIdToRuleListMap.get(skuEs.getId()));
                 });
@@ -127,25 +127,25 @@ public class SkuServiceImpl implements SkuService {
     public void upperSku(Long skuId) {
         //1 通过远程调用 ，根据skuId获取相关信息
         SkuInfo skuInfo = productFeignClient.getSkuInfo(skuId);
-        if(skuInfo == null) {
+        if (skuInfo == null) {
             return;
         }
         Category category = productFeignClient.getCategory(skuInfo.getCategoryId());
         //2 获取数据封装SkuEs对象
         SkuEs skuEs = new SkuEs();
         //封装分类
-        if(category != null) {
+        if (category != null) {
             skuEs.setCategoryId(category.getId());
             skuEs.setCategoryName(category.getName());
         }
         //封装sku信息部分
         skuEs.setId(skuInfo.getId());
-        skuEs.setKeyword(skuInfo.getSkuName()+","+skuEs.getCategoryName());
+        skuEs.setKeyword(skuInfo.getSkuName() + "," + skuEs.getCategoryName());
         skuEs.setWareId(skuInfo.getWareId());
         skuEs.setIsNewPerson(skuInfo.getIsNewPerson());
         skuEs.setImgUrl(skuInfo.getImgUrl());
         skuEs.setTitle(skuInfo.getSkuName());
-        if(skuInfo.getSkuType() == SkuType.COMMON.getCode()) {//普通商品
+        if (skuInfo.getSkuType() == SkuType.COMMON.getCode()) {//普通商品
             skuEs.setSkuType(0);
             skuEs.setPrice(skuInfo.getPrice().doubleValue());
             skuEs.setStock(skuInfo.getStock());

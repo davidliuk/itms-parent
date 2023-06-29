@@ -24,7 +24,7 @@ public class SkuPosterServiceImpl extends ServiceImpl<SkuPosterMapper, SkuPoster
     @Override
     public List<SkuPoster> getPosterListBySkuId(Long id) {
         LambdaQueryWrapper<SkuPoster> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(SkuPoster::getSkuId,id);
+        wrapper.eq(SkuPoster::getSkuId, id);
         return baseMapper.selectList(wrapper);
     }
 }

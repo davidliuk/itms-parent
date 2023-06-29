@@ -1,15 +1,11 @@
 package cn.neud.itms.product.service.impl;
 
-import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.common.exception.ItmsException;
 import cn.neud.itms.common.result.ResultCodeEnum;
 import cn.neud.itms.model.product.SkuAttrValue;
 import cn.neud.itms.model.product.SkuImage;
 import cn.neud.itms.model.product.SkuInfo;
 import cn.neud.itms.model.product.SkuPoster;
-import cn.neud.itms.vo.product.SkuInfoQueryVo;
-import cn.neud.itms.vo.product.SkuInfoVo;
-import cn.neud.itms.vo.product.SkuStockLockVo;
 import cn.neud.itms.mq.constant.MqConstant;
 import cn.neud.itms.mq.service.RabbitService;
 import cn.neud.itms.product.mapper.SkuInfoMapper;
@@ -17,6 +13,10 @@ import cn.neud.itms.product.service.SkuAttrValueService;
 import cn.neud.itms.product.service.SkuImageService;
 import cn.neud.itms.product.service.SkuInfoService;
 import cn.neud.itms.product.service.SkuPosterService;
+import cn.neud.itms.redis.constant.RedisConstant;
+import cn.neud.itms.vo.product.SkuInfoQueryVo;
+import cn.neud.itms.vo.product.SkuInfoVo;
+import cn.neud.itms.vo.product.SkuStockLockVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

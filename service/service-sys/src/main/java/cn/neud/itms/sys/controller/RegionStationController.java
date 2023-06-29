@@ -2,7 +2,6 @@ package cn.neud.itms.sys.controller;
 
 
 import cn.neud.itms.common.result.Result;
-import cn.neud.itms.model.product.Attr;
 import cn.neud.itms.model.sys.RegionStation;
 import cn.neud.itms.sys.service.RegionStationService;
 import io.swagger.annotations.Api;
@@ -80,6 +79,6 @@ public class RegionStationController {
         regionStationService.removeByIds(idList);
         return Result.ok(null);
     }
-    
+
 }
 

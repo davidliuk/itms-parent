@@ -12,22 +12,22 @@ import lombok.Data;
 @TableName("sku_image")
 public class SkuImage extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "sku_id")
-	@TableField("sku_id")
-	private Long skuId;
+    @ApiModelProperty(value = "sku_id")
+    @TableField("sku_id")
+    private Long skuId;
 
-	@ApiModelProperty(value = "图片名称")
-	@TableField("img_name")
-	private String imgName;
+    @ApiModelProperty(value = "图片名称")
+    @TableField("img_name")
+    private String imgName;
 
-	@ApiModelProperty(value = "图片地址")
-	@TableField("img_url")
-	private String imgUrl;
+    @ApiModelProperty(value = "图片地址")
+    @TableField("img_url")
+    private String imgUrl;
 
-	@ApiModelProperty(value = "排序")
-	@TableField("sort")
-	private Integer sort;
+    @ApiModelProperty(value = "排序")
+    @TableField("sort")
+    private Integer sort;
 
 }

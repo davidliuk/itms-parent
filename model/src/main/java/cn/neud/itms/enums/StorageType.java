@@ -5,15 +5,17 @@ import lombok.Getter;
 
 @Getter
 public enum StorageType {
-    IN(0,"入库"),
-    OUT(1,"出库" );
+    IN(0, "入库"),
+    OUT(1, "出库"),
+    RETURN_IN(2, "退货入库"),
+    RETURN_OUT(3, "退货出库");
 
     @EnumValue
-    private Integer code ;
-    private String comment ;
+    private Integer code;
+    private String comment;
 
-    StorageType(Integer code, String comment ){
-        this.code=code;
-        this.comment=comment;
+    StorageType(Integer code, String comment) {
+        this.code = code;
+        this.comment = comment;
     }
 }

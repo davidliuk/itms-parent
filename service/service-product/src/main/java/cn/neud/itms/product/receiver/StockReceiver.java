@@ -22,6 +22,7 @@ public class StockReceiver {
 
     /**
      * 扣减库存成功，更新订单状态
+     *
      * @param orderNo
      * @throws IOException
      */
@@ -33,9 +34,9 @@ public class StockReceiver {
     public void minusStock(String orderNo,
                            Message message,
                            Channel channel) throws IOException {
-        if(!StringUtils.isEmpty(orderNo)) {
+        if (!StringUtils.isEmpty(orderNo)) {
             skuInfoService.minusStock(orderNo);
         }
-        channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
+        channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
     }
 }

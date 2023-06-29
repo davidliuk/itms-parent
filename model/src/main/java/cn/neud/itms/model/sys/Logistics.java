@@ -12,17 +12,17 @@ import lombok.Data;
 @TableName("logistics")
 public class Logistics extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "名称")
-	@TableField("name")
-	private String name;
+    @ApiModelProperty(value = "名称")
+    @TableField("name")
+    private String name;
 
-	@ApiModelProperty(value = "手机")
-	@TableField("phone")
-	private String phone;
+    @ApiModelProperty(value = "手机")
+    @TableField("phone")
+    private String phone;
 
-	@ApiModelProperty(value = "仓库id")
-	@TableField("ware_id")
-	private Long wareId;
+    @ApiModelProperty(value = "仓库id")
+    @TableField("ware_id")
+    private Long wareId;
 }

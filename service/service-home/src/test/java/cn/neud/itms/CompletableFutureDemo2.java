@@ -15,13 +15,13 @@ public class CompletableFutureDemo2 {
         System.out.println("main begin....");
         //CompletableFuture创建异步对象
         CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
-            System.out.println("当前线程："+Thread.currentThread().getName());
+            System.out.println("当前线程：" + Thread.currentThread().getName());
             int value = 1024;
-            System.out.println("value: "+value);
+            System.out.println("value: " + value);
             return value;
         }, executorService);
         Integer value = future.get();
-        System.out.println("main over :"+value);
+        System.out.println("main over :" + value);
     }
 
 }

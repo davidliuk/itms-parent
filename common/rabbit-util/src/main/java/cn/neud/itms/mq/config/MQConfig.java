@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class MQConfig {
 
     @Bean
-    public MessageConverter messageConverter(){
+    public MessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
     }
 }

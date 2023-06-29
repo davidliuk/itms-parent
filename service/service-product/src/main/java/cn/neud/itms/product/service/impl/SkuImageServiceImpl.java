@@ -24,7 +24,7 @@ public class SkuImageServiceImpl extends ServiceImpl<SkuImageMapper, SkuImage> i
     @Override
     public List<SkuImage> getImageListBySkuId(Long id) {
         LambdaQueryWrapper<SkuImage> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(SkuImage::getSkuId,id);
+        wrapper.eq(SkuImage::getSkuId, id);
         List<SkuImage> skuImageList = baseMapper.selectList(wrapper);
         return skuImageList;
     }

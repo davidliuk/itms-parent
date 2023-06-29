@@ -2,10 +2,10 @@ package cn.neud.itms.product.controller;
 
 
 import cn.neud.itms.common.result.Result;
-import cn.neud.itms.vo.product.SkuInfoQueryVo;
-import cn.neud.itms.vo.product.SkuInfoVo;
 import cn.neud.itms.model.product.SkuInfo;
 import cn.neud.itms.product.service.SkuInfoService;
+import cn.neud.itms.vo.product.SkuInfoQueryVo;
+import cn.neud.itms.vo.product.SkuInfoVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;

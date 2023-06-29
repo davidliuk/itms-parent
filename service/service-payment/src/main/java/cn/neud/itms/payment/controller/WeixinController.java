@@ -1,9 +1,9 @@
 package cn.neud.itms.payment.controller;
 
-import cn.neud.itms.payment.service.PaymentInfoService;
-import cn.neud.itms.payment.service.WeixinService;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.common.result.ResultCodeEnum;
+import cn.neud.itms.payment.service.PaymentInfoService;
+import cn.neud.itms.payment.service.WeixinService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +27,7 @@ public class WeixinController {
     //调用微信支付系统生成预付单
     @GetMapping("/createJsapi/{orderNo}")
     public Result createJsapi(@PathVariable("orderNo") String orderNo) {
-        Map<String,String> map = weixinService.createJsapi(orderNo);
+        Map<String, String> map = weixinService.createJsapi(orderNo);
         return Result.ok(map);
     }
 
@@ -35,22 +35,22 @@ public class WeixinController {
     @GetMapping("/queryPayStatus/{orderNo}")
     public Result queryPayStatus(@PathVariable("orderNo") String orderNo) {
         //1 调用微信支付系统接口查询订单支付状态
-        Map<String,String> resultMap = weixinService.queryPayStatus(orderNo);
+        Map<String, String> resultMap = weixinService.queryPayStatus(orderNo);
 
         //2 微信支付系统返回值为null，支付失败
-        if(resultMap == null) {
-            return Result.build(null,ResultCodeEnum.PAYMENT_FAIL);
+        if (resultMap == null) {
+            return Result.build(null, ResultCodeEnum.PAYMENT_FAIL);
         }
 
         //3 如果微信支付系统返回值，判断支付成功
-        if("SUCCESS".equals(resultMap.get("trade_state"))) {
+        if ("SUCCESS".equals(resultMap.get("trade_state"))) {
             String out_trade_no = resultMap.get("out_trade_no");
-            paymentInfoService.paySuccess(out_trade_no,resultMap);
+            paymentInfoService.paySuccess(out_trade_no, resultMap);
             return Result.ok(null);
         }
 
         //4 支付中，等待
-        return Result.build(null,ResultCodeEnum.PAYMENT_WAITING);
+        return Result.build(null, ResultCodeEnum.PAYMENT_WAITING);
     }
 
 }

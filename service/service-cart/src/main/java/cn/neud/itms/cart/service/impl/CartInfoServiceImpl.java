@@ -2,12 +2,12 @@ package cn.neud.itms.cart.service.impl;
 
 import cn.neud.itms.cart.service.CartInfoService;
 import cn.neud.itms.client.product.ProductFeignClient;
-import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.common.exception.ItmsException;
 import cn.neud.itms.common.result.ResultCodeEnum;
 import cn.neud.itms.enums.SkuType;
 import cn.neud.itms.model.order.CartInfo;
 import cn.neud.itms.model.product.SkuInfo;
+import cn.neud.itms.redis.constant.RedisConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.RedisTemplate;

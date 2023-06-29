@@ -1,7 +1,6 @@
 package cn.neud.itms.acl.service.impl;
 
 import cn.dev33.satoken.stp.StpInterface;
-import cn.neud.itms.acl.mapper.AdminRoleMapper;
 import cn.neud.itms.acl.mapper.RoleMapper;
 import cn.neud.itms.acl.mapper.RolePermissionMapper;
 import cn.neud.itms.acl.service.AdminRoleService;

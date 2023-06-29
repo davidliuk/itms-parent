@@ -7,9 +7,9 @@ import lombok.Data;
 @Data
 public class OrderUserQueryVo {
 
-	private Long userId;
+    private Long userId;
 
-	@ApiModelProperty(value = "订单状态")
-	private OrderStatus orderStatus;
+    @ApiModelProperty(value = "订单状态")
+    private OrderStatus orderStatus;
 
 }

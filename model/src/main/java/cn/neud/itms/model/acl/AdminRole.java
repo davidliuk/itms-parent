@@ -19,16 +19,16 @@ import lombok.Data;
 @ApiModel(description = "用户角色")
 @TableName("admin_role")
 public class AdminRole extends BaseEntity {
-	
-	private static final long serialVersionUID = 1L;
-	
-	@ApiModelProperty(value = "角色id")
-	@TableField("role_id")
-	private Long roleId;
 
-	@ApiModelProperty(value = "用户id")
-	@TableField("admin_id")
-	private Long adminId;
+    private static final long serialVersionUID = 1L;
+
+    @ApiModelProperty(value = "角色id")
+    @TableField("role_id")
+    private Long roleId;
+
+    @ApiModelProperty(value = "用户id")
+    @TableField("admin_id")
+    private Long adminId;
 
 }
 

@@ -1,8 +1,8 @@
 package cn.neud.itms.activity.mapper;
 
+import cn.neud.itms.model.activity.ActivityInfo;
 import cn.neud.itms.model.activity.ActivityRule;
 import cn.neud.itms.model.activity.ActivitySku;
-import cn.neud.itms.model.activity.ActivityInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 

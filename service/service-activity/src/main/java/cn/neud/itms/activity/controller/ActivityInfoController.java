@@ -1,11 +1,11 @@
 package cn.neud.itms.activity.controller;
 
 
-import cn.neud.itms.common.result.Result;
-import cn.neud.itms.vo.activity.ActivityRuleVo;
 import cn.neud.itms.activity.service.ActivityInfoService;
+import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.activity.ActivityInfo;
 import cn.neud.itms.model.product.SkuInfo;
+import cn.neud.itms.vo.activity.ActivityRuleVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +36,13 @@ public class ActivityInfoController {
     @GetMapping("{page}/{limit}")
     public Result list(@PathVariable Long page,
                        @PathVariable Long limit) {
-        Page<ActivityInfo> pageParam = new Page<>(page,limit);
+        Page<ActivityInfo> pageParam = new Page<>(page, limit);
         IPage<ActivityInfo> pageModel =
                 activityInfoService.selectPage(pageParam);
         return Result.ok(pageModel);
     }
 
-//    url: `${api_name}/get/${id}`,
+    //    url: `${api_name}/get/${id}`,
 //    method: 'get'
     @GetMapping("get/{id}")
     public Result get(@PathVariable Long id) {
@@ -67,7 +67,7 @@ public class ActivityInfoController {
 //    method: 'get'
     @GetMapping("findActivityRuleList/{id}")
     public Result findActivityRuleList(@PathVariable Long id) {
-        Map<String,Object> activityRuleMap =
+        Map<String, Object> activityRuleMap =
                 activityInfoService.findActivityRuleList(id);
         return Result.ok(activityRuleMap);
     }

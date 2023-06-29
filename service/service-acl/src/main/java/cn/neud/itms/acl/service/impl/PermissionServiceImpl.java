@@ -1,9 +1,9 @@
 package cn.neud.itms.acl.service.impl;
 
-import cn.neud.itms.model.acl.Permission;
 import cn.neud.itms.acl.mapper.PermissionMapper;
 import cn.neud.itms.acl.service.PermissionService;
 import cn.neud.itms.acl.utils.PermissionHelper;
+import cn.neud.itms.model.acl.Permission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         //根据当前菜单id，获取当前菜单下面所有子菜单，
         //如果子菜单下面还有子菜单，都要获取到
         //重点：递归找当前菜单子菜单
-        this.getAllPermissionId(id,idList);
+        this.getAllPermissionId(id, idList);
 
         //设置当前菜单id
         idList.add(id);
@@ -50,7 +50,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         //根据当前菜单id查询下面子菜单
         //select * from permission where pid=2
         LambdaQueryWrapper<Permission> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Permission::getPid,id);
+        wrapper.eq(Permission::getPid, id);
         List<Permission> childList = baseMapper.selectList(wrapper);
 
         //递归查询是否还有子菜单，有继续递归查询
@@ -58,7 +58,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
             //封装菜单id到idList集合里面
             idList.add(item.getId());
             //递归
-            this.getAllPermissionId(item.getId(),idList);
+            this.getAllPermissionId(item.getId(), idList);
         });
     }
 }

@@ -1,8 +1,8 @@
 package cn.neud.itms.search.controller;
 
-import cn.neud.itms.search.service.SkuService;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.search.SkuEs;
+import cn.neud.itms.search.service.SkuService;
 import cn.neud.itms.vo.search.SkuEsQueryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,8 +28,8 @@ public class SkuApiController {
                           @PathVariable Integer limit,
                           SkuEsQueryVo skuEsQueryVo) {
         //创建pageable对象，0代表第一页
-        Pageable pageable = PageRequest.of(page-1,limit);
-        Page<SkuEs> pageModel = skuService.search(pageable,skuEsQueryVo);
+        Pageable pageable = PageRequest.of(page - 1, limit);
+        Page<SkuEs> pageModel = skuService.search(pageable, skuEsQueryVo);
         return Result.ok(pageModel);
     }
 

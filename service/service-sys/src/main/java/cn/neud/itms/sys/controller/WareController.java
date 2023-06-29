@@ -37,7 +37,7 @@ public class WareController {
         List<Ware> list = wareService.list();
         return Result.ok(list);
     }
-    
+
     @ApiOperation(value = "获取")
     @GetMapping("get/{id}")
     public Result get(@PathVariable Long id) {

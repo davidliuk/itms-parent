@@ -1,10 +1,10 @@
 package cn.neud.itms.product.service.impl;
 
+import cn.neud.itms.product.service.FileUploadService;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyun.oss.model.PutObjectResult;
-import cn.neud.itms.product.service.FileUploadService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

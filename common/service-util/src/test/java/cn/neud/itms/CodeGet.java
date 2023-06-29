@@ -18,9 +18,9 @@ public class CodeGet {
         // 2、全局配置
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir("C:\\Users\\Administrator\\Desktop\\itms-project\\code\\itms-parent\\service\\service-order"+"/src/main/java");
+        gc.setOutputDir("C:\\Users\\Administrator\\Desktop\\itms-project\\code\\itms-parent\\service\\service-order" + "/src/main/java");
 
-        gc.setServiceName("%sService");	//去掉Service接口的首字母I
+        gc.setServiceName("%sService");    //去掉Service接口的首字母I
         gc.setAuthor("neud");
         gc.setOpen(false);
         mpg.setGlobalConfig(gc);
@@ -47,7 +47,7 @@ public class CodeGet {
         // 5、策略配置
         StrategyConfig strategy = new StrategyConfig();
 
-        strategy.setInclude("order_info","order_item");
+        strategy.setInclude("order_info", "order_item");
 
         strategy.setNaming(NamingStrategy.underline_to_camel);//数据库表映射到实体的命名策略
 

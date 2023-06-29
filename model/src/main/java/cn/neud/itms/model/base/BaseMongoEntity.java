@@ -1,9 +1,9 @@
 package cn.neud.itms.model.base;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import lombok.Data;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Transient;
 

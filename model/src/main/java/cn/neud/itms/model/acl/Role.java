@@ -21,20 +21,20 @@ import lombok.Data;
 @ApiModel(description = "角色")
 @TableName("role")
 public class Role extends BaseEntity {
-	
-	private static final long serialVersionUID = 1L;
-	
-	@ApiModelProperty(value = "角色名称")
-	@TableField("name")
-	private String name;
 
-	@ApiModelProperty(value = "角色编码")
-	@TableField("code")
-	private String code;
+    private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "备注")
-	@TableField("remark")
-	private String remark;
+    @ApiModelProperty(value = "角色名称")
+    @TableField("name")
+    private String name;
+
+    @ApiModelProperty(value = "角色编码")
+    @TableField("code")
+    private String code;
+
+    @ApiModelProperty(value = "备注")
+    @TableField("remark")
+    private String remark;
 
 }
 

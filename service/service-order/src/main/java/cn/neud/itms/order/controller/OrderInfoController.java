@@ -1,8 +1,6 @@
 package cn.neud.itms.order.controller;
 
 
-import cn.dev33.satoken.annotation.SaCheckLogin;
-import cn.neud.itms.common.auth.AuthContextHolder;
 import cn.neud.itms.common.auth.SaUserCheckLogin;
 import cn.neud.itms.common.auth.StpUserUtil;
 import cn.neud.itms.common.result.Result;

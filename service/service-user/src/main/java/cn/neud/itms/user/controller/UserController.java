@@ -5,7 +5,7 @@ import cn.neud.itms.common.utils.MD5;
 import cn.neud.itms.model.user.User;
 import cn.neud.itms.user.service.AddressService;
 import cn.neud.itms.user.service.UserService;
-import cn.neud.itms.vo.user.*;
+import cn.neud.itms.vo.user.UserQueryVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -23,7 +23,7 @@ public class UserController {
 
     @Autowired
     private AddressService addressService;
-    
+
     //1 用户列表
     @ApiOperation("用户列表")
     @GetMapping("{current}/{limit}")

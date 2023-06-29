@@ -38,7 +38,7 @@ public interface RedisConstant {
     String SECKILL_USER = "seckill:user:";
     //用户锁定时间 单位：秒
     int SECKILL_TIMEOUT = 60 * 60;
-    
+
     // ----
     String LOGIN_CODE_KEY = "login:code:";
     Long LOGIN_CODE_TTL = 2L;

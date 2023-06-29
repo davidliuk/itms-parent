@@ -12,18 +12,18 @@ import lombok.Data;
 @TableName("attr_group")
 public class AttrGroup extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "组名")
-	@TableField("name")
-	private String name;
+    @ApiModelProperty(value = "组名")
+    @TableField("name")
+    private String name;
 
-	@ApiModelProperty(value = "排序")
-	@TableField("sort")
-	private Integer sort;
+    @ApiModelProperty(value = "排序")
+    @TableField("sort")
+    private Integer sort;
 
-	@ApiModelProperty(value = "备注")
-	@TableField("remark")
-	private String remark;
+    @ApiModelProperty(value = "备注")
+    @TableField("remark")
+    private String remark;
 
 }

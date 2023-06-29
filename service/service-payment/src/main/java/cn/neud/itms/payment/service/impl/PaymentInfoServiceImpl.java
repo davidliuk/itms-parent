@@ -1,7 +1,5 @@
 package cn.neud.itms.payment.service.impl;
 
-import cn.neud.itms.payment.mapper.PaymentInfoMappper;
-import cn.neud.itms.payment.service.PaymentInfoService;
 import cn.neud.itms.common.exception.ItmsException;
 import cn.neud.itms.common.result.ResultCodeEnum;
 import cn.neud.itms.enums.PaymentStatus;
@@ -11,6 +9,8 @@ import cn.neud.itms.model.order.PaymentInfo;
 import cn.neud.itms.mq.constant.MqConstant;
 import cn.neud.itms.mq.service.RabbitService;
 import cn.neud.itms.order.client.OrderFeignClient;
+import cn.neud.itms.payment.mapper.PaymentInfoMappper;
+import cn.neud.itms.payment.service.PaymentInfoService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class PaymentInfoServiceImpl extends ServiceImpl<PaymentInfoMappper, Paym
     public PaymentInfo savePaymentInfo(String orderNo) {
         //远程调用调用，根据orderNo查询订单信息
         OrderInfo orderInfo = orderFeignClient.getOrderInfo(orderNo);
-        if(orderInfo == null) {
+        if (orderInfo == null) {
             throw new ItmsException(ResultCodeEnum.DATA_ERROR);
         }
         //封装到PaymentInfo对象
@@ -53,7 +53,7 @@ public class PaymentInfoServiceImpl extends ServiceImpl<PaymentInfoMappper, Paym
         paymentInfo.setUserId(orderInfo.getUserId());
         paymentInfo.setOrderNo(orderInfo.getOrderNo());
         paymentInfo.setPaymentStatus(PaymentStatus.UNPAID);
-        String subject = "userID:"+orderInfo.getUserId()+"下订单";
+        String subject = "userID:" + orderInfo.getUserId() + "下订单";
         paymentInfo.setSubject(subject);
         //paymentInfo.setTotalAmount(orderInfo.getTotalAmount());
         //TODO 为了测试
@@ -73,7 +73,7 @@ public class PaymentInfoServiceImpl extends ServiceImpl<PaymentInfoMappper, Paym
                 new LambdaQueryWrapper<PaymentInfo>()
                         .eq(PaymentInfo::getOrderNo, orderNo)
         );
-        if(paymentInfo.getPaymentStatus() != PaymentStatus.UNPAID) {
+        if (paymentInfo.getPaymentStatus() != PaymentStatus.UNPAID) {
             return;
         }
 
@@ -85,7 +85,7 @@ public class PaymentInfoServiceImpl extends ServiceImpl<PaymentInfoMappper, Paym
 
         //3 整合RabbitMQ实现 修改订单记录已经支付，库存扣减
         rabbitService.sendMessage(MqConstant.EXCHANGE_PAY_DIRECT,
-                MqConstant.ROUTING_PAY_SUCCESS,orderNo);
+                MqConstant.ROUTING_PAY_SUCCESS, orderNo);
     }
 
 }

@@ -1,8 +1,5 @@
 package cn.neud.itms.user.api;
 
-import cn.neud.itms.user.utils.HttpClientUtils;
-import com.alibaba.fastjson.JSONObject;
-import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.common.auth.AuthContextHolder;
 import cn.neud.itms.common.exception.ItmsException;
 import cn.neud.itms.common.result.Result;
@@ -10,10 +7,12 @@ import cn.neud.itms.common.result.ResultCodeEnum;
 import cn.neud.itms.common.utils.JwtHelper;
 import cn.neud.itms.enums.UserType;
 import cn.neud.itms.model.user.User;
+import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.user.service.UserService;
 import cn.neud.itms.user.utils.ConstantPropertiesUtil;
-import cn.neud.itms.vo.user.CourierAddressVo;
+import cn.neud.itms.user.utils.HttpClientUtils;
 import cn.neud.itms.vo.user.UserVo;
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -89,7 +88,7 @@ public class WeixinApiController {
         //5 根据userId查询提货点和配送员信息
         ////提货点  user表  user_delivery表
         ////配送员    courier表
-        CourierAddressVo courierAddressVo = userService.getCourierAddressByUserId(user.getId());
+//        CourierAddressVo courierAddressVo = userService.getCourierAddressByUserId(user.getId());
 
         //6 使用JWT工具根据userId和userName生成token字符串
         String token = JwtHelper.createToken(user.getId(), user.getNickName());
@@ -106,7 +105,7 @@ public class WeixinApiController {
         Map<String, Object> map = new HashMap<>();
         map.put("user", user);
         map.put("token", token);
-        map.put("courierAddressVo", courierAddressVo);
+//        map.put("courierAddressVo", courierAddressVo);
         return Result.ok(map);
     }
 

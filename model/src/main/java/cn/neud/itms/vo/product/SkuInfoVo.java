@@ -9,16 +9,16 @@ import java.util.List;
 @Data
 public class SkuInfoVo extends SkuInfo {
 
-	@ApiModelProperty(value = "海报列表")
-	private List<SkuPoster> skuPosterList;
+    @ApiModelProperty(value = "海报列表")
+    private List<SkuPoster> skuPosterList;
 
-	@ApiModelProperty(value = "属性值")
-	private List<SkuAttrValue> skuAttrValueList;
+    @ApiModelProperty(value = "属性值")
+    private List<SkuAttrValue> skuAttrValueList;
 
-	@ApiModelProperty(value = "图片")
-	private List<SkuImage> skuImageList;
+    @ApiModelProperty(value = "图片")
+    private List<SkuImage> skuImageList;
 
-	@ApiModelProperty(value = "各仓库库存信息")
-	private List<SkuWare> skuWareList;
+    @ApiModelProperty(value = "各仓库库存信息")
+    private List<SkuWare> skuWareList;
 
 }

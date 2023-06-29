@@ -1,8 +1,8 @@
 package cn.neud.itms.home.api;
 
-import cn.neud.itms.home.service.HomeService;
 import cn.neud.itms.common.auth.AuthContextHolder;
 import cn.neud.itms.common.result.Result;
+import cn.neud.itms.home.service.HomeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class HomeApiController {
     @GetMapping("index")
     public Result index(HttpServletRequest request) {
         Long userId = AuthContextHolder.getUserId();
-        Map<String,Object> map = homeService.homeData(userId);
+        Map<String, Object> map = homeService.homeData(userId);
         return Result.ok(map);
     }
 

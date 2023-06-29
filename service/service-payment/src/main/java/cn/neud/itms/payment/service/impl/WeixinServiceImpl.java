@@ -1,11 +1,11 @@
 package cn.neud.itms.payment.service.impl;
 
+import cn.neud.itms.model.order.PaymentInfo;
 import cn.neud.itms.payment.service.PaymentInfoService;
 import cn.neud.itms.payment.service.WeixinService;
 import cn.neud.itms.payment.utils.ConstantPropertiesUtils;
 import cn.neud.itms.payment.utils.HttpClient;
 import cn.neud.itms.redis.constant.RedisConstant;
-import cn.neud.itms.model.order.PaymentInfo;
 import cn.neud.itms.vo.user.UserVo;
 import com.github.wxpay.sdk.WXPayUtil;
 import org.springframework.beans.factory.annotation.Autowired;

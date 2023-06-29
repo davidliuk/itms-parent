@@ -14,9 +14,9 @@ public class CompletableFutureDemo1 {
         System.out.println("main begin....");
         //CompletableFuture创建异步对象
         CompletableFuture<Void> completableFuture = CompletableFuture.runAsync(() -> {
-            System.out.println("当前线程："+Thread.currentThread().getName());
+            System.out.println("当前线程：" + Thread.currentThread().getName());
             int result = 1024;
-            System.out.println("result:"+result);
+            System.out.println("result:" + result);
         }, executorService);
         System.out.println("main over....");
     }
