@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Data
 @ApiModel(description = "用户登录信息")
-public class UserLoginVo implements Serializable {
+public class UserVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -6,7 +6,7 @@ import cn.neud.itms.payment.utils.ConstantPropertiesUtils;
 import cn.neud.itms.payment.utils.HttpClient;
 import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.model.order.PaymentInfo;
-import cn.neud.itms.vo.user.UserLoginVo;
+import cn.neud.itms.vo.user.UserVo;
 import com.github.wxpay.sdk.WXPayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -51,10 +51,10 @@ public class WeixinServiceImpl implements WeixinService {
         paramMap.put("trade_type", "JSAPI");
 
         //openid
-        UserLoginVo userLoginVo = (UserLoginVo) redisTemplate.opsForValue()
+        UserVo userVo = (UserVo) redisTemplate.opsForValue()
                 .get(RedisConstant.USER_LOGIN_KEY_PREFIX + paymentInfo.getUserId());
-        if (null != userLoginVo && !StringUtils.isEmpty(userLoginVo.getOpenId())) {
-            paramMap.put("openid", userLoginVo.getOpenId());
+        if (null != userVo && !StringUtils.isEmpty(userVo.getOpenId())) {
+            paramMap.put("openid", userVo.getOpenId());
         } else {
             paramMap.put("openid", "odo3j4q2KskkbbW-krfE-cAxUnzU1");
         }

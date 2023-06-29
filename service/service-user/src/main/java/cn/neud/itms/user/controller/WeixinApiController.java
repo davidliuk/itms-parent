@@ -13,7 +13,7 @@ import cn.neud.itms.model.user.User;
 import cn.neud.itms.user.service.UserService;
 import cn.neud.itms.user.utils.ConstantPropertiesUtil;
 import cn.neud.itms.vo.user.CourierAddressVo;
-import cn.neud.itms.vo.user.UserLoginVo;
+import cn.neud.itms.vo.user.UserVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -95,10 +95,10 @@ public class WeixinApiController {
         String token = JwtHelper.createToken(user.getId(), user.getNickName());
 
         //7 获取当前登录用户信息，放到Redis里面，设置有效时间
-        UserLoginVo userLoginVo = userService.getUserLoginVo(user.getId());
+        UserVo userVo = userService.getUserLoginVo(user.getId());
         redisTemplate.opsForValue()
                 .set(RedisConstant.USER_LOGIN_KEY_PREFIX + user.getId(),
-                        userLoginVo,
+                        userVo,
                         RedisConstant.USERKEY_TIMEOUT,
                         TimeUnit.DAYS);
 

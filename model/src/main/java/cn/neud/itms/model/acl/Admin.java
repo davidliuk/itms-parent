@@ -40,6 +40,10 @@ public class Admin extends BaseEntity {
     @TableField("phone")
     private String phone;
 
+    @ApiModelProperty(value = "邮箱")
+    @TableField("email")
+    private String email;
+
     @ApiModelProperty(value = "仓库id")
     @TableField("ware_id")
     private Long wareId;

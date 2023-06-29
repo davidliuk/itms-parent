@@ -3,7 +3,10 @@ package cn.neud.itms.user.service;
 import cn.neud.itms.model.user.User;
 import cn.neud.itms.vo.user.AddressVo;
 import cn.neud.itms.vo.user.CourierAddressVo;
-import cn.neud.itms.vo.user.UserLoginVo;
+import cn.neud.itms.vo.user.UserVo;
+import cn.neud.itms.vo.user.UserQueryVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface UserService extends IService<User> {
@@ -16,7 +19,11 @@ public interface UserService extends IService<User> {
     public AddressVo getAddressByUserId(Long userId);
 
     //7 获取当前登录用户信息，
-    UserLoginVo getUserLoginVo(Long id);
+    UserVo getUserLoginVo(Long id);
 
     User getUserByUserName(String username);
+
+    User getUserByEmail(String email);
+
+    IPage<User> selectPageUser(Page<User> pageParam, UserQueryVo userQueryVo);
 }

@@ -1,6 +1,6 @@
 package cn.neud.itms.common.auth;
 
-import cn.neud.itms.vo.user.UserLoginVo;
+import cn.neud.itms.vo.user.UserVo;
 
 // ThreadLocal工具类
 public class AuthContextHolder {
@@ -12,7 +12,7 @@ public class AuthContextHolder {
     private static ThreadLocal<Long> wareId = new ThreadLocal<>();
 
     //用户信息对象
-    private static ThreadLocal<UserLoginVo> userLoginVo = new ThreadLocal<>();
+    private static ThreadLocal<UserVo> userLoginVo = new ThreadLocal<>();
 
     //userId操作的方法
     public static void setUserId(Long _userId) {
@@ -31,12 +31,12 @@ public class AuthContextHolder {
         wareId.set(_wareId);
     }
 
-    public static UserLoginVo getUserLoginVo() {
+    public static UserVo getUserLoginVo() {
         return userLoginVo.get();
     }
 
-    public static void setUserLoginVo(UserLoginVo _userLoginVo) {
-        userLoginVo.set(_userLoginVo);
+    public static void setUserLoginVo(UserVo _userVo) {
+        userLoginVo.set(_userVo);
     }
 
 }

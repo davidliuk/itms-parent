@@ -8,6 +8,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @ApiModel(description = "User")
 @TableName("user")
@@ -23,6 +25,7 @@ public class User extends BaseEntity {
     @TableField("password")
     private String password;
 
+    @ApiModelProperty(value = "用户类型（0:用户；1:配送员）")
     @TableField("user_type")
     private UserType userType;
 
@@ -65,4 +68,12 @@ public class User extends BaseEntity {
     @ApiModelProperty(value = "是否新用户")
     @TableField("is_new")
     private Integer isNew;
+
+    @ApiModelProperty(value = "配送员信息")
+    @TableField(exist = false)
+    private CourierInfo courierInfo;
+
+    @ApiModelProperty(value = "地址列表")
+    @TableField(exist = false)
+    private List<Address> addresses;
 }

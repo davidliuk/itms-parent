@@ -32,6 +32,7 @@ public class MailUtil {
         try {
             MailSSLSocketFactory sf = new MailSSLSocketFactory();
             sf.setTrustAllHosts(true);
+            // 关闭/开启SSL加密，否则会失败
             this.put("mail.smtp.ssl.enable", "false");
             this.put("mail.smtp.ssl.socketFactory", sf);
         } catch (Exception e) {
@@ -46,7 +47,6 @@ public class MailUtil {
      * @throws Exception
      */
     public static String sendMail(String receiveMail) {
-        // 开启SSL加密，否则会失败
         String verifyCode = createCode();
         //创建验证码
         try {
@@ -101,7 +101,7 @@ public class MailUtil {
         message.setContent("你好！<br/>" +
                 "感谢您使用 ITMS - IDEA物流管理系统 。<br/>" +
                 "你的登录邮箱为：" + receiveMail + "。请回填如下6位验证码：<br/>" +
-                verifyCode + "<br/>如非本人操作，请忽略！请勿回复此邮箱", "text/html;charset=UTF-8");
+                verifyCode + "<br/>验证码有效期为：2 分钟。如非本人操作，请忽略！请勿回复此邮箱", "text/html;charset=UTF-8");
 
         // 返回创建好的邮件对象
         return message;

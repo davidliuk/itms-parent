@@ -1,5 +1,6 @@
 package cn.neud.itms.user.service.impl;
 
+import cn.neud.itms.enums.UserType;
 import cn.neud.itms.model.user.Address;
 import cn.neud.itms.model.user.CourierInfo;
 import cn.neud.itms.model.user.User;
@@ -11,12 +12,16 @@ import cn.neud.itms.user.mapper.UserMapper;
 import cn.neud.itms.user.service.UserService;
 import cn.neud.itms.vo.user.AddressVo;
 import cn.neud.itms.vo.user.CourierAddressVo;
-import cn.neud.itms.vo.user.UserLoginVo;
+import cn.neud.itms.vo.user.UserVo;
+import cn.neud.itms.vo.user.UserQueryVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
@@ -45,7 +50,33 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         );
     }
 
-    //5 根据userId查询提货点和配送员信息
+    @Override
+    public User getUserByEmail(String email) {
+        return baseMapper.selectOne(
+                new LambdaQueryWrapper<User>().eq(User::getEmail, email)
+        );
+    }
+
+    @Override
+    public IPage<User> selectPageUser(Page<User> pageParam, UserQueryVo userQueryVo) {
+        //获取条件值
+        UserType userType = userQueryVo.getUserType();
+        String userName = userQueryVo.getUserName();
+        String nickName = userQueryVo.getNickName();
+        String idNo = userQueryVo.getIdNo();
+
+        //创建mp条件对象
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<User>()
+                .eq(userType != null, User::getUserType, userType)
+                .like(!StringUtils.isEmpty(userName), User::getUsername, userName)
+                .like(!StringUtils.isEmpty(nickName), User::getNickName, nickName)
+                .like(!StringUtils.isEmpty(idNo), User::getIdNo, idNo);
+        // 调用方法实现条件分页查询
+        // 返回分页对象
+        return baseMapper.selectPage(pageParam, wrapper);
+    }
+
+    // 5 根据userId查询提货点和配送员信息
     @Override
     public CourierAddressVo getCourierAddressByUserId(Long userId) {
         //根据userId查询用户默认的配送员id
@@ -98,14 +129,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     //7 获取当前登录用户信息，
     @Override
-    public UserLoginVo getUserLoginVo(Long id) {
+    public UserVo getUserLoginVo(Long id) {
         User user = baseMapper.selectById(id);
-        UserLoginVo userLoginVo = new UserLoginVo();
-        userLoginVo.setUserId(id);
-        userLoginVo.setNickName(user.getNickName());
-        userLoginVo.setPhotoUrl(user.getPhotoUrl());
-        userLoginVo.setIsNew(user.getIsNew());
-        userLoginVo.setOpenId(user.getOpenId());
+        UserVo userVo = new UserVo();
+        userVo.setUserId(id);
+        userVo.setNickName(user.getNickName());
+        userVo.setPhotoUrl(user.getPhotoUrl());
+        userVo.setIsNew(user.getIsNew());
+        userVo.setOpenId(user.getOpenId());
 
 //        UserDelivery userDelivery = userDeliveryMapper.selectOne(
 //                new LambdaQueryWrapper<UserDelivery>().eq(UserDelivery::getUserId, id)
@@ -118,12 +149,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                         .eq(Address::getIsDefault, 1)
         );
         if (address != null) {
-            userLoginVo.setStationId(address.getStationId());
-            userLoginVo.setWareId(address.getWareId());
+            userVo.setStationId(address.getStationId());
+            userVo.setWareId(address.getWareId());
         } else {
-            userLoginVo.setStationId(1L);
-            userLoginVo.setWareId(1L);
+            userVo.setStationId(1L);
+            userVo.setWareId(1L);
         }
-        return userLoginVo;
+        return userVo;
     }
 }

@@ -271,7 +271,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         orderInfo.setTotalAmount(totalAmount);
 
         //计算配送员佣金
-        BigDecimal profitRate = new BigDecimal(0);//orderSetService.getProfitRate();
+        BigDecimal profitRate = new BigDecimal(0);
+//        orderSetService.getProfitRate();
         BigDecimal commissionAmount = orderInfo.getTotalAmount().multiply(profitRate);
         orderInfo.setCommissionAmount(commissionAmount);
 
@@ -325,11 +326,10 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     //根据orderNo查询订单信息
     @Override
     public OrderInfo getOrderInfoByOrderNo(String orderNo) {
-        OrderInfo orderInfo = baseMapper.selectOne(
+        return baseMapper.selectOne(
                 new LambdaQueryWrapper<OrderInfo>()
                         .eq(OrderInfo::getOrderNo, orderNo)
         );
-        return orderInfo;
     }
 
     //订单支付成功，更新订单状态，扣减库存
