@@ -1,5 +1,7 @@
-package cn.neud.itms.user.controller;
+package cn.neud.itms.user.api;
 
+import cn.neud.itms.common.auth.SaUserCheckLogin;
+import cn.neud.itms.common.auth.StpUserUtil;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.user.Address;
 import cn.neud.itms.user.service.AddressService;
@@ -21,10 +23,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user/address")
 //@CrossOrigin
-public class AddressController {
+public class AddressApiController {
 
     @Autowired
     private AddressService addressService;
+
+
+    @ApiOperation("获取所有地址信息")
+    @GetMapping()
+    @SaUserCheckLogin
+    public Result addressGet() {
+        return Result.ok(addressService.getAddressListByUserId(StpUserUtil.getLoginIdAsLong()));
+    }
 
     //平台属性列表方法
     //根据平台属性分组id查询

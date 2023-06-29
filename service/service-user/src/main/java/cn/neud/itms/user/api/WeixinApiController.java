@@ -1,4 +1,4 @@
-package cn.neud.itms.user.controller;
+package cn.neud.itms.user.api;
 
 import cn.neud.itms.user.utils.HttpClientUtils;
 import com.alibaba.fastjson.JSONObject;

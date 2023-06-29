@@ -1,7 +1,10 @@
 package cn.neud.itms.order.controller;
 
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.neud.itms.common.auth.AuthContextHolder;
+import cn.neud.itms.common.auth.SaUserCheckLogin;
+import cn.neud.itms.common.auth.StpUserUtil;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.common.result.ResultCodeEnum;
 import cn.neud.itms.model.order.OrderInfo;
@@ -35,6 +38,7 @@ public class OrderInfoController {
 
     //订单查询
     @GetMapping("auth/findUserOrderPage/{page}/{limit}")
+    @SaUserCheckLogin
     public Result findUserOrderPage(
             @ApiParam(name = "page", value = "当前页码", required = true)
             @PathVariable Long page,
@@ -43,7 +47,8 @@ public class OrderInfoController {
             @ApiParam(name = "orderVo", value = "查询对象", required = false)
             OrderUserQueryVo orderUserQueryVo) {
         //获取userId
-        Long userId = AuthContextHolder.getUserId();
+//        Long userId = AuthContextHolder.getUserId();
+        Long userId = StpUserUtil.getLoginIdAsLong();
         orderUserQueryVo.setUserId(userId);
 
         //分页查询条件

@@ -353,11 +353,11 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     @Override
     public IPage<OrderInfo> getOrderInfoByUserIdPage(Page<OrderInfo> pageParam,
                                                      OrderUserQueryVo orderUserQueryVo) {
-        LambdaQueryWrapper<OrderInfo> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(OrderInfo::getUserId, orderUserQueryVo.getUserId());
-        wrapper.eq(OrderInfo::getOrderStatus, orderUserQueryVo.getOrderStatus());
-        IPage<OrderInfo> pageModel = baseMapper.selectPage(pageParam, wrapper);
-
+        IPage<OrderInfo> pageModel = baseMapper.selectPage(pageParam,
+                new LambdaQueryWrapper<OrderInfo>()
+                        .eq(OrderInfo::getUserId, orderUserQueryVo.getUserId())
+                        .eq(OrderInfo::getOrderStatus, orderUserQueryVo.getOrderStatus())
+        );
         //获取每个订单，把每个订单里面订单项查询封装
         List<OrderInfo> orderInfoList = pageModel.getRecords();
         for (OrderInfo orderInfo : orderInfoList) {
@@ -374,7 +374,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         return pageModel;
     }
 
-    //更新状态
+    // 更新状态
     private void updateOrderStatus(Long id) {
         OrderInfo orderInfo = baseMapper.selectById(id);
         orderInfo.setOrderStatus(OrderStatus.WAITING_DELIVERY);
@@ -382,7 +382,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         baseMapper.updateById(orderInfo);
     }
 
-    //计算总金额
+    // 计算总金额
     private BigDecimal computeTotalAmount(List<CartInfo> cartInfoList) {
         BigDecimal total = new BigDecimal(0);
         for (CartInfo cartInfo : cartInfoList) {
