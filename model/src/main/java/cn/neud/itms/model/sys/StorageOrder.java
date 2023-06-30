@@ -31,7 +31,7 @@ public class StorageOrder extends BaseEntity {
 
     @ApiModelProperty(value = "分站名称")
     @TableField("station_name")
-    private Long stationName;
+    private String stationName;
 
     @ApiModelProperty(value = "供应商ID")
     @TableField("supplier_id")
@@ -39,7 +39,7 @@ public class StorageOrder extends BaseEntity {
 
     @ApiModelProperty(value = "供应商名称")
     @TableField("supplier_name")
-    private Long supplierName;
+    private String supplierName;
 
     @ApiModelProperty(value = "商品sku编号")
     @TableField("sku_id")

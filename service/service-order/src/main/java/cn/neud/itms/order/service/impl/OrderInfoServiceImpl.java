@@ -4,7 +4,7 @@ import cn.neud.itms.activity.client.ActivityFeignClient;
 import cn.neud.itms.cart.client.CartFeignClient;
 import cn.neud.itms.client.product.ProductFeignClient;
 import cn.neud.itms.client.user.UserFeignClient;
-import cn.neud.itms.common.auth.AuthContextHolder;
+import cn.neud.itms.common.auth.StpUserUtil;
 import cn.neud.itms.common.exception.ItmsException;
 import cn.neud.itms.common.result.ResultCodeEnum;
 import cn.neud.itms.common.utils.DateUtil;
@@ -20,11 +20,13 @@ import cn.neud.itms.order.mapper.OrderInfoMapper;
 import cn.neud.itms.order.mapper.OrderItemMapper;
 import cn.neud.itms.order.service.OrderInfoService;
 import cn.neud.itms.redis.constant.RedisConstant;
+import cn.neud.itms.sys.client.SysFeignClient;
 import cn.neud.itms.vo.order.CartInfoVo;
 import cn.neud.itms.vo.order.OrderConfirmVo;
 import cn.neud.itms.vo.order.OrderSubmitVo;
 import cn.neud.itms.vo.order.OrderUserQueryVo;
 import cn.neud.itms.vo.product.SkuStockLockVo;
+import cn.neud.itms.vo.user.AddressVo;
 import cn.neud.itms.vo.user.CourierAddressVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -69,6 +71,9 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     private ProductFeignClient productFeignClient;
 
     @Autowired
+    private SysFeignClient sysFeignClient;
+
+    @Autowired
     private RedisTemplate redisTemplate;
 
     @Autowired
@@ -77,14 +82,16 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     @Autowired
     private OrderItemMapper orderItemMapper;
 
-    //确认订单
+    // 确认订单
     @Override
     public OrderConfirmVo confirmOrder() {
         // 获取用户id
-        Long userId = AuthContextHolder.getUserId();
+        // Long userId = AuthContextHolder.getUserId();
+        Long userId = StpUserUtil.getLoginIdAsLong();
 
         // 获取用户对应配送员信息
         CourierAddressVo courierAddressVo = userFeignClient.getUserAddressByUserId(userId);
+        AddressVo addressVo = userFeignClient.getAddressByUserId(userId);
 
         // 获取购物车里面选中的商品
         List<CartInfo> cartInfoList = cartFeignClient.getCartCheckedList(userId);
@@ -98,6 +105,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         OrderConfirmVo orderConfirmVo = activityFeignClient.findCartActivityAndCoupon(cartInfoList, userId);
         // 封装其他值
         orderConfirmVo.setCourierAddressVo(courierAddressVo);
+        orderConfirmVo.setAddressVo(addressVo);
         orderConfirmVo.setOrderNo(orderNo);
 
         return orderConfirmVo;
@@ -107,7 +115,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     @Override
     public Long submitOrder(OrderSubmitVo orderParamVo) {
         // 第一步 设置给哪个用户生成订单  设置 orderParamVo 的 userId
-        Long userId = AuthContextHolder.getUserId();
+        // Long userId = AuthContextHolder.getUserId();
+        Long userId = StpUserUtil.getLoginIdAsLong();
         orderParamVo.setUserId(userId);
 
         // 第二步 订单不能重复提交，重复提交验证
@@ -165,8 +174,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         // order_info 和 order_item
         Long orderId = this.saveOrder(orderParamVo, cartInfoList);
 
-        //下单完成，删除购物车记录
-        //发送mq消息
+        // 下单完成，删除购物车记录
+        // 发送mq消息
         rabbitService.sendMessage(MqConstant.EXCHANGE_ORDER_DIRECT,
                 MqConstant.ROUTING_DELETE_CART, orderParamVo.getUserId());
 
@@ -177,24 +186,28 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     // 1 向两张表添加数据
     // order_info 和 order_item
     @Transactional(rollbackFor = {Exception.class})
-    public Long saveOrder(OrderSubmitVo orderParamVo,
-                          List<CartInfo> cartInfoList) {
+    public Long saveOrder(
+            OrderSubmitVo orderParamVo,
+            List<CartInfo> cartInfoList
+    ) {
         if (CollectionUtils.isEmpty(cartInfoList)) {
             throw new ItmsException(ResultCodeEnum.DATA_ERROR);
         }
-        //查询用户提货点和配送员信息
-        Long userId = AuthContextHolder.getUserId();
-        CourierAddressVo courierAddressVo = userFeignClient.getUserAddressByUserId(userId);
-        if (courierAddressVo == null) {
+        // 查询用户提货点和配送员信息
+        // Long userId = AuthContextHolder.getUserId();
+        Long userId = StpUserUtil.getLoginIdAsLong();
+//        CourierAddressVo courierAddressVo = userFeignClient.getUserAddressByUserId(userId);
+        AddressVo addressVo = orderParamVo.getAddress() != null ? orderParamVo.getAddress() : userFeignClient.getAddressByUserId(userId);
+        if (addressVo == null) {
             throw new ItmsException(ResultCodeEnum.DATA_ERROR);
         }
-        //计算金额
-        //营销活动金额
+        // 计算金额
+        // 营销活动金额
         Map<String, BigDecimal> activitySplitAmount = this.computeActivitySplitAmount(cartInfoList);
         //优惠卷金额
         Map<String, BigDecimal> couponInfoSplitAmount = this.computeCouponInfoSplitAmount(cartInfoList, orderParamVo.getCouponId());
 
-        //封装订单项数据
+        // 封装订单项数据
         List<OrderItem> orderItemList = new ArrayList<>();
         for (CartInfo cartInfo : cartInfoList) {
             OrderItem orderItem = new OrderItem();
@@ -210,10 +223,9 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             orderItem.setSkuPrice(cartInfo.getCartPrice());
             orderItem.setImgUrl(cartInfo.getImgUrl());
             orderItem.setSkuNum(cartInfo.getSkuNum());
-            orderItem.setCourierId(orderParamVo.getStationId());
+//            orderItem.setCourierId(orderParamVo.getStationId());
             //营销活动金额
-            BigDecimal activityAmount =
-                    activitySplitAmount.get("activity:" + orderItem.getSkuId());
+            BigDecimal activityAmount = activitySplitAmount.get("activity:" + orderItem.getSkuId());
             if (activityAmount == null) {
                 activityAmount = new BigDecimal(0);
             }
@@ -236,26 +248,27 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
             orderItemList.add(orderItem);
         }
 
-        //封装订单OrderInfo数据
+        // 封装订单OrderInfo数据
         OrderInfo orderInfo = new OrderInfo();
         orderInfo.setUserId(userId);//用户id
         orderInfo.setOrderNo(orderParamVo.getOrderNo()); // 订单号 唯一标识
         orderInfo.setOrderStatus(OrderStatus.UNPAID); // 订单状态，生成成功未支付
-        orderInfo.setCourierId(orderParamVo.getStationId());// 配送员id
-        orderInfo.setCourierName(courierAddressVo.getCourierName()); // 配送员名称
-
-        orderInfo.setCourierPhone(courierAddressVo.getCourierPhone());
+        orderInfo.setStationId(orderParamVo.getStationId());// 分站id
+//        orderInfo.setCourierId(orderParamVo.getStationId());// 配送员id
+//        orderInfo.setCourierName(courierAddressVo.getCourierName()); // 配送员名称
+//
+//        orderInfo.setCourierPhone(courierAddressVo.getCourierPhone());
 //        orderInfo.setTakeName(courierAddressVo.getTakeName());
         orderInfo.setReceiverName(orderParamVo.getReceiverName());
         orderInfo.setReceiverPhone(orderParamVo.getReceiverPhone());
-        orderInfo.setReceiverProvince(courierAddressVo.getProvince());
-        orderInfo.setReceiverCity(courierAddressVo.getCity());
-        orderInfo.setReceiverDistrict(courierAddressVo.getDistrict());
-        orderInfo.setReceiverAddress(courierAddressVo.getDetailAddress());
+        orderInfo.setReceiverProvince(addressVo.getProvince());
+        orderInfo.setReceiverCity(addressVo.getCity());
+        orderInfo.setReceiverDistrict(addressVo.getDistrict());
+        orderInfo.setReceiverAddress(addressVo.getDetailAddress());
         orderInfo.setWareId(cartInfoList.get(0).getWareId());
         orderInfo.setProcessStatus(ProcessStatus.UNPAID);
 
-        //计算订单金额
+        // 计算订单金额
         BigDecimal originalTotalAmount = this.computeTotalAmount(cartInfoList);
         BigDecimal activityAmount = activitySplitAmount.get("activity:total");
 
@@ -270,29 +283,29 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         orderInfo.setCouponAmount(couponAmount);
         orderInfo.setTotalAmount(totalAmount);
 
-        //计算配送员佣金
+        // 计算配送员佣金
         BigDecimal profitRate = new BigDecimal(0);
 //        orderSetService.getProfitRate();
         BigDecimal commissionAmount = orderInfo.getTotalAmount().multiply(profitRate);
         orderInfo.setCommissionAmount(commissionAmount);
 
-        //添加数据到订单基本信息表
+        // 添加数据到订单基本信息表
         baseMapper.insert(orderInfo);
 
-        //添加订单里面订单项
+        // 添加订单里面订单项
         orderItemList.forEach(orderItem -> {
             orderItem.setOrderId(orderInfo.getId());
             orderItemMapper.insert(orderItem);
         });
 
-        //如果当前订单使用优惠卷，更新优惠卷状态
+        // 如果当前订单使用优惠卷，更新优惠卷状态
         if (orderInfo.getCouponId() != null) {
             activityFeignClient.updateCouponInfoUseStatus(orderInfo.getCouponId(),
                     userId, orderInfo.getId());
         }
 
-        //下单成功，记录用户购物商品数量，redis
-        //hash类型   key(userId)  -  field(skuId)-value(skuNum)
+        // 下单成功，记录用户购物商品数量，redis
+        // hash类型   key(userId)  -  field(skuId)-value(skuNum)
         String orderSkuKey = RedisConstant.ORDER_SKU_MAP + orderParamVo.getUserId();
         BoundHashOperations<String, String, Integer> hashOperations = redisTemplate.boundHashOps(orderSkuKey);
         cartInfoList.forEach(cartInfo -> {
@@ -309,10 +322,10 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     //订单详情
     @Override
     public OrderInfo getOrderInfoById(Long orderId) {
-        //根据orderId查询订单基本信息
+        // 根据orderId查询订单基本信息
         OrderInfo orderInfo = baseMapper.selectById(orderId);
 
-        //根据orderId查询订单所有订单项list列表
+        // 根据orderId查询订单所有订单项list列表
         List<OrderItem> orderItemList = orderItemMapper.selectList(
                 new LambdaQueryWrapper<OrderItem>()
                         .eq(OrderItem::getOrderId, orderInfo.getId())
@@ -332,24 +345,26 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         );
     }
 
-    //订单支付成功，更新订单状态，扣减库存
+    // 订单支付成功，更新订单状态，扣减库存
     @Override
     public void orderPay(String orderNo) {
-        //查询订单状态是否已经修改完成了支付状态
+        // 查询订单状态是否已经修改完成了支付状态
         OrderInfo orderInfo = this.getOrderInfoByOrderNo(orderNo);
         if (orderInfo == null || orderInfo.getOrderStatus() != OrderStatus.UNPAID) {
             return;
         }
-        //更新状态
+        // 更新状态
         this.updateOrderStatus(orderInfo.getId());
 
-        //扣减库存
+        // 扣减库存
         rabbitService.sendMessage(MqConstant.EXCHANGE_ORDER_DIRECT,
                 MqConstant.ROUTING_MINUS_STOCK,
                 orderNo);
+
+        sysFeignClient.autoDispatch(orderNo);
     }
 
-    //订单查询
+    // 订单查询
     @Override
     public IPage<OrderInfo> getOrderInfoByUserIdPage(Page<OrderInfo> pageParam,
                                                      OrderUserQueryVo orderUserQueryVo) {
@@ -377,8 +392,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     // 更新状态
     private void updateOrderStatus(Long id) {
         OrderInfo orderInfo = baseMapper.selectById(id);
-        orderInfo.setOrderStatus(OrderStatus.WAITING_DELIVERY);
-        orderInfo.setProcessStatus(ProcessStatus.WAITING_DELIVERY);
+        orderInfo.setOrderStatus(OrderStatus.WAITING_DISPATCH);
+        orderInfo.setProcessStatus(ProcessStatus.WAITING_DISPATCH);
         baseMapper.updateById(orderInfo);
     }
 

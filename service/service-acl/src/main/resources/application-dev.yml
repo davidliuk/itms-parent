@@ -15,9 +15,9 @@ spring:
   redis:
     host: 123.57.29.205
     port: 6379
-    #    database: 0
+    database: 0
     timeout: 1800000
-    #    password: DavidLiu7
+    password: DavidLiu7
     lettuce:
       pool:
         max-active: 20 #最大连接数

@@ -7,11 +7,18 @@ import lombok.Getter;
 public enum OrderStatus {
     //订单状态【0->待付款；1->待发货；2->待配送员收货；3->待用户收货，已完成；-1->已取消】
     UNPAID(0, "待支付"),
-    WAITING_DELIVERY(1, "待发货"),
-    WAITING_TAKE(2, "待提货"),
-    WAITING_COMMENT(3, "待评论"),
-    FINISHED(4, "已完结"),
-    CANCEL(-1, "已取消");
+    WAITING_DISPATCH(1, "可调度"),
+    DISPATCH(2, "已调度"),
+    WAITING_ASSIGN(3, "待分配"),
+    ASSIGN(4, "已分配"),
+    WAITING_TAKE(5, "待领货"),
+    FINISHED(6, "完成"),
+    CANCEL(-1, "取消");
+//    WAITING_DELIVERY(1, "待发货"),
+//    WAITING_TAKE(2, "待提货"),
+//    WAITING_COMMENT(3, "待评论"),
+//    FINISHED(4, "已完结"),
+//    CANCEL(-1, "已取消");
 
     @EnumValue
     private Integer code;

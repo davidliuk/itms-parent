@@ -17,11 +17,11 @@ public class RedissonConfig {
 
     private String host;
 
-    private String addresses;
-
     private String password;
 
     private String port;
+
+    private String addresses;
 
     private int timeout = 3000;
     private int connectionPoolSize = 64;

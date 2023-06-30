@@ -3,6 +3,7 @@ package cn.neud.itms.model.sys;
 import cn.neud.itms.enums.WorkStatus;
 import cn.neud.itms.enums.WorkType;
 import cn.neud.itms.model.base.BaseEntity;
+import cn.neud.itms.model.order.OrderInfo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
@@ -28,13 +29,17 @@ public class WorkOrder extends BaseEntity {
     @TableField("station_id")
     private Long stationId;
 
+    @ApiModelProperty(value = "姓名")
+    @TableField("station_name")
+    private String stationName;
+
     @ApiModelProperty(value = "订单ID")
     @TableField("order_id")
     private Long orderId;
 
     @ApiModelProperty(value = "姓名")
     @TableField("name")
-    private Long name;
+    private String name;
 
     @ApiModelProperty(value = "电话号码")
     @TableField("phone")
@@ -68,4 +73,9 @@ public class WorkOrder extends BaseEntity {
     @ApiModelProperty(value = "状态")
     @TableField("status")
     private WorkStatus workStatus;
+
+    @ApiModelProperty(value = "订单")
+    @TableField(exist = false)
+    private OrderInfo orderInfo;
+
 }

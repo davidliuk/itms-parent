@@ -31,7 +31,7 @@ public class TransferOrder extends BaseEntity {
 
     @ApiModelProperty(value = "分站名称")
     @TableField("station_name")
-    private Long stationName;
+    private String stationName;
 
     @ApiModelProperty(value = "物流公司id")
     @TableField("logistics_id")

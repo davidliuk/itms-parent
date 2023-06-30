@@ -24,7 +24,8 @@ public class HomeApiController {
     @ApiOperation("首页数据显示接口")
     @GetMapping("index")
     public Result index(HttpServletRequest request) {
-        Long userId = AuthContextHolder.getUserId();
+        // Long userId = AuthContextHolder.getUserId();
+        Long userId = StpUserUtil.getLoginIdAsLong();
         Map<String, Object> map = homeService.homeData(userId);
         return Result.ok(map);
     }

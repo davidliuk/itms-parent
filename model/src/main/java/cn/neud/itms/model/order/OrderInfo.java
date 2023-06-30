@@ -1,6 +1,7 @@
 package cn.neud.itms.model.order;
 
 import cn.neud.itms.enums.OrderStatus;
+import cn.neud.itms.enums.OrderType;
 import cn.neud.itms.enums.ProcessStatus;
 import cn.neud.itms.model.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -76,6 +77,10 @@ public class OrderInfo extends BaseEntity {
     @ApiModelProperty(value = "订单状态【0->待付款；1->待发货；2->待配送员收货；3->待用户收货，已完成；-1->已取消】")
     @TableField("order_status")
     private OrderStatus orderStatus;
+
+    @ApiModelProperty(value = "订单类型")
+    @TableField("order_type")
+    private OrderType orderType;
 
     @ApiModelProperty(value = "进度状态")
     @TableField("process_status")
@@ -172,7 +177,7 @@ public class OrderInfo extends BaseEntity {
 
     @ApiModelProperty(value = "仓库名称")
     @TableField("ware_name")
-    private Long wareName;
+    private String wareName;
 
     @ApiModelProperty(value = "分站id")
     @TableField("station_id")
@@ -180,7 +185,7 @@ public class OrderInfo extends BaseEntity {
 
     @ApiModelProperty(value = "分站名称")
     @TableField("station_name")
-    private Long stationName;
+    private String stationName;
 
     @ApiModelProperty(value = "配送员佣金")
     @TableField("commission_amount")

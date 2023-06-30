@@ -61,8 +61,8 @@ public class OrderItem extends BaseEntity {
     @TableField("split_total_amount")
     private BigDecimal splitTotalAmount;
 
-    @ApiModelProperty(value = "配送员id（冗余）")
-    @TableField("courier_id")
-    private Long courierId;
+//    @ApiModelProperty(value = "配送员id（冗余）")
+//    @TableField("courier_id")
+//    private Long courierId;
 
 }

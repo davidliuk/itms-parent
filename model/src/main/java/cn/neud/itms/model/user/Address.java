@@ -31,7 +31,7 @@ public class Address extends BaseEntity {
 
     @ApiModelProperty(value = "姓名")
     @TableField("name")
-    private Long name;
+    private String name;
 
     @ApiModelProperty(value = "电话号码")
     @TableField("phone")

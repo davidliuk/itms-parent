@@ -22,7 +22,8 @@ public class ItemApiController {
 
     @GetMapping("item/{id}")
     public Result index(@PathVariable Long id) {
-        Long userId = AuthContextHolder.getUserId();
+        // Long userId = AuthContextHolder.getUserId();
+        Long userId = StpUserUtil.getLoginIdAsLong();
         Map<String, Object> map = itemService.item(id, userId);
         return Result.ok(map);
     }

@@ -26,7 +26,8 @@ public class CartApiController {
     public Result checkCart(@PathVariable Long skuId,
                             @PathVariable Integer isChecked) {
         //获取userId
-        Long userId = AuthContextHolder.getUserId();
+        // Long userId = AuthContextHolder.getUserId();
+        Long userId = StpUserUtil.getLoginIdAsLong();
         //调用方法
         cartInfoService.checkCart(userId, skuId, isChecked);
         return Result.ok(null);
@@ -35,7 +36,8 @@ public class CartApiController {
     //2 全选
     @GetMapping("checkAllCart/{isChecked}")
     public Result checkAllCart(@PathVariable Integer isChecked) {
-        Long userId = AuthContextHolder.getUserId();
+        // Long userId = AuthContextHolder.getUserId();
+        Long userId = StpUserUtil.getLoginIdAsLong();
         cartInfoService.checkAllCart(userId, isChecked);
         return Result.ok(null);
     }
@@ -44,7 +46,8 @@ public class CartApiController {
     @PostMapping("batchCheckCart/{isChecked}")
     public Result batchCheckCart(@RequestBody List<Long> skuIdList,
                                  @PathVariable Integer isChecked) {
-        Long userId = AuthContextHolder.getUserId();
+        // Long userId = AuthContextHolder.getUserId();
+        Long userId = StpUserUtil.getLoginIdAsLong();
         cartInfoService.batchCheckCart(skuIdList, userId, isChecked);
         return Result.ok(null);
     }
@@ -57,7 +60,8 @@ public class CartApiController {
     @GetMapping("activityCartList")
     public Result activityCartList() {
         // 获取用户Id
-        Long userId = AuthContextHolder.getUserId();
+        // Long userId = AuthContextHolder.getUserId();
+        Long userId = StpUserUtil.getLoginIdAsLong();
         List<CartInfo> cartInfoList = cartInfoService.getCartList(userId);
 
         OrderConfirmVo orderTradeVo = activityFeignClient.findCartActivityAndCoupon(cartInfoList, userId);
@@ -68,7 +72,8 @@ public class CartApiController {
     @GetMapping("cartList")
     public Result cartList() {
         //获取userId
-        Long userId = AuthContextHolder.getUserId();
+        // Long userId = AuthContextHolder.getUserId();
+        Long userId = StpUserUtil.getLoginIdAsLong();
         List<CartInfo> cartInfoList = cartInfoService.getCartList(userId);
         return Result.ok(cartInfoList);
     }
@@ -79,7 +84,8 @@ public class CartApiController {
     public Result addToCart(@PathVariable("skuId") Long skuId,
                             @PathVariable("skuNum") Integer skuNum) {
         //获取当前登录用户Id
-        Long userId = AuthContextHolder.getUserId();
+        // Long userId = AuthContextHolder.getUserId();
+        Long userId = StpUserUtil.getLoginIdAsLong();
         cartInfoService.addToCart(userId, skuId, skuNum);
         return Result.ok(null);
     }
@@ -87,7 +93,8 @@ public class CartApiController {
     //根据skuId删除购物车
     @DeleteMapping("deleteCart/{skuId}")
     public Result deleteCart(@PathVariable("skuId") Long skuId) {
-        Long userId = AuthContextHolder.getUserId();
+        // Long userId = AuthContextHolder.getUserId();
+        Long userId = StpUserUtil.getLoginIdAsLong();
         cartInfoService.deleteCart(skuId, userId);
         return Result.ok(null);
     }
@@ -95,7 +102,8 @@ public class CartApiController {
     //清空购物车
     @DeleteMapping("deleteAllCart")
     public Result deleteAllCart() {
-        Long userId = AuthContextHolder.getUserId();
+        // Long userId = AuthContextHolder.getUserId();
+        Long userId = StpUserUtil.getLoginIdAsLong();
         cartInfoService.deleteAllCart(userId);
         return Result.ok(null);
     }
@@ -103,7 +111,8 @@ public class CartApiController {
     //批量删除购物车 多个skuId
     @DeleteMapping("batchDeleteCart")
     public Result batchDeleteCart(@RequestBody List<Long> skuIdList) {
-        Long userId = AuthContextHolder.getUserId();
+        // Long userId = AuthContextHolder.getUserId();
+        Long userId = StpUserUtil.getLoginIdAsLong();
         cartInfoService.batchDeleteCart(skuIdList, userId);
         return Result.ok(null);
     }

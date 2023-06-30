@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public enum PaymentType {
     ALIPAY(1, "支付宝"),
-    WEIXIN(2, "微信");
+    WECHAT(2, "微信");
 
     @EnumValue
     private Integer code;

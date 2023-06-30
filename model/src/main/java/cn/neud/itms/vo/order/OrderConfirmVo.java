@@ -1,6 +1,7 @@
 package cn.neud.itms.vo.order;
 
 import cn.neud.itms.model.activity.CouponInfo;
+import cn.neud.itms.vo.user.AddressVo;
 import cn.neud.itms.vo.user.CourierAddressVo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -26,6 +27,9 @@ public class OrderConfirmVo implements Serializable {
 
     @ApiModelProperty(value = "用户对应的配送员地址")
     private CourierAddressVo courierAddressVo;
+
+    @ApiModelProperty(value = "用户地址")
+    private AddressVo addressVo;
 
     @ApiModelProperty(value = "购物项列表")
     private List<CartInfoVo> carInfoVoList;

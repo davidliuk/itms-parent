@@ -1,5 +1,6 @@
 package cn.neud.itms.vo.order;
 
+import cn.neud.itms.vo.user.AddressVo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -26,6 +27,9 @@ public class OrderSubmitVo {
 
     @ApiModelProperty(value = "下单选中的优惠券id")
     private Long couponId;
+
+    @ApiModelProperty(value = "地址")
+    private AddressVo address;
 
 //	@ApiModelProperty("购买的sku信息")
 //	private List<Long> skuIdList;

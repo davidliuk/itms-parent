@@ -46,6 +46,6 @@ public class PurchaseOrder extends BaseEntity {
 
     @ApiModelProperty(value = "供应商名称")
     @TableField("supplier_name")
-    private Long supplierName;
+    private String supplierName;
 
 }
