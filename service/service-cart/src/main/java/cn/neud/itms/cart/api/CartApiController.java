@@ -2,7 +2,7 @@ package cn.neud.itms.cart.api;
 
 import cn.neud.itms.activity.client.ActivityFeignClient;
 import cn.neud.itms.cart.service.CartInfoService;
-import cn.neud.itms.common.auth.AuthContextHolder;
+import cn.neud.itms.common.auth.StpUserUtil;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.order.CartInfo;
 import cn.neud.itms.vo.order.OrderConfirmVo;

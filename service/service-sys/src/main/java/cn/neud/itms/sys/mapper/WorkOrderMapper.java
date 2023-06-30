@@ -1,6 +1,5 @@
 package cn.neud.itms.sys.mapper;
 
-import cn.neud.itms.model.sys.TransferOrder;
 import cn.neud.itms.model.sys.WorkOrder;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 

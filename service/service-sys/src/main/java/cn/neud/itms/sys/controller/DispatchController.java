@@ -7,17 +7,13 @@ import cn.neud.itms.common.auth.RoleConstant;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.enums.OrderStatus;
 import cn.neud.itms.model.order.OrderInfo;
-import cn.neud.itms.model.sys.Region;
 import cn.neud.itms.model.sys.WorkOrder;
 import cn.neud.itms.order.client.OrderFeignClient;
-import cn.neud.itms.sys.service.RegionService;
 import cn.neud.itms.sys.service.WorkOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * <p>

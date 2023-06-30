@@ -1,6 +1,6 @@
 package cn.neud.itms.home.api;
 
-import cn.neud.itms.common.auth.AuthContextHolder;
+import cn.neud.itms.common.auth.StpUserUtil;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.home.service.HomeService;
 import io.swagger.annotations.Api;

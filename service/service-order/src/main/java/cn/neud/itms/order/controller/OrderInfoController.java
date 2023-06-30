@@ -1,7 +1,6 @@
 package cn.neud.itms.order.controller;
 
 
-import cn.neud.itms.common.auth.AuthContextHolder;
 import cn.neud.itms.common.auth.SaUserCheckLogin;
 import cn.neud.itms.common.auth.StpUserUtil;
 import cn.neud.itms.common.result.Result;
@@ -12,7 +11,6 @@ import cn.neud.itms.order.service.OrderInfoService;
 import cn.neud.itms.vo.order.OrderConfirmVo;
 import cn.neud.itms.vo.order.OrderSubmitVo;
 import cn.neud.itms.vo.order.OrderUserQueryVo;
-import cn.neud.itms.vo.user.AddressVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;
