@@ -17,4 +17,6 @@ public interface AddressService extends IService<Address> {
 
     //根据平用户id查询
     List<Address> getAddressListByUserId(Long userId);
+
+    void setAllUnDefault();
 }

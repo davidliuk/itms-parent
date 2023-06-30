@@ -28,12 +28,25 @@ public class AddressApiController {
     @Autowired
     private AddressService addressService;
 
-
     @ApiOperation("获取所有地址信息")
     @GetMapping()
     @SaUserCheckLogin
     public Result addressGet() {
         return Result.ok(addressService.getAddressListByUserId(StpUserUtil.getLoginIdAsLong()));
+    }
+
+    @ApiOperation("设置默认地址")
+    @GetMapping("default/{addressId}")
+    @SaUserCheckLogin
+    public Result addressGet(Long addressId) {
+        // 把原来的默认地址改为非默认
+        addressService.setAllUnDefault();
+        // 把当前地址改为默认
+        Address address = new Address();
+        address.setId(addressId);
+        address.setIsDefault(1);
+        addressService.updateById(address);
+        return Result.ok(null);
     }
 
     //平台属性列表方法
@@ -47,8 +60,8 @@ public class AddressApiController {
         return Result.ok(list);
     }
 
-    @ApiOperation(value = "获取")
-    @GetMapping("get/{id}")
+    @ApiOperation(value = "获取收货地址")
+    @GetMapping("{id}")
     public Result get(@PathVariable Long id) {
         Address address = addressService.getById(id);
         return Result.ok(address);
@@ -67,12 +80,15 @@ public class AddressApiController {
     @ApiOperation(value = "修改")
     @PutMapping("update")
     public Result updateById(@RequestBody Address address) {
+        if (address.getIsDefault().equals(1)) {
+            addressService.setAllUnDefault();
+        }
         addressService.updateById(address);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "删除")
-    @DeleteMapping("remove/{id}")
+    @DeleteMapping("{id}")
     public Result remove(@PathVariable Long id) {
         addressService.removeById(id);
         return Result.ok(null);

@@ -24,7 +24,7 @@ public class UserController {
     @Autowired
     private AddressService addressService;
 
-    //1 用户列表
+    // 1 用户列表
     @ApiOperation("用户列表")
     @GetMapping("{current}/{limit}")
     public Result list(@PathVariable Long current,

@@ -23,14 +23,16 @@ import java.util.stream.Collectors;
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
 
-    //用户角色关系
+    // 用户角色关系
     @Autowired
     private AdminRoleService adminRoleService;
 
-    //1 角色列表（条件分页查询）
+    // 1 角色列表（条件分页查询）
     @Override
-    public IPage<Role> selectRolePage(Page<Role> pageParam,
-                                      RoleQueryVo roleQueryVo) {
+    public IPage<Role> selectRolePage(
+            Page<Role> pageParam,
+            RoleQueryVo roleQueryVo
+    ) {
         //获取条件值
         String roleName = roleQueryVo.getRoleName();
 
@@ -48,7 +50,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         return rolePage;
     }
 
-    //获取所有角色，和根据用户id查询用户分配角色列表
+    // 获取所有角色，和根据用户id查询用户分配角色列表
     @Override
     public Map<String, Object> getRoleByAdminId(Long adminId) {
         //1 查询所有角色
@@ -88,16 +90,16 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         return result;
     }
 
-    //为用户进行分配
+    // 为用户进行分配
     @Override
     public void saveAdminRole(Long adminId, Long[] roleIds) {
-        //1 删除用户已经分配过的角色数据
-        //根据用户id删除admin_role表里面对应数据
-        LambdaQueryWrapper<AdminRole> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(AdminRole::getAdminId, adminId);
-        adminRoleService.remove(wrapper);
+        // 1 删除用户已经分配过的角色数据
+        // 根据用户id删除admin_role表里面对应数据
+        adminRoleService.remove(new LambdaQueryWrapper<AdminRole>()
+                .eq(AdminRole::getAdminId, adminId)
+        );
 
-        //2 重新分配
+        // 2 重新分配
         //adminId:1   roleId: 2 3
         //遍历多个角色id，得到每个角色id，拿着每个角色id + 用户id添加用户角色关系表
 //        for (Long roleId:roleIds) {

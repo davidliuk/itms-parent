@@ -27,4 +27,14 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, Address> impl
         wrapper.eq(Address::getUserId, userId);
         return baseMapper.selectList(wrapper);
     }
+
+    @Override
+    public void setAllUnDefault() {
+        baseMapper.selectList(new LambdaQueryWrapper<Address>()
+                .eq(Address::getIsDefault, 1)
+        ).forEach(address -> {
+            address.setIsDefault(0);
+            baseMapper.updateById(address);
+        });
+    }
 }

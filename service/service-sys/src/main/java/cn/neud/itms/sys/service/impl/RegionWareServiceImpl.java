@@ -26,8 +26,10 @@ public class RegionWareServiceImpl extends ServiceImpl<RegionWareMapper, RegionW
 
     // 开通区域列表
     @Override
-    public IPage<RegionWare> selectPageRegionWare(Page<RegionWare> pageParam,
-                                                  RegionWareQueryVo regionWareQueryVo) {
+    public IPage<RegionWare> selectPageRegionWare(
+            Page<RegionWare> pageParam,
+            RegionWareQueryVo regionWareQueryVo
+    ) {
         //1 获取查询条件值
         String keyword = regionWareQueryVo.getKeyword();
 

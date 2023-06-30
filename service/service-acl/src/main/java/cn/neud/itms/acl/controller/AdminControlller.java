@@ -1,7 +1,9 @@
 package cn.neud.itms.acl.controller;
 
+import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.neud.itms.acl.service.AdminService;
 import cn.neud.itms.acl.service.RoleService;
+import cn.neud.itms.common.auth.RoleConstant;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.common.utils.MD5;
 import cn.neud.itms.model.acl.Admin;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@Api(tags = "用户接口")
+@Api(tags = "用户管理")
 @RestController
 @RequestMapping("/admin/acl/user")
 //@CrossOrigin
@@ -38,6 +40,7 @@ public class AdminControlller {
     //参数有用户id 和 多个角色id
     @ApiOperation("为用户进行角色分配")
     @PostMapping("doAssign")
+    @SaCheckRole(RoleConstant.SYSTEM)
     public Result doAssign(@RequestParam Long adminId,
                            @RequestParam Long[] roleId) {
         roleService.saveAdminRole(adminId, roleId);
@@ -58,9 +61,11 @@ public class AdminControlller {
     //1 用户列表
     @ApiOperation("用户列表")
     @GetMapping("{current}/{limit}")
-    public Result list(@PathVariable Long current,
-                       @PathVariable Long limit,
-                       AdminQueryVo adminQueryVo) {
+    public Result list(
+            @PathVariable Long current,
+            @PathVariable Long limit,
+            AdminQueryVo adminQueryVo
+    ) {
         Page<Admin> pageParam = new Page<Admin>(current, limit);
         IPage<Admin> pageModel = adminService.selectPageUser(pageParam, adminQueryVo);
         return Result.ok(pageModel);
@@ -82,6 +87,7 @@ public class AdminControlller {
 //    data: user
     @ApiOperation("添加用户")
     @PostMapping("save")
+    @SaCheckRole(RoleConstant.SYSTEM)
     public Result save(@RequestBody Admin admin) {
         //获取输入的密码
         String password = admin.getPassword();
