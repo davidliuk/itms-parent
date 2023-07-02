@@ -6,20 +6,14 @@ import lombok.Data;
 @Data
 public class CourierQueryVo {
 
-    @ApiModelProperty(value = "审核状态")
-    private Integer checkStatus;
+    @ApiModelProperty(value = "分站ID")
+    private Long stationId;
 
-    @ApiModelProperty(value = "关键字")
-    private String keyword;
+    @ApiModelProperty(value = "姓名")
+    private String name;
 
-    @ApiModelProperty(value = "省")
-    private String province;
-
-    @ApiModelProperty(value = "城市")
-    private String city;
-
-    @ApiModelProperty(value = "区域")
-    private String district;
+    @ApiModelProperty(value = "身份证号")
+    private String idNo;
 
 }
 

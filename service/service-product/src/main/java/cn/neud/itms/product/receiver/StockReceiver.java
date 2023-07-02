@@ -1,6 +1,8 @@
 package cn.neud.itms.product.receiver;
 
+import cn.neud.itms.model.order.OrderInfo;
 import cn.neud.itms.mq.constant.MqConstant;
+import cn.neud.itms.order.client.OrderFeignClient;
 import cn.neud.itms.product.service.SkuInfoService;
 import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.Message;
@@ -20,6 +22,9 @@ public class StockReceiver {
     @Autowired
     private SkuInfoService skuInfoService;
 
+    @Autowired
+    private OrderFeignClient orderFeignClient;
+
     /**
      * 扣减库存成功，更新订单状态
      *
@@ -35,7 +40,8 @@ public class StockReceiver {
                            Message message,
                            Channel channel) throws IOException {
         if (!StringUtils.isEmpty(orderNo)) {
-            skuInfoService.minusStock(orderNo);
+            OrderInfo order = orderFeignClient.getOrderInfo(orderNo);
+            skuInfoService.minusStock(order.getWareId(), orderNo);
         }
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
     }

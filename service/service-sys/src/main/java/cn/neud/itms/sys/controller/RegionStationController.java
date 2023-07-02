@@ -2,13 +2,20 @@ package cn.neud.itms.sys.controller;
 
 
 import cn.neud.itms.common.result.Result;
+import cn.neud.itms.enums.WorkStatus;
 import cn.neud.itms.model.sys.RegionStation;
+import cn.neud.itms.model.sys.TransferOrder;
+import cn.neud.itms.model.sys.WorkOrder;
 import cn.neud.itms.sys.service.RegionStationService;
+import cn.neud.itms.sys.service.TransferOrderService;
+import cn.neud.itms.sys.service.WorkOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,6 +34,12 @@ public class RegionStationController {
 
     @Autowired
     private RegionStationService regionStationService;
+
+    @Autowired
+    private WorkOrderService workOrderService;
+
+    @Autowired
+    private TransferOrderService transferOrderService;
 
     //根据区域关键字查询区域列表信息
 //    url: `${api_name}/findRegionStationByKeyword/${keyword}`,
@@ -77,6 +90,25 @@ public class RegionStationController {
     @DeleteMapping("batchRemove")
     public Result batchRemove(@RequestBody List<Long> idList) {
         regionStationService.removeByIds(idList);
+        return Result.ok(null);
+    }
+
+    // 调拨出库
+    @ApiOperation("调拨出库")
+    @GetMapping("/in/{workOrderId}")
+    public Result out(@PathVariable Long workOrderId) {
+        // 获取任务单
+        WorkOrder workOrder = workOrderService.getById(workOrderId);
+        workOrder.setWorkStatus(WorkStatus.IN);
+        workOrderService.updateById(workOrder);
+
+        // 生成调拨单
+        TransferOrder transferOrder = new TransferOrder();
+        transferOrder.setWorkOrderId(workOrderId);
+        transferOrder.setInTime(new Date());
+        BeanUtils.copyProperties(workOrder, transferOrder);
+        transferOrderService.save(transferOrder);
+
         return Result.ok(null);
     }
 

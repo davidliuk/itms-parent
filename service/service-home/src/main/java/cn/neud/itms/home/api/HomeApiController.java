@@ -29,5 +29,4 @@ public class HomeApiController {
         Map<String, Object> map = homeService.homeData(userId);
         return Result.ok(map);
     }
-
 }

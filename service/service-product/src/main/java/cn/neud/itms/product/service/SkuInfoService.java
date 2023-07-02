@@ -54,8 +54,8 @@ public interface SkuInfoService extends IService<SkuInfo> {
     SkuInfoVo getSkuInfoVo(Long skuId);
 
     //验证和锁定库存
-    Boolean checkAndLock(List<SkuStockLockVo> skuStockLockVoList, String orderNo);
+    Boolean checkAndLock(List<SkuStockLockVo> skuStockLockVoList, Long wareId, String orderNo);
 
     //扣减库存成功，更新订单状态
-    void minusStock(String orderNo);
+    void minusStock(Long wareId, String orderNo);
 }

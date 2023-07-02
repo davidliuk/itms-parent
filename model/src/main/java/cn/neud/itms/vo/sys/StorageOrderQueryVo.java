@@ -2,7 +2,6 @@ package cn.neud.itms.vo.sys;
 
 import cn.neud.itms.enums.WorkStatus;
 import cn.neud.itms.enums.WorkType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -10,7 +9,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class WorkOrderQueryVo {
+public class StorageOrderQueryVo {
 
     @ApiModelProperty(value = "收货人姓名关键字")
     private String name;

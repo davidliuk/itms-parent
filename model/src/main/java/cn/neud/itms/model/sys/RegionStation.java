@@ -18,6 +18,10 @@ public class RegionStation extends BaseEntity {
     @TableField("region_id")
     private Long regionId;
 
+    @ApiModelProperty(value = " ")
+    @TableField("ware_id")
+    private Long wareId;
+
     @ApiModelProperty(value = "名称")
     @TableField("name")
     private String name;

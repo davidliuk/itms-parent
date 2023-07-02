@@ -70,11 +70,14 @@ public class ProductApiController {
         return skuInfoService.getSkuInfoVo(skuId);
     }
 
-    //验证和锁定库存
+    // 验证和锁定库存
     @ApiOperation(value = "锁定库存")
-    @PostMapping("inner/checkAndLock/{orderNo}")
-    public Boolean checkAndLock(@RequestBody List<SkuStockLockVo> skuStockLockVoList,
-                                @PathVariable String orderNo) {
-        return skuInfoService.checkAndLock(skuStockLockVoList, orderNo);
+    @PostMapping("inner/checkAndLock/{wareId}/{orderNo}")
+    public Boolean checkAndLock(
+            @RequestBody List<SkuStockLockVo> skuStockLockVoList,
+            @PathVariable Long wareId,
+            @PathVariable String orderNo
+    ) {
+        return skuInfoService.checkAndLock(skuStockLockVoList, wareId, orderNo);
     }
 }

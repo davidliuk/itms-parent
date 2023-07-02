@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-@ComponentScan("com.neud")
+@ComponentScan("cn.neud")
 public class ServiceActivityApplication {
 
     public static void main(String[] args) {

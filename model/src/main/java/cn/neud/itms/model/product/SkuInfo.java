@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @ApiModel(description = "SkuInfo")
@@ -68,23 +69,27 @@ public class SkuInfo extends BaseEntity {
     @TableField("market_price")
     private BigDecimal marketPrice;
 
+//    @ApiModelProperty(value = "库存")
+//    @TableField("stock")
+//    private Integer stock;
+//
+//    @ApiModelProperty(value = "锁定库存")
+//    @TableField("lock_stock")
+//    private Integer lockStock;
+//
+//    @ApiModelProperty(value = "预警库存")
+//    @TableField("low_stock")
+//    private Integer lowStock;
+//
+//    @ApiModelProperty(value = "销量")
+//    @TableField("sale")
+//    private Integer sale;
+//
+//    @ApiModelProperty(value = "仓库")
+//    @TableField("ware_id")
+//    private Long wareId;
+    
     @ApiModelProperty(value = "库存")
-    @TableField("stock")
-    private Integer stock;
-
-    @ApiModelProperty(value = "锁定库存")
-    @TableField("lock_stock")
-    private Integer lockStock;
-
-    @ApiModelProperty(value = "预警库存")
-    @TableField("low_stock")
-    private Integer lowStock;
-
-    @ApiModelProperty(value = "销量")
-    @TableField("sale")
-    private Integer sale;
-
-    @ApiModelProperty(value = "仓库")
-    @TableField("ware_id")
-    private Long wareId;
+    @TableField(exist = false)
+    private List<SkuWare> skuWareList;
 }

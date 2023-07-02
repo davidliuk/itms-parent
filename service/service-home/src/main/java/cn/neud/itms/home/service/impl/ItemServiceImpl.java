@@ -33,7 +33,7 @@ public class ItemServiceImpl implements ItemService {
     public Map<String, Object> item(Long skuId, Long userId) {
         Map<String, Object> result = new HashMap<>();
 
-        //skuId查询
+        // skuId查询
         CompletableFuture<SkuInfoVo> skuInfocompletableFuture =
                 CompletableFuture.supplyAsync(() -> {
                     //远程调用获取sku对应数据
@@ -42,21 +42,20 @@ public class ItemServiceImpl implements ItemService {
                     return skuInfoVo;
                 }, threadPoolExecutor);
 
-        //sku对应优惠卷信息
+        // sku对应优惠卷信息
         CompletableFuture<Void> activityCompletableFuture = CompletableFuture.runAsync(() -> {
-            //远程调用获取优惠卷
-            Map<String, Object> activityMap =
-                    activityFeignClient.findActivityAndCoupon(skuId, userId);
+            // 远程调用获取优惠卷
+            Map<String, Object> activityMap = activityFeignClient.findActivityAndCoupon(skuId, userId);
             result.putAll(activityMap);
         }, threadPoolExecutor);
 
-        //更新商品热度
+        // 更新商品热度
         CompletableFuture<Void> hotCompletableFuture = CompletableFuture.runAsync(() -> {
-            //远程调用更新热度
+            // 远程调用更新热度
             skuFeignClient.incrHotScore(skuId);
         }, threadPoolExecutor);
 
-        //任务组合
+        // 任务组合
         CompletableFuture.allOf(
                 skuInfocompletableFuture,
                 activityCompletableFuture,

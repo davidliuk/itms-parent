@@ -35,9 +35,11 @@ public class RegionWareController {
 //    params: searchObj
     @ApiOperation("开通区域列表")
     @GetMapping("{page}/{limit}")
-    public Result list(@PathVariable Long page,
-                       @PathVariable Long limit,
-                       RegionWareQueryVo regionWareQueryVo) {
+    public Result list(
+            @PathVariable Long page,
+            @PathVariable Long limit,
+            RegionWareQueryVo regionWareQueryVo
+    ) {
         Page<RegionWare> pageParam = new Page<>(page, limit);
         IPage<RegionWare> pageModel = regionWareService.selectPageRegionWare(pageParam, regionWareQueryVo);
         return Result.ok(pageModel);

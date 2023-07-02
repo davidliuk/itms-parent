@@ -27,11 +27,11 @@ import org.springframework.web.bind.annotation.RestController;
  * @author neud
  * @since 2023-04-03
  */
-@Api(tags = "任务单管理")
+@Api(tags = "出入库管理")
 @RestController
-@RequestMapping("/admin/sys/workOrder")
+@RequestMapping("/admin/sys/storageOrder")
 //@CrossOrigin
-public class WorkOrderController {
+public class StorageOrderController {
 
     @Autowired
     private WorkOrderService workOrderService;

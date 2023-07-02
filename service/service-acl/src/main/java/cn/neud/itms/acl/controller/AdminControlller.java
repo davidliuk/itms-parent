@@ -41,8 +41,10 @@ public class AdminControlller {
     @ApiOperation("为用户进行角色分配")
     @PostMapping("doAssign")
     @SaCheckRole(RoleConstant.SYSTEM)
-    public Result doAssign(@RequestParam Long adminId,
-                           @RequestParam Long[] roleId) {
+    public Result doAssign(
+            @RequestParam Long adminId,
+            @RequestParam Long[] roleId
+    ) {
         roleService.saveAdminRole(adminId, roleId);
         return Result.ok(null);
     }

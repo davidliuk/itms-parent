@@ -13,6 +13,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
+
 /**
  * <p>
  * 仓库表 服务实现类
@@ -35,11 +37,13 @@ public class WorkOrderServiceImpl extends ServiceImpl<WorkOrderMapper, WorkOrder
         Long orderId = workOrderQueryVo.getOrderId();
         WorkStatus status = workOrderQueryVo.getWorkStatus();
         WorkType type = workOrderQueryVo.getWorkType();
+        Date startTime = workOrderQueryVo.getStartTime();
+        Date endTime = workOrderQueryVo.getEndTime();
 
-        //2 判断条件值是否为空，不为空封装条件
+        // 2 判断条件值是否为空，不为空封装条件
         // 封装条件
-        //3 调用方法实现条件分页查询
-        //4 数据返回
+        // 3 调用方法实现条件分页查询
+        // 4 数据返回
         return baseMapper.selectPage(pageParam, new LambdaQueryWrapper<WorkOrder>()
                 .like(!StringUtils.isEmpty(name), WorkOrder::getName, name)
                 .eq(courierId != null, WorkOrder::getCourierId, courierId)
@@ -48,7 +52,9 @@ public class WorkOrderServiceImpl extends ServiceImpl<WorkOrderMapper, WorkOrder
                 .eq(stationId != null, WorkOrder::getStationId, stationId)
                 .eq(orderId != null, WorkOrder::getOrderId, orderId)
                 .eq(status != null, WorkOrder::getWorkStatus, status)
-                .eq(type != null, WorkOrder::getWorkType, type));
+                .eq(type != null, WorkOrder::getWorkType, type)
+                .ge(startTime != null, WorkOrder::getCreateTime, startTime)
+                .le(endTime != null, WorkOrder::getCreateTime, endTime));
     }
 
     @Override

@@ -37,6 +37,18 @@ public class WorkOrder extends BaseEntity {
     @TableField("station_name")
     private String stationName;
 
+    @ApiModelProperty(value = "物流公司id")
+    @TableField("logistics_id")
+    private Long logisticsId;
+
+    @ApiModelProperty(value = "物流公司名称")
+    @TableField("logistics_name")
+    private String logisticsName;
+
+    @ApiModelProperty(value = "物流公司电话")
+    @TableField("logistics_phone")
+    private String logisticsPhone;
+
     @ApiModelProperty(value = "订单ID")
     @TableField("order_id")
     private Long orderId;

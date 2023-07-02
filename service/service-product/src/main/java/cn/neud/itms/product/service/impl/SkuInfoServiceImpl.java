@@ -2,17 +2,11 @@ package cn.neud.itms.product.service.impl;
 
 import cn.neud.itms.common.exception.ItmsException;
 import cn.neud.itms.common.result.ResultCodeEnum;
-import cn.neud.itms.model.product.SkuAttrValue;
-import cn.neud.itms.model.product.SkuImage;
-import cn.neud.itms.model.product.SkuInfo;
-import cn.neud.itms.model.product.SkuPoster;
+import cn.neud.itms.model.product.*;
 import cn.neud.itms.mq.constant.MqConstant;
 import cn.neud.itms.mq.service.RabbitService;
 import cn.neud.itms.product.mapper.SkuInfoMapper;
-import cn.neud.itms.product.service.SkuAttrValueService;
-import cn.neud.itms.product.service.SkuImageService;
-import cn.neud.itms.product.service.SkuInfoService;
-import cn.neud.itms.product.service.SkuPosterService;
+import cn.neud.itms.product.service.*;
 import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.vo.product.SkuInfoQueryVo;
 import cn.neud.itms.vo.product.SkuInfoVo;
@@ -54,6 +48,9 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
     //sku海报
     @Autowired
     private SkuPosterService skuPosterService;
+
+    @Autowired
+    private SkuWareService skuWareService;
 
     @Autowired
     private RabbitService rabbitService;
@@ -121,6 +118,9 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
 
         //根据id查询商品属性信息列表
         List<SkuAttrValue> skuAttrValueList = skuAttrValueService.getAttrValueListBySkuId(id);
+
+        //根据id查询商品属性信息列表
+        List<SkuWare> skuWareList = skuWareService.getSkuWareListBySkuId(id);
 
         //封装所有数据，返回
         BeanUtils.copyProperties(skuInfo, skuInfoVo);
@@ -243,7 +243,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         LambdaQueryWrapper<SkuInfo> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SkuInfo::getIsNewPerson, 1);
         wrapper.eq(SkuInfo::getPublishStatus, 1);
-        wrapper.orderByDesc(SkuInfo::getStock);//库存排序
+//        wrapper.orderByDesc(SkuInfo::getStock);//库存排序
         //调用方法查询
         IPage<SkuInfo> skuInfoPage = baseMapper.selectPage(pageParam, wrapper);
         List<SkuInfo> skuInfoList = skuInfoPage.getRecords();
@@ -276,17 +276,20 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         return skuInfoVo;
     }
 
-    //验证和锁定库存
+    // 验证和锁定库存
     @Override
-    public Boolean checkAndLock(List<SkuStockLockVo> skuStockLockVoList,
-                                String orderNo) {
+    public Boolean checkAndLock(
+            List<SkuStockLockVo> skuStockLockVoList,
+            Long wareId,
+            String orderNo
+    ) {
         //1 判断skuStockLockVoList集合是否为空
         if (CollectionUtils.isEmpty(skuStockLockVoList)) {
             throw new ItmsException(ResultCodeEnum.DATA_ERROR);
         }
 
         //2 遍历skuStockLockVoList得到每个商品，验证库存并锁定库存，具备原子性
-        skuStockLockVoList.forEach(this::checkLock);
+        skuStockLockVoList.forEach(vo -> checkLock(wareId, vo));
 
         //3 只要有一个商品锁定失败，所有锁定成功的商品都解锁
         boolean flag = skuStockLockVoList.stream()
@@ -295,7 +298,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
             //所有锁定成功的商品都解锁
             skuStockLockVoList.stream().filter(SkuStockLockVo::getIsLock)
                     .forEach(skuStockLockVo -> {
-                        baseMapper.unlockStock(skuStockLockVo.getSkuId(),
+                        baseMapper.unlockStock(wareId, skuStockLockVo.getSkuId(),
                                 skuStockLockVo.getSkuNum());
                     });
             //返回失败的状态
@@ -310,7 +313,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
 
     //扣减库存成功，更新订单状态
     @Override
-    public void minusStock(String orderNo) {
+    public void minusStock(Long wareId, String orderNo) {
         //从redis获取锁定库存信息
         List<SkuStockLockVo> skuStockLockVoList =
                 (List<SkuStockLockVo>) redisTemplate.opsForValue().get(RedisConstant.SROCK_INFO + orderNo);
@@ -319,7 +322,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         }
         //遍历集合，得到每个对象，减库存
         skuStockLockVoList.forEach(skuStockLockVo -> {
-            baseMapper.minusStock(skuStockLockVo.getSkuId(), skuStockLockVo.getSkuNum());
+            baseMapper.minusStock(wareId, skuStockLockVo.getSkuId(), skuStockLockVo.getSkuNum());
         });
 
         //删除redis数据
@@ -327,7 +330,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
     }
 
     //2 遍历skuStockLockVoList得到每个商品，验证库存并锁定库存，具备原子性
-    private void checkLock(SkuStockLockVo skuStockLockVo) {
+    private void checkLock(Long wareId, SkuStockLockVo skuStockLockVo) {
         //获取锁
         //公平锁
         RLock rLock = this.redissonClient.getFairLock(RedisConstant.SKUKEY_PREFIX + skuStockLockVo.getSkuId());
@@ -336,7 +339,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
 
         try {
             //验证库存
-            SkuInfo skuInfo = baseMapper.checkStock(skuStockLockVo.getSkuId(), skuStockLockVo.getSkuNum());
+            SkuInfo skuInfo = baseMapper.checkStock(wareId, skuStockLockVo.getSkuId(), skuStockLockVo.getSkuNum());
             //判断没有满足条件商品，设置isLock值false，返回
             if (skuInfo == null) {
                 skuStockLockVo.setIsLock(false);
@@ -344,7 +347,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
             }
             //有满足条件商品
             //锁定库存:update
-            Integer rows = baseMapper.lockStock(skuStockLockVo.getSkuId(), skuStockLockVo.getSkuNum());
+            Integer rows = baseMapper.lockStock(wareId, skuStockLockVo.getSkuId(), skuStockLockVo.getSkuNum());
             if (rows == 1) {
                 skuStockLockVo.setIsLock(true);
             }
@@ -360,6 +363,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
                                             SkuInfoQueryVo skuInfoQueryVo) {
         String keyword = skuInfoQueryVo.getKeyword();
         Long categoryId = skuInfoQueryVo.getCategoryId();
+        Long wareId = skuInfoQueryVo.getWareId();
         String skuType = skuInfoQueryVo.getSkuType();
 
         LambdaQueryWrapper<SkuInfo> wrapper = new LambdaQueryWrapper<>();

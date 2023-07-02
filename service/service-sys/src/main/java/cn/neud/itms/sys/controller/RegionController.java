@@ -39,6 +39,16 @@ public class RegionController {
     }
 
     @ApiOperation(value = "获取")
+    @GetMapping("assign")
+    public Result assign(
+            @RequestParam Long regionId,
+            @RequestParam Long[] stationId
+    ) {
+//        Region region = regionService.getById(id);
+        return Result.ok(null);
+    }
+
+    @ApiOperation(value = "获取")
     @GetMapping("get/{id}")
     public Result get(@PathVariable Long id) {
         Region region = regionService.getById(id);

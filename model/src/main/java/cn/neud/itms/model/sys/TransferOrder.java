@@ -21,6 +21,10 @@ public class TransferOrder extends BaseEntity {
     @TableField("order_id")
     private Long orderId;
 
+    @ApiModelProperty(value = "任务单ID")
+    @TableField("work_order_id")
+    private Long workOrderId;
+
     @ApiModelProperty(value = "仓库ID")
     @TableField("ware_id")
     private Long wareId;

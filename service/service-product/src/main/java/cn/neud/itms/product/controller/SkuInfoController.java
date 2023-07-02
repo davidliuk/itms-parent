@@ -40,8 +40,7 @@ public class SkuInfoController {
                        @PathVariable Long limit,
                        SkuInfoQueryVo skuInfoQueryVo) {
         Page<SkuInfo> pageParam = new Page<>(page, limit);
-        IPage<SkuInfo> pageModel =
-                skuInfoService.selectPageSkuInfo(pageParam, skuInfoQueryVo);
+        IPage<SkuInfo> pageModel = skuInfoService.selectPageSkuInfo(pageParam, skuInfoQueryVo);
         return Result.ok(pageModel);
     }
 

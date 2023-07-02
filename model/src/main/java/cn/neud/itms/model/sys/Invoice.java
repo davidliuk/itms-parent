@@ -1,4 +1,4 @@
-package cn.neud.itms.model.user;
+package cn.neud.itms.model.sys;
 
 import cn.neud.itms.model.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
