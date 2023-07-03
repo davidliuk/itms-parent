@@ -127,6 +127,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         skuInfoVo.setSkuImageList(skuImageList);
         skuInfoVo.setSkuPosterList(skuPosterList);
         skuInfoVo.setSkuAttrValueList(skuAttrValueList);
+        skuInfoVo.setSkuWareList(skuWareList);
         return skuInfoVo;
     }
 
@@ -327,6 +328,11 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
 
         //删除redis数据
         redisTemplate.delete(RedisConstant.SROCK_INFO + orderNo);
+    }
+
+    @Override
+    public void addStock(Long wareId, Long skuId, int skuNum) {
+        baseMapper.addStock(wareId, skuId, skuNum);
     }
 
     //2 遍历skuStockLockVoList得到每个商品，验证库存并锁定库存，具备原子性

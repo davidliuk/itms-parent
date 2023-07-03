@@ -25,4 +25,6 @@ public interface SkuInfoMapper extends BaseMapper<SkuInfo> {
 
     //遍历集合，得到每个对象，减库存
     void minusStock(@Param("wareId") Long wareId, @Param("skuId") Long skuId, @Param("skuNum") Integer skuNum);
+
+    void addStock(@Param("wareId") Long wareId, @Param("skuId") Long skuId, @Param("skuNum") Integer skuNum);
 }

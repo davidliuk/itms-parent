@@ -58,4 +58,6 @@ public interface SkuInfoService extends IService<SkuInfo> {
 
     //扣减库存成功，更新订单状态
     void minusStock(Long wareId, String orderNo);
+
+    void addStock(Long wareId, Long skuId, int skuNum);
 }

@@ -1,7 +1,9 @@
 package cn.neud.itms.vo.sys;
 
+import cn.neud.itms.enums.StorageType;
 import cn.neud.itms.enums.WorkStatus;
 import cn.neud.itms.enums.WorkType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -11,29 +13,32 @@ import java.util.Date;
 @Data
 public class StorageOrderQueryVo {
 
-    @ApiModelProperty(value = "收货人姓名关键字")
-    private String name;
-
-    @ApiModelProperty(value = "配送员Id")
-    private Long courierId;
-
-    @ApiModelProperty(value = "用户Id")
-    private Long userId;
-
     @ApiModelProperty(value = "仓库ID")
     private Long wareId;
-
-    @ApiModelProperty(value = "分站ID")
-    private Long stationId;
 
     @ApiModelProperty(value = "订单ID")
     private Long orderId;
 
-    @ApiModelProperty(value = "任务单类型")
-    private WorkType workType;
+    @ApiModelProperty(value = "分站ID")
+    private Long stationId;
 
-    @ApiModelProperty(value = "任务单状态")
-    private WorkStatus workStatus;
+    @ApiModelProperty(value = "分站名称")
+    private String stationName;
+
+    @ApiModelProperty(value = "供应商ID")
+    private Long supplierId;
+
+    @ApiModelProperty(value = "供应商名称")
+    private String supplierName;
+
+    @ApiModelProperty(value = "商品sku编号")
+    private Long skuId;
+
+    @ApiModelProperty(value = "商品sku名字")
+    private String skuName;
+
+    @ApiModelProperty(value = "类型")
+    private StorageType storageType;
 
     @ApiModelProperty(value = "开始时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

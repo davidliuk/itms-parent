@@ -5,10 +5,10 @@ import cn.neud.itms.common.result.Result;
 import cn.neud.itms.enums.OrderStatus;
 import cn.neud.itms.enums.WorkStatus;
 import cn.neud.itms.model.order.OrderInfo;
-import cn.neud.itms.model.sys.WorkOrder;
+import cn.neud.itms.model.sys.StorageOrder;
 import cn.neud.itms.order.client.OrderFeignClient;
-import cn.neud.itms.sys.service.WorkOrderService;
-import cn.neud.itms.vo.sys.WorkOrderQueryVo;
+import cn.neud.itms.sys.service.StorageOrderService;
+import cn.neud.itms.vo.sys.StorageOrderQueryVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StorageOrderController {
 
     @Autowired
-    private WorkOrderService workOrderService;
+    private StorageOrderService storageOrderService;
 
     @Autowired
     private OrderFeignClient orderFeignClient;
@@ -43,40 +43,20 @@ public class StorageOrderController {
 //    url: `${api_name}/${page}/${limit}`,
 //    method: 'get',
 //    params: searchObj
-    @ApiOperation("任务单列表")
+    @ApiOperation("库存单列表")
     @GetMapping("/{page}/{limit}")
     public Result list(
             @PathVariable Long page,
             @PathVariable Long limit,
-            WorkOrderQueryVo workOrderQueryVo
+            StorageOrderQueryVo workOrderQueryVo
     ) {
-        Page<WorkOrder> pageParam = new Page<>(page, limit);
-        IPage<WorkOrder> pageModel = workOrderService.selectPage(pageParam, workOrderQueryVo);
+        Page<StorageOrder> pageParam = new Page<>(page, limit);
+        IPage<StorageOrder> pageModel = storageOrderService.selectPage(pageParam, workOrderQueryVo);
         return Result.ok(pageModel);
     }
 
-    // 分配任务单
-    @ApiOperation("分配任务单")
-    @GetMapping("/assign/{workOrderId}/{courierId}")
-    public Result assign(
-            @PathVariable Long workOrderId,
-            @PathVariable Long courierId
-    ) {
-        WorkOrder workOrder = workOrderService.getById(workOrderId);
-        if (workOrder == null) {
-            return Result.fail("任务单不存在");
-        }
-        if (workOrder.getWorkStatus() != WorkStatus.WAITING_ASSIGN && workOrder.getWorkStatus() != WorkStatus.ASSIGN) {
-            return Result.fail("任务单状态不正确");
-        }
-        OrderInfo orderInfo = new OrderInfo();
-        orderInfo.setId(workOrder.getId());
-        orderInfo.setOrderStatus(OrderStatus.ASSIGN);
-        orderFeignClient.updateOrderInfo(orderInfo);
-        workOrder.setCourierId(courierId);
-        workOrderService.updateById(workOrder);
-        return Result.ok(null);
-    }
+    // 保存库存单
+    
 
 }
 

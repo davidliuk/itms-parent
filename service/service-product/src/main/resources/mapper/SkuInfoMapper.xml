@@ -30,30 +30,42 @@
              sku_ware
         where sku_info.id = sku_ware.sku_id
           and sku_info.id = #{skuId}
-          and stock - lock_stock > #{skuNum} for
+          and stock - lock_stock > #{skuNum}
+            for
         update
     </select>
 
     <!--//锁定库存:update-->
     <update id="lockStock">
-        update sku_info
+        update sku_ware
         set lock_stock = lock_stock + #{skuNum}
-        where id = #{skuId}
+        where sku_id = #{skuId}
+          and ware_id = #{wareId}
     </update>
 
     <!--//解锁库存-->
     <update id="unlockStock">
-        update sku_info
+        update sku_ware
         set lock_stock = lock_stock - #{skuNum}
-        where id = #{skuId}
+        where sku_id = #{skuId}
+          and ware_id = #{wareId}
     </update>
 
     <!--减库存-->
     <update id="minusStock">
-        update sku_info
+        update sku_ware
         set stock      = stock - #{skuNum},
             lock_stock = lock_stock - #{skuNum},
             sale       = sale + #{skuNum}
-        where id = #{skuId}
+        where sku_id = #{skuId}
+          and ware_id = #{wareId}
+    </update>
+
+    <!--减库存-->
+    <update id="addStock">
+        update sku_ware
+        set stock = stock + #{skuNum}
+        where sku_id = #{skuId}
+          and ware_id = #{wareId}
     </update>
 </mapper>

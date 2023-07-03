@@ -1,7 +1,8 @@
-package cn.neud.itms.product.service;
+package cn.neud.itms.product.service.impl;
 
 import cn.neud.itms.model.product.SkuWare;
 import cn.neud.itms.product.mapper.SkuWareMapper;
+import cn.neud.itms.product.service.SkuWareService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
