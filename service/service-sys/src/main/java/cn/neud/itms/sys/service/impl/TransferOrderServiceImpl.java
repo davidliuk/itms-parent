@@ -6,8 +6,12 @@ import cn.neud.itms.sys.mapper.TransferOrderMapper;
 import cn.neud.itms.sys.mapper.WareMapper;
 import cn.neud.itms.sys.service.TransferOrderService;
 import cn.neud.itms.sys.service.WareService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * <p>
@@ -20,4 +24,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class TransferOrderServiceImpl extends ServiceImpl<TransferOrderMapper, TransferOrder> implements TransferOrderService {
 
+    @Override
+    public IPage<TransferOrder> selectPage(Page<TransferOrder> pageParam, TransferOrder workOrder) {
+        Long id = workOrder.getId();
+        Long orderId = workOrder.getOrderId();
+        Long workOrderId = workOrder.getWorkOrderId();
+        Long wareId = workOrder.getWareId();
+        Long stationId = workOrder.getStationId();
+        Long logisticsId = workOrder.getLogisticsId();
+        String logisticsName = workOrder.getLogisticsName();
+        String stationName = workOrder.getStationName();
+
+        return baseMapper.selectPage(pageParam, new LambdaQueryWrapper<TransferOrder>()
+                .eq(!StringUtils.isEmpty(id), TransferOrder::getId, id)
+                .eq(!StringUtils.isEmpty(orderId), TransferOrder::getOrderId, orderId)
+                .eq(!StringUtils.isEmpty(workOrderId), TransferOrder::getWorkOrderId, workOrderId)
+                .eq(!StringUtils.isEmpty(wareId), TransferOrder::getWareId, wareId)
+                .eq(!StringUtils.isEmpty(stationId), TransferOrder::getStationId, stationId)
+                .eq(!StringUtils.isEmpty(logisticsId), TransferOrder::getLogisticsId, logisticsId)
+                .like(!StringUtils.isEmpty(logisticsName), TransferOrder::getLogisticsName, logisticsName)
+                .like(!StringUtils.isEmpty(stationName), TransferOrder::getStationName, stationName));
+    }
 }

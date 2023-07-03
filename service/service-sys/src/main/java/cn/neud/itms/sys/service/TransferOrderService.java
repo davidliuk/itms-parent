@@ -15,7 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface TransferOrderService extends IService<TransferOrder> {
 
-//    IPage<TransferOrder> selectPage(Page<TransferOrder> pageParam, TransferOrderQueryVo workOrderQueryVo);
+    IPage<TransferOrder> selectPage(Page<TransferOrder> pageParam, TransferOrder workOrder);
 //
 //    void updateByOrderId(TransferOrder workOrder);
 }

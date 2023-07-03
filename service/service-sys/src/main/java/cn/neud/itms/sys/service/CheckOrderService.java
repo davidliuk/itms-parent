@@ -1,7 +1,6 @@
 package cn.neud.itms.sys.service;
 
-import cn.neud.itms.model.sys.Logistics;
-import cn.neud.itms.model.sys.PurchaseOrder;
+import cn.neud.itms.model.sys.CheckOrder;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -14,7 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author neud
  * @since 2023-04-03
  */
-public interface PurchaseOrderService extends IService<PurchaseOrder> {
+public interface CheckOrderService extends IService<CheckOrder> {
 
-    IPage<PurchaseOrder> selectPage(Page<PurchaseOrder> pageParam, PurchaseOrder purchaseOrder);
+    IPage<CheckOrder> selectPage(Page<CheckOrder> pageParam, CheckOrder checkOrder);
 }

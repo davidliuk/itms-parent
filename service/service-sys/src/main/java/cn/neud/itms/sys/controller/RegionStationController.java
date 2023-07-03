@@ -93,12 +93,12 @@ public class RegionStationController {
         return Result.ok(null);
     }
 
-    // 调拨出库
-    @ApiOperation("调拨出库")
+    @ApiOperation("调拨入库")
     @GetMapping("/in/{workOrderId}")
     public Result out(@PathVariable Long workOrderId) {
         // 获取任务单
         WorkOrder workOrder = workOrderService.getById(workOrderId);
+        // 修改任务单状态
         workOrder.setWorkStatus(WorkStatus.IN);
         workOrderService.updateById(workOrder);
 
