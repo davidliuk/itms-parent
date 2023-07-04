@@ -77,7 +77,7 @@ public class AdminControlller {
 //    url: `${api_name}/get/${id}`,
 //    method: 'get'
     @ApiOperation("根据id查询")
-    @GetMapping("get/{id}")
+    @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
         Admin admin = adminService.getById(id);
         return Result.ok(admin);
@@ -88,7 +88,7 @@ public class AdminControlller {
 //    method: 'post',
 //    data: user
     @ApiOperation("添加用户")
-    @PostMapping("save")
+    @PostMapping("")
     @SaCheckRole(RoleConstant.SYSTEM)
     public Result save(@RequestBody Admin admin) {
         //获取输入的密码
@@ -107,7 +107,7 @@ public class AdminControlller {
 //    method: 'put',
 //    data: user
     @ApiOperation("修改用户")
-    @PutMapping("update")
+    @PutMapping("")
     public Result update(@RequestBody Admin admin) {
         adminService.updateById(admin);
         return Result.ok(null);
@@ -117,7 +117,7 @@ public class AdminControlller {
 //    url: `${api_name}/remove/${id}`,
 //    method: 'delete'
     @ApiOperation("根据id删除用户")
-    @DeleteMapping("remove/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable Long id) {
         adminService.removeById(id);
         return Result.ok(null);
@@ -129,7 +129,7 @@ public class AdminControlller {
 //    data: ids
     // [1,2,3]
     @ApiOperation("批量删除")
-    @DeleteMapping("batchRemove")
+    @DeleteMapping("")
     public Result batchRemove(@RequestBody List<Long> idList) {
         adminService.removeByIds(idList);
         return Result.ok(null);

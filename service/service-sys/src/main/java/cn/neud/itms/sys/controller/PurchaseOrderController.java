@@ -45,28 +45,28 @@ public class PurchaseOrderController {
     }
 
     @ApiOperation(value = "获取")
-    @GetMapping("get/{id}")
+    @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
         PurchaseOrder purchaseOrder = purchaseOrderService.getById(id);
         return Result.ok(purchaseOrder);
     }
 
     @ApiOperation(value = "新增")
-    @PostMapping("save")
+    @PostMapping("")
     public Result save(@RequestBody PurchaseOrder purchaseOrder) {
         purchaseOrderService.save(purchaseOrder);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "修改")
-    @PutMapping("update")
+    @PutMapping("")
     public Result updateById(@RequestBody PurchaseOrder purchaseOrder) {
         purchaseOrderService.updateById(purchaseOrder);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "删除")
-    @DeleteMapping("remove/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable Long id) {
         purchaseOrderService.removeById(id);
         return Result.ok(null);

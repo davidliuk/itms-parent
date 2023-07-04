@@ -45,28 +45,28 @@ public class CheckOrderController {
     }
 
     @ApiOperation(value = "获取")
-    @GetMapping("get/{id}")
+    @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
         CheckOrder checkOrder = checkOrderService.getById(id);
         return Result.ok(checkOrder);
     }
 
     @ApiOperation(value = "新增")
-    @PostMapping("save")
+    @PostMapping("")
     public Result save(@RequestBody CheckOrder checkOrder) {
         checkOrderService.save(checkOrder);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "修改")
-    @PutMapping("update")
+    @PutMapping("")
     public Result updateById(@RequestBody CheckOrder checkOrder) {
         checkOrderService.updateById(checkOrder);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "删除")
-    @DeleteMapping("remove/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable Long id) {
         checkOrderService.removeById(id);
         return Result.ok(null);

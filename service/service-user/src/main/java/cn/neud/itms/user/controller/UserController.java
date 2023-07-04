@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @ApiOperation("根据id查询")
-    @GetMapping("get/{id}")
+    @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
         User user = userService.getById(id);
         user.setAddresses(addressService.getAddressListByUserId(id));
@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @ApiOperation("添加用户")
-    @PostMapping("save")
+    @PostMapping("")
     public Result save(@RequestBody User user) {
         //获取输入的密码
         String password = user.getPassword();
@@ -59,7 +59,7 @@ public class UserController {
 
     //4 修改用户(不能修改密码)，传入的密码值为null的时候不会改密码
     @ApiOperation("修改用户")
-    @PutMapping("update")
+    @PutMapping("")
     public Result update(@RequestBody User user) {
         userService.updateById(user);
         return Result.ok(null);

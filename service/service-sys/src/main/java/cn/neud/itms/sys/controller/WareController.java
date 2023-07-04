@@ -51,35 +51,35 @@ public class WareController {
     }
 
     @ApiOperation(value = "获取")
-    @GetMapping("get/{id}")
+    @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
         Ware ware = wareService.getById(id);
         return Result.ok(ware);
     }
 
     @ApiOperation(value = "新增")
-    @PostMapping("save")
+    @PostMapping("")
     public Result save(@RequestBody Ware ware) {
         wareService.save(ware);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "修改")
-    @PutMapping("update")
+    @PutMapping("")
     public Result updateById(@RequestBody Ware ware) {
         wareService.updateById(ware);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "删除")
-    @DeleteMapping("remove/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable Long id) {
         wareService.removeById(id);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "根据id列表删除")
-    @DeleteMapping("batchRemove")
+    @DeleteMapping("")
     public Result batchRemove(@RequestBody List<Long> idList) {
         wareService.removeByIds(idList);
         return Result.ok(null);

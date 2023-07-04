@@ -45,28 +45,28 @@ public class TransferOrderController {
     }
 
     @ApiOperation(value = "获取")
-    @GetMapping("get/{id}")
+    @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
         TransferOrder transferOrder = transferOrderService.getById(id);
         return Result.ok(transferOrder);
     }
 
     @ApiOperation(value = "新增")
-    @PostMapping("save")
+    @PostMapping("")
     public Result save(@RequestBody TransferOrder transferOrder) {
         transferOrderService.save(transferOrder);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "修改")
-    @PutMapping("update")
+    @PutMapping("")
     public Result updateById(@RequestBody TransferOrder transferOrder) {
         transferOrderService.updateById(transferOrder);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "删除")
-    @DeleteMapping("remove/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable Long id) {
         transferOrderService.removeById(id);
         return Result.ok(null);

@@ -44,7 +44,7 @@ public class ActivityInfoController {
 
     //    url: `${api_name}/get/${id}`,
 //    method: 'get'
-    @GetMapping("get/{id}")
+    @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
         ActivityInfo activityInfo = activityInfoService.getById(id);
         activityInfo.setActivityTypeString(activityInfo.getActivityType().getComment());
@@ -55,7 +55,7 @@ public class ActivityInfoController {
 //    url: `${api_name}/save`,
 //    method: 'post',
 //    data: role
-    @PostMapping("save")
+    @PostMapping("")
     public Result save(@RequestBody ActivityInfo activityInfo) {
         activityInfoService.save(activityInfo);
         return Result.ok(null);

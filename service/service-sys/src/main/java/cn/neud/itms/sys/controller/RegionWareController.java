@@ -50,7 +50,7 @@ public class RegionWareController {
 //    method: 'post',
 //    data: role
     @ApiOperation("添加开通区域")
-    @PostMapping("save")
+    @PostMapping("")
     public Result addRegionWare(@RequestBody RegionWare regionWare) {
         regionWareService.saveRegionWare(regionWare);
         return Result.ok(null);
@@ -60,7 +60,7 @@ public class RegionWareController {
 //    url: `${api_name}/remove/${id}`,
 //    method: 'delete'
     @ApiOperation("删除开通区域")
-    @DeleteMapping("remove/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable Long id) {
         regionWareService.removeById(id);
         return Result.ok(null);

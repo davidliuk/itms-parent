@@ -68,7 +68,7 @@ public class AddressApiController {
     }
 
     @ApiOperation(value = "新增")
-    @PostMapping("save")
+    @PostMapping("")
     public Result save(@RequestBody Address address) {
         if (addressService.count(new LambdaQueryWrapper<Address>().eq(Address::getUserId, address.getUserId())) == 0) {
             address.setIsDefault(1);
@@ -78,7 +78,7 @@ public class AddressApiController {
     }
 
     @ApiOperation(value = "修改")
-    @PutMapping("update")
+    @PutMapping("")
     public Result updateById(@RequestBody Address address) {
         if (address.getIsDefault().equals(1)) {
             addressService.setAllUnDefault();
@@ -95,7 +95,7 @@ public class AddressApiController {
     }
 
     @ApiOperation(value = "根据id列表删除")
-    @DeleteMapping("batchRemove")
+    @DeleteMapping("")
     public Result batchRemove(@RequestBody List<Long> idList) {
         addressService.removeByIds(idList);
         return Result.ok(null);

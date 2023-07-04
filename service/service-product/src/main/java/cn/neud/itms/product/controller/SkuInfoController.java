@@ -63,7 +63,7 @@ public class SkuInfoController {
 //    method: 'post',
 //    data: role
     @ApiOperation("添加商品sku信息")
-    @PostMapping("save")
+    @PostMapping("")
     public Result save(@RequestBody SkuInfoVo skuInfoVo) {
         skuInfoService.saveSkuInfo(skuInfoVo);
         return Result.ok(null);
@@ -91,7 +91,7 @@ public class SkuInfoController {
     //    url: `${api_name}/get/${id}`,
 //    method: 'get'
     @ApiOperation("获取sku信息")
-    @GetMapping("get/{id}")
+    @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
         SkuInfoVo skuInfoVo = skuInfoService.getSkuInfo(id);
         return Result.ok(skuInfoVo);
@@ -101,21 +101,21 @@ public class SkuInfoController {
 //    method: 'put',
 //    data: role
     @ApiOperation("修改sku")
-    @PutMapping("update")
+    @PutMapping("")
     public Result update(@RequestBody SkuInfoVo skuInfoVo) {
         skuInfoService.updateSkuInfo(skuInfoVo);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "删除")
-    @DeleteMapping("remove/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable Long id) {
         skuInfoService.removeById(id);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "根据id列表删除")
-    @DeleteMapping("batchRemove")
+    @DeleteMapping("")
     public Result batchRemove(@RequestBody List<Long> idList) {
         skuInfoService.removeByIds(idList);
         return Result.ok(null);

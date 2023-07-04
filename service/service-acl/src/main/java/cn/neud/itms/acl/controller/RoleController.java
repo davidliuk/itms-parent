@@ -42,7 +42,7 @@ public class RoleController {
 
     //2 根据id查询角色
     @ApiOperation("根据id查询角色")
-    @GetMapping("get/{id}")
+    @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
         Role role = roleService.getById(id);
         return Result.ok(role);
@@ -50,7 +50,7 @@ public class RoleController {
 
     //3 添加角色
     @ApiOperation("添加角色")
-    @PostMapping("save")
+    @PostMapping("")
     public Result save(@RequestBody Role role) {
         boolean is_success = roleService.save(role);
         if (is_success) {
@@ -62,7 +62,7 @@ public class RoleController {
 
     //4 修改角色
     @ApiOperation("修改角色")
-    @PutMapping("update")
+    @PutMapping("")
     public Result update(@RequestBody Role role) {
         roleService.updateById(role);
         return Result.ok(null);
@@ -70,7 +70,7 @@ public class RoleController {
 
     //5 根据id删除角色
     @ApiOperation("根据id删除角色")
-    @DeleteMapping("remove/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable Long id) {
         roleService.removeById(id);
         return Result.ok(null);
@@ -79,7 +79,7 @@ public class RoleController {
     //6 批量删除角色
     // json数组[1,2,3]  --- java的list集合
     @ApiOperation("批量删除角色")
-    @DeleteMapping("batchRemove")
+    @DeleteMapping("")
     public Result batchRemove(@RequestBody List<Long> idList) {
         roleService.removeByIds(idList);
         return Result.ok(null);

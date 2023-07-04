@@ -59,35 +59,35 @@ public class RegionStationController {
     }
 
     @ApiOperation(value = "获取")
-    @GetMapping("get/{id}")
+    @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
         RegionStation region = regionStationService.getById(id);
         return Result.ok(region);
     }
 
     @ApiOperation(value = "新增")
-    @PostMapping("save")
+    @PostMapping("")
     public Result save(@RequestBody RegionStation region) {
         regionStationService.save(region);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "修改")
-    @PutMapping("update")
+    @PutMapping("")
     public Result updateById(@RequestBody RegionStation region) {
         regionStationService.updateById(region);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "删除")
-    @DeleteMapping("remove/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable Long id) {
         regionStationService.removeById(id);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "根据id列表删除")
-    @DeleteMapping("batchRemove")
+    @DeleteMapping("")
     public Result batchRemove(@RequestBody List<Long> idList) {
         regionStationService.removeByIds(idList);
         return Result.ok(null);

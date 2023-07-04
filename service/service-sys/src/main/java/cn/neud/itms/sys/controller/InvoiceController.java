@@ -41,28 +41,28 @@ public class InvoiceController {
     }
 
     @ApiOperation(value = "获取")
-    @GetMapping("get/{id}")
+    @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
         TransferOrder invoice = invoiceService.getById(id);
         return Result.ok(invoice);
     }
 
     @ApiOperation(value = "新增")
-    @PostMapping("save")
+    @PostMapping("")
     public Result save(@RequestBody TransferOrder invoice) {
         invoiceService.save(invoice);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "修改")
-    @PutMapping("update")
+    @PutMapping("")
     public Result updateById(@RequestBody TransferOrder invoice) {
         invoiceService.updateById(invoice);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "删除")
-    @DeleteMapping("remove/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable Long id) {
         invoiceService.removeById(id);
         return Result.ok(null);

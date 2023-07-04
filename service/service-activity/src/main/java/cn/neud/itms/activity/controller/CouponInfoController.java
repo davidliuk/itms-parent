@@ -42,7 +42,7 @@ public class CouponInfoController {
 //    url: `${api_name}/save`,
 //    method: 'post',
 //    data: role
-    @PostMapping("save")
+    @PostMapping("")
     public Result save(@RequestBody CouponInfo couponInfo) {
         couponInfoService.save(couponInfo);
         return Result.ok(null);
@@ -51,7 +51,7 @@ public class CouponInfoController {
     //3 根据id查询优惠卷
 //    url: `${api_name}/get/${id}`,
 //    method: 'get'
-    @GetMapping("get/{id}")
+    @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
         CouponInfo couponInfo = couponInfoService.getCouponInfo(id);
         return Result.ok(couponInfo);

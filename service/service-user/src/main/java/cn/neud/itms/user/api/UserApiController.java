@@ -164,7 +164,7 @@ public class UserApiController {
 
     //4 修改用户信息，传入的密码值为null的时候不会改密码
     @ApiOperation("修改用户信息")
-    @PutMapping("update")
+    @PutMapping("")
     public Result update(@RequestBody User user) {
         // 获取输入的密码
         String password = user.getPassword();

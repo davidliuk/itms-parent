@@ -34,7 +34,7 @@ public class PermissionController {
 //    method: "post",
 //    data: permission
     @ApiOperation("添加菜单")
-    @PostMapping("save")
+    @PostMapping("")
     public Result save(@RequestBody Permission permission) {
         permissionService.save(permission);
         return Result.ok(null);
@@ -45,7 +45,7 @@ public class PermissionController {
 //    method: "put",
 //    data: permission
     @ApiOperation("修改菜单")
-    @PutMapping("update")
+    @PutMapping("")
     public Result update(@RequestBody Permission permission) {
         permissionService.updateById(permission);
         return Result.ok(null);
@@ -55,7 +55,7 @@ public class PermissionController {
 //    url: `${api_name}/remove/${id}`,
 //    method: "delete"
     @ApiOperation("递归删除菜单")
-    @DeleteMapping("remove/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable Long id) {
         permissionService.removeChildById(id);
         return Result.ok(null);
