@@ -7,3 +7,5 @@ spring:
     nacos:
       discovery:
         server-addr: 123.57.29.205:8848
+        namespace: david-dev
+        group: itms-project

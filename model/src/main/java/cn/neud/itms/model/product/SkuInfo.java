@@ -88,7 +88,7 @@ public class SkuInfo extends BaseEntity {
 //    @ApiModelProperty(value = "仓库")
 //    @TableField("ware_id")
 //    private Long wareId;
-    
+
     @ApiModelProperty(value = "库存")
     @TableField(exist = false)
     private List<SkuWare> skuWareList;

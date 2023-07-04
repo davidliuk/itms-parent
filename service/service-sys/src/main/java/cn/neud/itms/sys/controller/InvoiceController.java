@@ -19,56 +19,52 @@ import org.springframework.web.bind.annotation.*;
  * @author neud
  * @since 2023-04-03
  */
-@Api(tags = "调拨单管理")
+@Api(tags = "发票管理")
 @RestController
-@RequestMapping("/admin/sys/transferOrder")
+@RequestMapping("/admin/sys/invoice")
 //@CrossOrigin
-public class TransferOrderController {
+public class InvoiceController {
 
     @Autowired
-    private TransferOrderService transferOrderService;
+    private TransferOrderService invoiceService;
 
-    //开通区域列表
-//    url: `${api_name}/${page}/${limit}`,
-//    method: 'get',
-//    params: searchObj
-    @ApiOperation("调拨单列表")
+    @ApiOperation("发票列表")
     @GetMapping("/{page}/{limit}")
     public Result list(
             @PathVariable Long page,
             @PathVariable Long limit,
-            TransferOrder transferOrder
+            TransferOrder invoice
     ) {
         Page<TransferOrder> pageParam = new Page<>(page, limit);
-        IPage<TransferOrder> pageModel = transferOrderService.selectPage(pageParam, transferOrder);
+        IPage<TransferOrder> pageModel = invoiceService.selectPage(pageParam, invoice);
         return Result.ok(pageModel);
     }
 
     @ApiOperation(value = "获取")
     @GetMapping("get/{id}")
     public Result get(@PathVariable Long id) {
-        TransferOrder transferOrder = transferOrderService.getById(id);
-        return Result.ok(transferOrder);
+        TransferOrder invoice = invoiceService.getById(id);
+        return Result.ok(invoice);
     }
 
     @ApiOperation(value = "新增")
     @PostMapping("save")
-    public Result save(@RequestBody TransferOrder transferOrder) {
-        transferOrderService.save(transferOrder);
+    public Result save(@RequestBody TransferOrder invoice) {
+        invoiceService.save(invoice);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "修改")
     @PutMapping("update")
-    public Result updateById(@RequestBody TransferOrder transferOrder) {
-        transferOrderService.updateById(transferOrder);
+    public Result updateById(@RequestBody TransferOrder invoice) {
+        invoiceService.updateById(invoice);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "删除")
     @DeleteMapping("remove/{id}")
     public Result remove(@PathVariable Long id) {
-        transferOrderService.removeById(id);
+        invoiceService.removeById(id);
         return Result.ok(null);
     }
 

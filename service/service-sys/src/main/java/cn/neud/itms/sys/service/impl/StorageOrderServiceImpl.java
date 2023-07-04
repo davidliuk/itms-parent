@@ -1,7 +1,5 @@
 package cn.neud.itms.sys.service.impl;
 
-import cn.neud.itms.common.exception.ItmsException;
-import cn.neud.itms.common.result.ResultCodeEnum;
 import cn.neud.itms.enums.StorageType;
 import cn.neud.itms.model.sys.StorageOrder;
 import cn.neud.itms.sys.mapper.StorageOrderMapper;

@@ -1,7 +1,6 @@
 package cn.neud.itms.sys.service;
 
 import cn.neud.itms.model.sys.Logistics;
-import cn.neud.itms.model.sys.Ware;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

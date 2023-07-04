@@ -14,9 +14,13 @@ public class SkuWare extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "分类id")
+    @ApiModelProperty(value = "商品id")
     @TableField("sku_id")
     private Long skuId;
+
+    @ApiModelProperty(value = "商品名称")
+    @TableField("sku_name")
+    private Long skuName;
 
     @ApiModelProperty(value = "仓库")
     @TableField("ware_id")

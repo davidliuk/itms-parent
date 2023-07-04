@@ -1,16 +1,9 @@
 package cn.neud.itms.user.controller;
 
 import cn.neud.itms.common.auth.SaUserCheckLogin;
-import cn.neud.itms.common.auth.StpUserUtil;
 import cn.neud.itms.common.result.Result;
-import cn.neud.itms.model.activity.ActivityInfo;
 import cn.neud.itms.model.user.CourierInfo;
-import cn.neud.itms.sys.client.SysFeignClient;
 import cn.neud.itms.user.service.CourierService;
-import cn.neud.itms.user.service.UserService;
-import cn.neud.itms.vo.sys.WorkOrderQueryVo;
-import cn.neud.itms.vo.user.AddressVo;
-import cn.neud.itms.vo.user.CourierAddressVo;
 import cn.neud.itms.vo.user.CourierQueryVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;

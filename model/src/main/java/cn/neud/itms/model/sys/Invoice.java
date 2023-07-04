@@ -20,9 +20,21 @@ public class Invoice extends BaseEntity {
     @TableField("user_id")
     private Long userId;
 
+    @ApiModelProperty(value = "用户ID")
+    @TableField("user_name")
+    private String userName;
+
     @ApiModelProperty(value = "配送员ID")
     @TableField("courier_id")
     private Long courierId;
+
+    @ApiModelProperty(value = "配送员名称")
+    @TableField("courier_name")
+    private String courierName;
+
+    @ApiModelProperty(value = "分站ID")
+    @TableField("station_id")
+    private Long stationId;
 
     @ApiModelProperty(value = "订单ID")
     @TableField("order_id")

@@ -25,7 +25,7 @@ public class RoleController {
 
     //1 角色列表（条件分页查询）
     @ApiOperation("角色条件分页查询")
-    @GetMapping("{current}/{limit}")
+    @PostMapping("{current}/{limit}")
     public Result pageList(@PathVariable Long current,
                            @PathVariable Long limit,
                            RoleQueryVo roleQueryVo) {

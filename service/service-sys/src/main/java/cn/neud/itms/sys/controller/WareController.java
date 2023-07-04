@@ -3,8 +3,7 @@ package cn.neud.itms.sys.controller;
 
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.enums.WorkStatus;
-import cn.neud.itms.model.sys.Region;
-import cn.neud.itms.model.sys.TransferOrder;
+import cn.neud.itms.model.sys.StorageOrder;
 import cn.neud.itms.model.sys.Ware;
 import cn.neud.itms.model.sys.WorkOrder;
 import cn.neud.itms.sys.service.TransferOrderService;
@@ -16,7 +15,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -96,10 +94,14 @@ public class WareController {
         workOrder.setWorkStatus(WorkStatus.OUT);
         workOrderService.updateById(workOrder);
 
-        // 生成调拨单
-        TransferOrder transferOrder = new TransferOrder();
-        transferOrder.setOutTime(new Date());
-        transferOrderService.save(transferOrder);
+//        // 生成调拨单
+//        TransferOrder transferOrder = new TransferOrder();
+//        transferOrder.setOutTime(new Date());
+//        transferOrderService.save(transferOrder);
+
+        // 生成库存单
+        StorageOrder storageOrder = new StorageOrder();
+        BeanUtils.copyProperties(workOrder, storageOrder);
 
         return Result.ok(null);
     }

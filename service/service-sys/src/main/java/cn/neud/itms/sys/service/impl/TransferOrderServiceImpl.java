@@ -1,11 +1,8 @@
 package cn.neud.itms.sys.service.impl;
 
 import cn.neud.itms.model.sys.TransferOrder;
-import cn.neud.itms.model.sys.Ware;
 import cn.neud.itms.sys.mapper.TransferOrderMapper;
-import cn.neud.itms.sys.mapper.WareMapper;
 import cn.neud.itms.sys.service.TransferOrderService;
-import cn.neud.itms.sys.service.WareService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

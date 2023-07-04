@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,20 +31,26 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
             RoleQueryVo roleQueryVo
     ) {
         //获取条件值
-        String roleName = roleQueryVo.getRoleName();
+        Long id = roleQueryVo.getId();
+        String name = roleQueryVo.getName();
+        String remark = roleQueryVo.getRemark();
+        String code = roleQueryVo.getCode();
+        Date createTime = roleQueryVo.getCreateTime();
+        Date updateTime = roleQueryVo.getUpdateTime();
 
         //创建mp条件对象
-        LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
-
         //判断条件值是否为空，不为封装查询条件
         // rolename like ?
-        wrapper.like(!StringUtils.isEmpty(roleName), Role::getName, roleName);
-
         //调用方法实现条件分页查询
-        IPage<Role> rolePage = baseMapper.selectPage(pageParam, wrapper);
-
         //返回分页对象
-        return rolePage;
+        return baseMapper.selectPage(pageParam, new LambdaQueryWrapper<Role>()
+                .eq(!StringUtils.isEmpty(id), Role::getId, id)
+                .like(!StringUtils.isEmpty(name), Role::getName, name)
+                .like(!StringUtils.isEmpty(remark), Role::getRemark, remark)
+                .like(!StringUtils.isEmpty(code), Role::getCode, code)
+                .ge(!StringUtils.isEmpty(createTime), Role::getCreateTime, createTime)
+                .ge(!StringUtils.isEmpty(updateTime), Role::getUpdateTime, updateTime)
+        );
     }
 
     // 获取所有角色，和根据用户id查询用户分配角色列表

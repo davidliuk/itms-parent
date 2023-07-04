@@ -83,7 +83,7 @@ public class WorkOrder extends BaseEntity {
 
     @ApiModelProperty(value = "配送类型")
     @TableField("work_type")
-//	private DeliveryType deliveryType;
+    //	private DeliveryType deliveryType;
     private WorkType workType;
 
     @ApiModelProperty(value = "状态")

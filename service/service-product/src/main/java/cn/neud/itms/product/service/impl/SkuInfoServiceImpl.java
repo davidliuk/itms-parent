@@ -119,7 +119,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         //根据id查询商品属性信息列表
         List<SkuAttrValue> skuAttrValueList = skuAttrValueService.getAttrValueListBySkuId(id);
 
-        //根据id查询商品属性信息列表
+        //根据id查询商品库存信息列表
         List<SkuWare> skuWareList = skuWareService.getSkuWareListBySkuId(id);
 
         //封装所有数据，返回
@@ -254,7 +254,6 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
     //根据skuId获取sku信息
     @Override
     public SkuInfoVo getSkuInfoVo(Long skuId) {
-
         SkuInfoVo skuInfoVo = new SkuInfoVo();
 
         //skuId查询skuInfo

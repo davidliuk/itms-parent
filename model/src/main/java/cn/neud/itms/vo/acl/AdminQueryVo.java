@@ -2,11 +2,10 @@
 //
 package cn.neud.itms.vo.acl;
 
+import cn.neud.itms.model.acl.Admin;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import java.io.Serializable;
 
 /**
  * <p>
@@ -18,7 +17,7 @@ import java.io.Serializable;
  */
 @Data
 @ApiModel(description = "用户查询实体")
-public class AdminQueryVo implements Serializable {
+public class AdminQueryVo extends Admin {
 
     private static final long serialVersionUID = 1L;
 

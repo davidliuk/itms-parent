@@ -16,17 +16,22 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     //1 用户列表
     @Override
     public IPage<Admin> selectPageUser(Page<Admin> pageParam, AdminQueryVo adminQueryVo) {
+        Long id = adminQueryVo.getId();
+        Long wareId = adminQueryVo.getWareId();
+        Long stationId = adminQueryVo.getStationId();
         String username = adminQueryVo.getUsername();
         String name = adminQueryVo.getName();
-        LambdaQueryWrapper<Admin> wrapper = new LambdaQueryWrapper<>();
-        if (!StringUtils.isEmpty(username)) {
-            wrapper.eq(Admin::getUsername, username);
-        }
-        if (!StringUtils.isEmpty(name)) {
-            wrapper.like(Admin::getName, name);
-        }
-        IPage<Admin> adminPage = baseMapper.selectPage(pageParam, wrapper);
-        return adminPage;
+        String phone = adminQueryVo.getPhone();
+        String email = adminQueryVo.getEmail();
+
+        return baseMapper.selectPage(pageParam, new LambdaQueryWrapper<Admin>()
+                .eq(!StringUtils.isEmpty(id), Admin::getId, id)
+                .eq(!StringUtils.isEmpty(wareId), Admin::getWareId, wareId)
+                .eq(!StringUtils.isEmpty(stationId), Admin::getStationId, stationId)
+                .like(!StringUtils.isEmpty(username), Admin::getUsername, username)
+                .like(!StringUtils.isEmpty(name), Admin::getName, name)
+                .like(!StringUtils.isEmpty(phone), Admin::getPhone, phone)
+                .like(!StringUtils.isEmpty(email), Admin::getEmail, email));
     }
 
     @Override

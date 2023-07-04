@@ -1,6 +1,5 @@
 package cn.neud.itms.sys.service;
 
-import cn.neud.itms.model.sys.Logistics;
 import cn.neud.itms.model.sys.PurchaseOrder;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

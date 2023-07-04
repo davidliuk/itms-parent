@@ -1,8 +1,6 @@
 package cn.neud.itms.product.mapper;
 
-import cn.neud.itms.model.product.SkuAttrValue;
 import cn.neud.itms.model.product.SkuWare;
-import cn.neud.itms.model.sys.Ware;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

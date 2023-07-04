@@ -48,9 +48,11 @@ public class SkuInfoController {
 //    params: searchObj
     @ApiOperation("sku列表")
     @GetMapping("{page}/{limit}")
-    public Result list(@PathVariable Long page,
-                       @PathVariable Long limit,
-                       SkuInfoQueryVo skuInfoQueryVo) {
+    public Result list(
+            @PathVariable Long page,
+            @PathVariable Long limit,
+            SkuInfoQueryVo skuInfoQueryVo
+    ) {
         Page<SkuInfo> pageParam = new Page<>(page, limit);
         IPage<SkuInfo> pageModel = skuInfoService.selectPageSkuInfo(pageParam, skuInfoQueryVo);
         return Result.ok(pageModel);

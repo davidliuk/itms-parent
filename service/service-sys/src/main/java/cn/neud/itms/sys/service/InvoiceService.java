@@ -1,7 +1,6 @@
 package cn.neud.itms.sys.service;
 
-import cn.neud.itms.model.sys.StorageOrder;
-import cn.neud.itms.vo.sys.StorageOrderQueryVo;
+import cn.neud.itms.model.sys.Invoice;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -14,8 +13,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author neud
  * @since 2023-04-03
  */
-public interface StorageOrderService extends IService<StorageOrder> {
+public interface InvoiceService extends IService<Invoice> {
 
-    IPage<StorageOrder> selectPage(Page<StorageOrder> pageParam, StorageOrderQueryVo workOrderQueryVo);
+    IPage<Invoice> selectPage(Page<Invoice> pageParam, Invoice workOrderQueryVo);
 
 }
