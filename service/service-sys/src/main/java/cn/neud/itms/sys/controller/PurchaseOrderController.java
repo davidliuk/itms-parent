@@ -33,7 +33,7 @@ public class PurchaseOrderController {
 //    method: 'get',
 //    params: searchObj
     @ApiOperation("任务单列表")
-    @GetMapping("/{page}/{limit}")
+    @PostMapping("/{page}/{limit}")
     public Result list(
             @PathVariable Long page,
             @PathVariable Long limit,

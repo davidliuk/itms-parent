@@ -29,7 +29,7 @@ public class InvoiceController {
     private TransferOrderService invoiceService;
 
     @ApiOperation("发票列表")
-    @GetMapping("/{page}/{limit}")
+    @PostMapping("/{page}/{limit}")
     public Result list(
             @PathVariable Long page,
             @PathVariable Long limit,

@@ -7,10 +7,7 @@ import cn.neud.itms.user.service.CourierService;
 import cn.neud.itms.vo.user.CourierQueryVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/user/courier")
@@ -21,7 +18,7 @@ public class CourierController {
 
     // 根据配送员id分页查询配送任务单
     @SaUserCheckLogin
-    @GetMapping("/{current}/{limit}")
+    @PostMapping("/{current}/{limit}")
     public Result page(
             @PathVariable("current") Long current,
             @PathVariable("limit") Long limit,

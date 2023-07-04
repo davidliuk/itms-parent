@@ -26,7 +26,7 @@ public class UserController {
 
     // 1 用户列表
     @ApiOperation("用户列表")
-    @GetMapping("{current}/{limit}")
+    @PostMapping("/{current}/{limit}")
     public Result list(@PathVariable Long current,
                        @PathVariable Long limit,
                        UserQueryVo userQueryVo) {

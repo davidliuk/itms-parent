@@ -20,7 +20,7 @@ public class Invoice extends BaseEntity {
     @TableField("user_id")
     private Long userId;
 
-    @ApiModelProperty(value = "用户ID")
+    @ApiModelProperty(value = "用户名称")
     @TableField("user_name")
     private String userName;
 

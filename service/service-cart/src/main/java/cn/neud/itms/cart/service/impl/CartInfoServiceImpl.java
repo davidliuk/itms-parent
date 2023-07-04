@@ -98,7 +98,7 @@ public class CartInfoServiceImpl implements CartInfoService {
             cartInfo.setPerLimit(skuInfo.getPerLimit());
             cartInfo.setImgUrl(skuInfo.getImgUrl());
             cartInfo.setSkuName(skuInfo.getSkuName());
-            cartInfo.setWareId(skuInfo.getWareId());
+//            cartInfo.setWareId(skuInfo.getWareId());
             cartInfo.setIsChecked(1);
             cartInfo.setStatus(1);
             cartInfo.setCreateTime(new Date());
