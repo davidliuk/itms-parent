@@ -10,6 +10,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
+
 /**
  * <p>
  * 仓库表 服务实现类
@@ -23,19 +25,23 @@ public class CheckOrderServiceImpl extends ServiceImpl<CheckOrderMapper, CheckOr
 
     @Override
     public IPage<CheckOrder> selectPage(Page<CheckOrder> pageParam, CheckOrder checkOrder) {
-        Long skuId = checkOrder.getSkuId();
+//        Long skuId = checkOrder.getSkuId();
         Long id = checkOrder.getId();
         Long wareId = checkOrder.getWareId();
         Long stationId = checkOrder.getStationId();
         Integer status = checkOrder.getStatus();
-        String skuName = checkOrder.getSkuName();
+        Date inTime = checkOrder.getInTime();
+        Date outTime = checkOrder.getOutTime();
+//        String skuName = checkOrder.getSkuName();
 
         return baseMapper.selectPage(pageParam, new LambdaQueryWrapper<CheckOrder>()
-                .eq(!StringUtils.isEmpty(skuId), CheckOrder::getSkuId, skuId)
+//                .eq(!StringUtils.isEmpty(skuId), CheckOrder::getSkuId, skuId)
+//                .like(!StringUtils.isEmpty(skuName), CheckOrder::getSkuName, skuName)
                 .eq(!StringUtils.isEmpty(id), CheckOrder::getId, id)
                 .eq(!StringUtils.isEmpty(wareId), CheckOrder::getWareId, wareId)
                 .eq(!StringUtils.isEmpty(stationId), CheckOrder::getStationId, stationId)
                 .eq(!StringUtils.isEmpty(status), CheckOrder::getStatus, status)
-                .like(!StringUtils.isEmpty(skuName), CheckOrder::getSkuName, skuName));
+                .ge(!StringUtils.isEmpty(inTime), CheckOrder::getInTime, inTime)
+                .ge(!StringUtils.isEmpty(outTime), CheckOrder::getOutTime, outTime));
     }
 }

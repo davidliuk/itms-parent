@@ -1,6 +1,7 @@
 package cn.neud.itms.model.sys;
 
 import cn.neud.itms.model.base.BaseEntity;
+import cn.neud.itms.model.order.OrderInfo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -22,6 +23,10 @@ public class CheckOrder extends BaseEntity {
     @TableField("order_id")
     private Long orderId;
 
+    @ApiModelProperty(value = "订单")
+    @TableField(exist = false)
+    private OrderInfo orderInfo;
+
     @ApiModelProperty(value = "仓库ID")
     @TableField("ware_id")
     private Long wareId;
@@ -30,25 +35,25 @@ public class CheckOrder extends BaseEntity {
     @TableField("station_id")
     private Long stationId;
 
-    @ApiModelProperty(value = "商品sku编号")
-    @TableField("sku_id")
-    private Long skuId;
-
-    @ApiModelProperty(value = "商品sku名字")
-    @TableField("sku_name")
-    private String skuName;
-
-    @ApiModelProperty(value = "商品sku图片")
-    @TableField("img_url")
-    private String imgUrl;
-
-    @ApiModelProperty(value = "商品sku价格")
-    @TableField("sku_price")
-    private BigDecimal skuPrice;
-
-    @ApiModelProperty(value = "商品购买的数量")
-    @TableField("sku_num")
-    private Integer skuNum;
+//    @ApiModelProperty(value = "商品sku编号")
+//    @TableField("sku_id")
+//    private Long skuId;
+//
+//    @ApiModelProperty(value = "商品sku名字")
+//    @TableField("sku_name")
+//    private String skuName;
+//
+//    @ApiModelProperty(value = "商品sku图片")
+//    @TableField("img_url")
+//    private String imgUrl;
+//
+//    @ApiModelProperty(value = "商品sku价格")
+//    @TableField("sku_price")
+//    private BigDecimal skuPrice;
+//
+//    @ApiModelProperty(value = "商品购买的数量")
+//    @TableField("sku_num")
+//    private Integer skuNum;
 
     @ApiModelProperty(value = "状态")
     @TableField("status")

@@ -87,7 +87,7 @@ public class WorkOrder extends BaseEntity {
     private WorkType workType;
 
     @ApiModelProperty(value = "状态")
-    @TableField("status")
+    @TableField("work_status")
     private WorkStatus workStatus;
 
     @ApiModelProperty(value = "订单")
