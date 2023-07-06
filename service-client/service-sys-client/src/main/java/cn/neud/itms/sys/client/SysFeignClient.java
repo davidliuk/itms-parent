@@ -16,7 +16,7 @@ public interface SysFeignClient {
     @GetMapping("/api/sys/dispatch/inner/{orderNo}")
     public void autoDispatch(@PathVariable String orderNo);
 
-    @PostMapping("/api/sys/inner/purchaseOrder/save")
+    @PostMapping("/api/sys/inner/purchaseOrder")
     public Result savePurchaseOrder(@RequestBody PurchaseOrder purchaseOrder);
 
     @ApiOperation("任务单列表")

@@ -33,7 +33,7 @@ public class ActivityInfoController {
     //列表
 //    url: `${api_name}/${page}/${limit}`,
 //    method: 'get'
-    @GetMapping("{page}/{limit}")
+    @PostMapping("{page}/{limit}")
     public Result list(@PathVariable Long page,
                        @PathVariable Long limit) {
         Page<ActivityInfo> pageParam = new Page<>(page, limit);

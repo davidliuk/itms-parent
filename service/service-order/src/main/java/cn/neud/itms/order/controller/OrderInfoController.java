@@ -13,6 +13,7 @@ import cn.neud.itms.vo.order.OrderSubmitVo;
 import cn.neud.itms.vo.order.OrderUserQueryVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
@@ -29,6 +30,7 @@ import java.util.Date;
  * @author neud
  * @since 2023-04-18
  */
+@Api(tags = "订单管理")
 @RestController
 @RequestMapping(value = "/api/order")
 public class OrderInfoController {

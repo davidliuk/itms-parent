@@ -3,12 +3,16 @@ package cn.neud.itms.sys.controller;
 
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.enums.WorkStatus;
+import cn.neud.itms.model.acl.Role;
 import cn.neud.itms.model.sys.RegionStation;
 import cn.neud.itms.model.sys.TransferOrder;
 import cn.neud.itms.model.sys.WorkOrder;
 import cn.neud.itms.sys.service.RegionStationService;
 import cn.neud.itms.sys.service.TransferOrderService;
 import cn.neud.itms.sys.service.WorkOrderService;
+import cn.neud.itms.vo.acl.RoleQueryVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -40,6 +44,23 @@ public class RegionStationController {
 
     @Autowired
     private TransferOrderService transferOrderService;
+
+    //1 分站列表（条件分页查询）
+    @ApiOperation("分站条件分页查询")
+    @PostMapping("{current}/{limit}")
+    public Result pageList(@PathVariable Long current,
+                           @PathVariable Long limit,
+                           RegionStation regionStation) {
+        // 1 创建page对象，传递当前页和每页记录数
+        // current：当前页
+        // limit: 每页显示记录数
+        Page<RegionStation> pageParam = new Page<>(current, limit);
+
+        //2 调用service方法实现条件分页查询，返回分页对象
+        IPage<RegionStation> pageModel = regionStationService.selectRole(pageParam, regionStation);
+
+        return Result.ok(pageModel);
+    }
 
     //根据区域关键字查询区域列表信息
 //    url: `${api_name}/findRegionStationByKeyword/${keyword}`,

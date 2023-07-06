@@ -134,7 +134,7 @@ public class CartInfoServiceImpl implements CartInfoService {
         }
     }
 
-    //批量删除购物车 多个skuId
+    // 批量删除购物车 多个skuId
     @Override
     public void batchDeleteCart(List<Long> skuIdList, Long userId) {
         String cartKey = this.getCartKey(userId);
@@ -145,7 +145,7 @@ public class CartInfoServiceImpl implements CartInfoService {
         });
     }
 
-    //购物车列表
+    // 购物车列表
     @Override
     public List<CartInfo> getCartList(Long userId) {
         //判断userId

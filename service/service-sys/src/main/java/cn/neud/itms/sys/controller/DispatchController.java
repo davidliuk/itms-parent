@@ -31,7 +31,7 @@ import java.util.Date;
  * @author neud
  * @since 2023-04-03
  */
-@Api(tags = "调度控制器")
+@Api(tags = "调度管理")
 @RestController
 @RequestMapping("/admin/sys/dispatch")
 //@CrossOrigin

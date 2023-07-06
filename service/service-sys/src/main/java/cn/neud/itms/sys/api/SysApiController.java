@@ -20,7 +20,7 @@ public class SysApiController {
     @Autowired
     private StorageOrderService storageOrderService;
 
-    @PostMapping("inner/purchaseOrder/save")
+    @PostMapping("inner/purchaseOrder")
     public Result savePurchaseOrder(@RequestBody PurchaseOrder purchaseOrder) {
         purchaseOrderService.save(purchaseOrder);
 

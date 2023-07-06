@@ -25,7 +25,7 @@ import java.util.List;
  * @author neud
  * @since 2023-04-03
  */
-@Api(tags = "区域仓库接口")
+@Api(tags = "区域中心仓库管理接口")
 @RestController
 @RequestMapping("/admin/sys/ware")
 //@CrossOrigin

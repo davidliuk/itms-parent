@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -141,15 +142,15 @@ public class SkuServiceImpl implements SkuService {
         //封装sku信息部分
         skuEs.setId(skuInfo.getId());
         skuEs.setKeyword(skuInfo.getSkuName() + "," + skuEs.getCategoryName());
-        skuEs.setWareId(skuInfo.getWareId());
+//        skuEs.setWareId(skuInfo.getWareId());
         skuEs.setIsNewPerson(skuInfo.getIsNewPerson());
         skuEs.setImgUrl(skuInfo.getImgUrl());
         skuEs.setTitle(skuInfo.getSkuName());
-        if (skuInfo.getSkuType() == SkuType.COMMON.getCode()) {//普通商品
+        if (Objects.equals(skuInfo.getSkuType(), SkuType.COMMON.getCode())) { //普通商品
             skuEs.setSkuType(0);
             skuEs.setPrice(skuInfo.getPrice().doubleValue());
-            skuEs.setStock(skuInfo.getStock());
-            skuEs.setSale(skuInfo.getSale());
+//            skuEs.setStock(skuInfo.getStock());
+//            skuEs.setSale(skuInfo.getSale());
             skuEs.setPerLimit(skuInfo.getPerLimit());
         }
         //3 调用方法添加ES

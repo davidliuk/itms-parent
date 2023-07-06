@@ -12,14 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * <p>
- * 城市仓库关联表 前端控制器
- * </p>
- *
  * @author neud
  * @since 2023-04-03
  */
-@Api(tags = "发票管理")
+@Api(tags = "发票单管理")
 @RestController
 @RequestMapping("/admin/sys/invoice")
 //@CrossOrigin

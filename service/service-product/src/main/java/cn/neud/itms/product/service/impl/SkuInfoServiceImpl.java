@@ -134,27 +134,24 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
     //修改sku
     @Override
     public void updateSkuInfo(SkuInfoVo skuInfoVo) {
-        //修改sku基本信息
+        // 修改sku基本信息
         SkuInfo skuInfo = new SkuInfo();
         BeanUtils.copyProperties(skuInfoVo, skuInfo);
         baseMapper.updateById(skuInfo);
 
         Long skuId = skuInfoVo.getId();
-        //海报信息
-        LambdaQueryWrapper<SkuPoster> wrapperSkuPoster = new LambdaQueryWrapper<>();
-        wrapperSkuPoster.eq(SkuPoster::getSkuId, skuId);
-        skuPosterService.remove(wrapperSkuPoster);
-
+        // 海报信息
+        skuPosterService.remove(new LambdaQueryWrapper<SkuPoster>().eq(SkuPoster::getSkuId, skuId));
         List<SkuPoster> skuPosterList = skuInfoVo.getSkuPosterList();
         if (!CollectionUtils.isEmpty(skuPosterList)) {
-            //遍历，向每个海报对象添加商品skuId
+            // 遍历，向每个海报对象添加商品skuId
             for (SkuPoster skuPoster : skuPosterList) {
                 skuPoster.setSkuId(skuId);
             }
             skuPosterService.saveBatch(skuPosterList);
         }
 
-        //商品图片
+        // 商品图片
         skuImageService.remove(new LambdaQueryWrapper<SkuImage>().eq(SkuImage::getSkuId, skuId));
         List<SkuImage> skuImagesList = skuInfoVo.getSkuImageList();
         if (!CollectionUtils.isEmpty(skuImagesList)) {
@@ -165,7 +162,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
             skuImageService.saveBatch(skuImagesList);
         }
 
-        //商品属性
+        // 商品属性
         skuAttrValueService.remove(new LambdaQueryWrapper<SkuAttrValue>().eq(SkuAttrValue::getSkuId, skuId));
         List<SkuAttrValue> skuAttrValueList = skuInfoVo.getSkuAttrValueList();
         if (!CollectionUtils.isEmpty(skuAttrValueList)) {
@@ -188,7 +185,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
     //商品上下架
     @Override
     public void publish(Long skuId, Integer status) {
-        if (status == 1) { //上架
+        if (status == 1) { // 上架
             SkuInfo skuInfo = baseMapper.selectById(skuId);
             skuInfo.setPublishStatus(status);
             baseMapper.updateById(skuInfo);
@@ -196,7 +193,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
             rabbitService.sendMessage(MqConstant.EXCHANGE_GOODS_DIRECT,
                     MqConstant.ROUTING_GOODS_UPPER,
                     skuId);
-        } else { //下架
+        } else { // 下架
             SkuInfo skuInfo = baseMapper.selectById(skuId);
             skuInfo.setPublishStatus(status);
             baseMapper.updateById(skuInfo);
@@ -219,20 +216,18 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
     //根据skuId列表得到sku信息列表
     @Override
     public List<SkuInfo> findSkuInfoList(List<Long> skuIdList) {
-        List<SkuInfo> skuInfoList = baseMapper.selectBatchIds(skuIdList);
-        return skuInfoList;
+        return baseMapper.selectBatchIds(skuIdList);
     }
 
     //根据关键字匹配sku列表
     @Override
     public List<SkuInfo> findSkuInfoByKeyword(String keyword) {
-        List<SkuInfo> skuInfoList = baseMapper.selectList(
+        return baseMapper.selectList(
                 new LambdaQueryWrapper<SkuInfo>().like(SkuInfo::getSkuName, keyword)
         );
-        return skuInfoList;
     }
 
-    //获取新人专享商品
+    // 获取新人专享商品
     @Override
     public List<SkuInfo> findNewPersonSkuInfoList() {
         //条件1 ： is_new_person=1
@@ -251,7 +246,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         return skuInfoList;
     }
 
-    //根据skuId获取sku信息
+    // 根据skuId获取sku信息
     @Override
     public SkuInfoVo getSkuInfoVo(Long skuId) {
         SkuInfoVo skuInfoVo = new SkuInfoVo();
@@ -368,7 +363,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
                                             SkuInfoQueryVo skuInfoQueryVo) {
         String keyword = skuInfoQueryVo.getKeyword();
         Long categoryId = skuInfoQueryVo.getCategoryId();
-        Long wareId = skuInfoQueryVo.getWareId();
+//        Long wareId = skuInfoQueryVo.getWareId();
         String skuType = skuInfoQueryVo.getSkuType();
 
         LambdaQueryWrapper<SkuInfo> wrapper = new LambdaQueryWrapper<>();
@@ -381,7 +376,6 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         if (!StringUtils.isEmpty(skuType)) {
             wrapper.like(SkuInfo::getSkuType, skuType);
         }
-        IPage<SkuInfo> pageModel = baseMapper.selectPage(pageParam, wrapper);
-        return pageModel;
+        return baseMapper.selectPage(pageParam, wrapper);
     }
 }

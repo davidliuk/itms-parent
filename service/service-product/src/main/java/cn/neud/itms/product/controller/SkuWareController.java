@@ -6,6 +6,7 @@ import cn.neud.itms.model.product.SkuWare;
 import cn.neud.itms.product.service.SkuWareService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author neud
  * @since 2023-04-04
  */
+@Api(tags = "商品库存管理")
 @RestController
 @RequestMapping("/admin/product/skuWare")
 //@CrossOrigin

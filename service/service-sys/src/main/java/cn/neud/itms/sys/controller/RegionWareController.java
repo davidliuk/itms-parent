@@ -34,7 +34,7 @@ public class RegionWareController {
 //    method: 'get',
 //    params: searchObj
     @ApiOperation("开通区域列表")
-    @GetMapping("{page}/{limit}")
+    @PostMapping("{page}/{limit}")
     public Result list(
             @PathVariable Long page,
             @PathVariable Long limit,

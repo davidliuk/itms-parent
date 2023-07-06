@@ -30,7 +30,7 @@ public class CouponInfoController {
     //1 优惠卷分页查询
 //    url: `${api_name}/${page}/${limit}`,
 //    method: 'get'
-    @GetMapping("{page}/{limit}")
+    @PostMapping("{page}/{limit}")
     public Result list(@PathVariable Long page,
                        @PathVariable Long limit) {
         IPage<CouponInfo> pageModel =

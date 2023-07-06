@@ -22,7 +22,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/acl/user")
 //@CrossOrigin
-public class AdminControlller {
+public class AdminController {
 
     @Autowired
     private AdminService adminService;

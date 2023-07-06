@@ -7,6 +7,7 @@ import cn.neud.itms.product.service.CategoryService;
 import cn.neud.itms.vo.product.CategoryQueryVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import java.util.List;
  * @author neud
  * @since 2023-04-04
  */
+@Api(tags = "商品类别管理")
 @RestController
 @RequestMapping("/admin/product/category")
 //@CrossOrigin
@@ -34,7 +36,7 @@ public class CategoryController {
 //    method: 'get',
 //    params: searchObj
     @ApiOperation("商品分类列表")
-    @GetMapping("{page}/{limit}")
+    @PostMapping("{page}/{limit}")
     public Result list(@PathVariable Long page,
                        @PathVariable Long limit,
                        CategoryQueryVo categoryQueryVo) {

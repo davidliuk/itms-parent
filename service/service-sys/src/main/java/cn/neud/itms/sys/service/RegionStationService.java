@@ -1,6 +1,8 @@
 package cn.neud.itms.sys.service;
 
 import cn.neud.itms.model.sys.RegionStation;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -19,4 +21,6 @@ public interface RegionStationService extends IService<RegionStation> {
     List<RegionStation> getRegionStationByKeyword(String keyword);
 
     List<RegionStation> getRegionStationListByGroupId(Long regionId);
+
+    IPage<RegionStation> selectRole(Page<RegionStation> pageParam, RegionStation regionStation);
 }

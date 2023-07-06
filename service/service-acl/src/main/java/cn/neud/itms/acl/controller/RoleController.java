@@ -3,6 +3,7 @@ package cn.neud.itms.acl.controller;
 import cn.neud.itms.acl.service.RoleService;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.acl.Role;
+import cn.neud.itms.model.product.Category;
 import cn.neud.itms.vo.acl.RoleQueryVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -38,6 +39,13 @@ public class RoleController {
         IPage<Role> pageModel = roleService.selectRolePage(pageParam, roleQueryVo);
 
         return Result.ok(pageModel);
+    }
+
+    @ApiOperation("查询所有角色分类")
+    @GetMapping("findAllList")
+    public Result findAllList() {
+        List<Role> list = roleService.list();
+        return Result.ok(list);
     }
 
     //2 根据id查询角色

@@ -324,6 +324,9 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     public OrderInfo getOrderInfoById(Long orderId) {
         // 根据orderId查询订单基本信息
         OrderInfo orderInfo = baseMapper.selectById(orderId);
+        if (orderInfo == null) {
+            return null;
+        }
 
         // 根据orderId查询订单所有订单项list列表
         List<OrderItem> orderItemList = orderItemMapper.selectList(

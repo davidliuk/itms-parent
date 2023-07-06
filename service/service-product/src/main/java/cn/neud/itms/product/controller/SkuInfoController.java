@@ -13,6 +13,7 @@ import cn.neud.itms.vo.product.SkuInfoVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import java.util.List;
  * @author neud
  * @since 2023-04-04
  */
+@Api(tags = "商品信息管理")
 @RestController
 @RequestMapping("/admin/product/skuInfo")
 //@CrossOrigin
@@ -47,7 +49,7 @@ public class SkuInfoController {
 //    method: 'get',
 //    params: searchObj
     @ApiOperation("sku列表")
-    @GetMapping("{page}/{limit}")
+    @PostMapping("{page}/{limit}")
     public Result list(
             @PathVariable Long page,
             @PathVariable Long limit,

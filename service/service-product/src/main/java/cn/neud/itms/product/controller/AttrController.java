@@ -4,6 +4,7 @@ package cn.neud.itms.product.controller;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.product.Attr;
 import cn.neud.itms.product.service.AttrService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.List;
  * @author neud
  * @since 2023-04-04
  */
+@Api(tags = "商品属性管理")
 @RestController
 @RequestMapping("/admin/product/attr")
 //@CrossOrigin

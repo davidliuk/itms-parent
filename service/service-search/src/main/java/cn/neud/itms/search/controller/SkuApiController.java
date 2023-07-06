@@ -4,17 +4,16 @@ import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.search.SkuEs;
 import cn.neud.itms.search.service.SkuService;
 import cn.neud.itms.vo.search.SkuEsQueryVo;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Api(tags = "商品检索")
 @RestController
 @RequestMapping("/api/search/sku")
 public class SkuApiController {
@@ -23,7 +22,7 @@ public class SkuApiController {
     private SkuService skuService;
 
     //查询分类商品
-    @GetMapping("{page}/{limit}")
+    @PostMapping("{page}/{limit}")
     public Result listSku(@PathVariable Integer page,
                           @PathVariable Integer limit,
                           SkuEsQueryVo skuEsQueryVo) {
