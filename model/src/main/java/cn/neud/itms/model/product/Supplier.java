@@ -8,15 +8,15 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-@ApiModel(description = "RegionStation")
-@TableName("region_station")
+@ApiModel(description = "Supplier")
+@TableName("supplier")
 public class Supplier extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "名称")
     @TableField("name")
-    private String regionName;
+    private String name;
 
     @ApiModelProperty(value = "手机号")
     @TableField("phone")

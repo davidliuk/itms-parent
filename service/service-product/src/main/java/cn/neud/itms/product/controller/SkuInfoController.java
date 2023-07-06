@@ -71,7 +71,7 @@ public class SkuInfoController {
         return Result.ok(null);
     }
 
-    @ApiOperation("添加商品sku库存")
+    @ApiOperation("进货")
     @PostMapping("stock")
     public Result stock(@RequestBody SkuWare skuWare) {
         if (skuWareService.count(new LambdaQueryWrapper<SkuWare>()

@@ -42,4 +42,11 @@ public class TransferOrderServiceImpl extends ServiceImpl<TransferOrderMapper, T
                 .like(!StringUtils.isEmpty(logisticsName), TransferOrder::getLogisticsName, logisticsName)
                 .like(!StringUtils.isEmpty(stationName), TransferOrder::getStationName, stationName));
     }
+
+    @Override
+    public void updateByOrderId(TransferOrder workOrder) {
+        baseMapper.update(workOrder, new LambdaQueryWrapper<TransferOrder>()
+                .eq(TransferOrder::getOrderId, workOrder.getOrderId())
+        );
+    }
 }

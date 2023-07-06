@@ -16,4 +16,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface CheckOrderService extends IService<CheckOrder> {
 
     IPage<CheckOrder> selectPage(Page<CheckOrder> pageParam, CheckOrder checkOrder);
+
+//    CheckOrder selectByOrderId(String orderId);
+
+    CheckOrder selectByWorkOrderId(Long workOrderId);
 }

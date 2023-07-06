@@ -44,4 +44,10 @@ public class CheckOrderServiceImpl extends ServiceImpl<CheckOrderMapper, CheckOr
                 .ge(!StringUtils.isEmpty(inTime), CheckOrder::getInTime, inTime)
                 .ge(!StringUtils.isEmpty(outTime), CheckOrder::getOutTime, outTime));
     }
+
+    @Override
+    public CheckOrder selectByWorkOrderId(Long workOrderId) {
+        return baseMapper.selectOne(new LambdaQueryWrapper<CheckOrder>()
+                .eq(CheckOrder::getWorkOrderId, workOrderId));
+    }
 }

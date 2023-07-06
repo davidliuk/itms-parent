@@ -23,6 +23,10 @@ public class CheckOrder extends BaseEntity {
     @TableField("order_id")
     private Long orderId;
 
+    @ApiModelProperty(value = "任务单ID")
+    @TableField("work_order_id")
+    private Long workOrderId;
+
     @ApiModelProperty(value = "订单")
     @TableField(exist = false)
     private OrderInfo orderInfo;

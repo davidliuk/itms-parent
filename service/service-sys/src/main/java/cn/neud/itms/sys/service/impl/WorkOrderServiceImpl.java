@@ -63,4 +63,11 @@ public class WorkOrderServiceImpl extends ServiceImpl<WorkOrderMapper, WorkOrder
                 .eq(WorkOrder::getOrderId, workOrder.getOrderId())
         );
     }
+
+    @Override
+    public WorkOrder getByOrderId(Long orderId) {
+        return baseMapper.selectOne(new LambdaQueryWrapper<WorkOrder>()
+                .eq(WorkOrder::getOrderId, orderId)
+        );
+    }
 }

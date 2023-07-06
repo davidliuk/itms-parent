@@ -19,4 +19,6 @@ public interface WorkOrderService extends IService<WorkOrder> {
     IPage<WorkOrder> selectPage(Page<WorkOrder> pageParam, WorkOrderQueryVo workOrderQueryVo);
 
     void updateByOrderId(WorkOrder workOrder);
+
+    WorkOrder getByOrderId(Long orderId);
 }

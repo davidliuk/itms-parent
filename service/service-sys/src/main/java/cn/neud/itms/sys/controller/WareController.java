@@ -2,7 +2,9 @@ package cn.neud.itms.sys.controller;
 
 
 import cn.neud.itms.common.result.Result;
+import cn.neud.itms.enums.StorageType;
 import cn.neud.itms.enums.WorkStatus;
+import cn.neud.itms.model.sys.CheckOrder;
 import cn.neud.itms.model.sys.StorageOrder;
 import cn.neud.itms.model.sys.Ware;
 import cn.neud.itms.model.sys.WorkOrder;
@@ -15,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -87,21 +90,26 @@ public class WareController {
 
     // 调拨出库
     @ApiOperation("调拨出库")
-    @GetMapping("/out/{workOrderId}")
-    public Result out(@PathVariable Long workOrderId) {
+    @GetMapping("/out/{orderId}")
+    public Result out(@PathVariable Long orderId) {
         // 获取任务单
-        WorkOrder workOrder = workOrderService.getById(workOrderId);
+        WorkOrder workOrder = workOrderService.getByOrderId(orderId);
         workOrder.setWorkStatus(WorkStatus.OUT);
-        workOrderService.updateById(workOrder);
+        workOrderService.updateByOrderId(workOrder);
 
 //        // 生成调拨单
 //        TransferOrder transferOrder = new TransferOrder();
 //        transferOrder.setOutTime(new Date());
 //        transferOrderService.save(transferOrder);
 
-        // 生成库存单
+        // 生成库存单，应该每个item一个单
         StorageOrder storageOrder = new StorageOrder();
         BeanUtils.copyProperties(workOrder, storageOrder);
+        storageOrder.setStorageType(StorageType.OUT);
+        // 生成验货单
+        CheckOrder checkOrder = new CheckOrder();
+        BeanUtils.copyProperties(workOrder, checkOrder);
+        checkOrder.setOutTime(new Date());
 
         return Result.ok(null);
     }

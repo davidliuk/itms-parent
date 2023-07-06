@@ -31,10 +31,10 @@ public class SkuWareController {
     @Autowired
     private SkuWareService skuWareService;
 
-    //sku列表
-//    url: `${api_name}/${page}/${limit}`,
-//    method: 'get',
-//    params: searchObj
+    // sku列表
+    //    url: `${api_name}/${page}/${limit}`,
+    //    method: 'get',
+    //    params: searchObj
     @ApiOperation("sku库存列表")
     @PostMapping("{page}/{limit}")
     public Result list(
@@ -48,4 +48,3 @@ public class SkuWareController {
     }
 
 }
-
