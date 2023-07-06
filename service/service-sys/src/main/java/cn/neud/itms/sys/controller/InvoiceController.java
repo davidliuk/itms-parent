@@ -2,8 +2,8 @@ package cn.neud.itms.sys.controller;
 
 
 import cn.neud.itms.common.result.Result;
-import cn.neud.itms.model.sys.TransferOrder;
-import cn.neud.itms.sys.service.TransferOrderService;
+import cn.neud.itms.model.sys.Invoice;
+import cn.neud.itms.sys.service.InvoiceService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -22,37 +22,37 @@ import org.springframework.web.bind.annotation.*;
 public class InvoiceController {
 
     @Autowired
-    private TransferOrderService invoiceService;
+    private InvoiceService invoiceService;
 
     @ApiOperation("发票列表")
     @PostMapping("/{page}/{limit}")
     public Result list(
             @PathVariable Long page,
             @PathVariable Long limit,
-            TransferOrder invoice
+            Invoice invoice
     ) {
-        Page<TransferOrder> pageParam = new Page<>(page, limit);
-        IPage<TransferOrder> pageModel = invoiceService.selectPage(pageParam, invoice);
+        Page<Invoice> pageParam = new Page<>(page, limit);
+        IPage<Invoice> pageModel = invoiceService.selectPage(pageParam, invoice);
         return Result.ok(pageModel);
     }
 
     @ApiOperation(value = "获取")
     @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
-        TransferOrder invoice = invoiceService.getById(id);
+        Invoice invoice = invoiceService.getById(id);
         return Result.ok(invoice);
     }
 
     @ApiOperation(value = "新增")
     @PostMapping("")
-    public Result save(@RequestBody TransferOrder invoice) {
+    public Result save(@RequestBody Invoice invoice) {
         invoiceService.save(invoice);
         return Result.ok(null);
     }
 
     @ApiOperation(value = "修改")
     @PutMapping("")
-    public Result updateById(@RequestBody TransferOrder invoice) {
+    public Result updateById(@RequestBody Invoice invoice) {
         invoiceService.updateById(invoice);
         return Result.ok(null);
     }
