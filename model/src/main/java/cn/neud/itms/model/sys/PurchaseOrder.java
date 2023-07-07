@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 @Data
 @ApiModel(description = "验货单")
-@TableName("check_order")
+@TableName("purchase_order")
 public class PurchaseOrder extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

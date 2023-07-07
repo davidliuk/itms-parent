@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Getter
 public enum OrderStatus {
-    //订单状态【0->待付款；1->待发货；2->待配送员收货；3->待用户收货，已完成；-1->已取消】
     UNPAID(0, "待支付"),
     WAITING_DISPATCH(1, "可调度"),
     DISPATCH(2, "已调度"),

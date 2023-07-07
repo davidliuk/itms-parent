@@ -2,6 +2,7 @@ package cn.neud.itms.order.service;
 
 import cn.neud.itms.model.order.OrderInfo;
 import cn.neud.itms.vo.order.OrderConfirmVo;
+import cn.neud.itms.vo.order.OrderInfoQueryVo;
 import cn.neud.itms.vo.order.OrderSubmitVo;
 import cn.neud.itms.vo.order.OrderUserQueryVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -35,4 +36,8 @@ public interface OrderInfoService extends IService<OrderInfo> {
 
     //订单查询
     IPage<OrderInfo> getOrderInfoByUserIdPage(Page<OrderInfo> pageParam, OrderUserQueryVo orderUserQueryVo);
+
+    IPage<OrderInfo> selectPage(Page<OrderInfo> pageParam, OrderInfoQueryVo orderInfoQueryVo);
+
+    OrderInfo getOrderInfoDetail(Long orderId);
 }

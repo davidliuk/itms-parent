@@ -21,10 +21,7 @@ import cn.neud.itms.order.mapper.OrderItemMapper;
 import cn.neud.itms.order.service.OrderInfoService;
 import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.sys.client.SysFeignClient;
-import cn.neud.itms.vo.order.CartInfoVo;
-import cn.neud.itms.vo.order.OrderConfirmVo;
-import cn.neud.itms.vo.order.OrderSubmitVo;
-import cn.neud.itms.vo.order.OrderUserQueryVo;
+import cn.neud.itms.vo.order.*;
 import cn.neud.itms.vo.product.SkuStockLockVo;
 import cn.neud.itms.vo.user.AddressVo;
 import cn.neud.itms.vo.user.CourierAddressVo;
@@ -369,27 +366,60 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 
     // 订单查询
     @Override
-    public IPage<OrderInfo> getOrderInfoByUserIdPage(Page<OrderInfo> pageParam,
-                                                     OrderUserQueryVo orderUserQueryVo) {
+    public IPage<OrderInfo> getOrderInfoByUserIdPage(
+            Page<OrderInfo> pageParam,
+            OrderUserQueryVo orderUserQueryVo
+    ) {
         IPage<OrderInfo> pageModel = baseMapper.selectPage(pageParam,
                 new LambdaQueryWrapper<OrderInfo>()
                         .eq(OrderInfo::getUserId, orderUserQueryVo.getUserId())
                         .eq(OrderInfo::getOrderStatus, orderUserQueryVo.getOrderStatus())
         );
-        //获取每个订单，把每个订单里面订单项查询封装
+        // 获取每个订单，把每个订单里面订单项查询封装
         List<OrderInfo> orderInfoList = pageModel.getRecords();
         for (OrderInfo orderInfo : orderInfoList) {
-            //根据订单id查询里面所有订单项列表
+            // 根据订单id查询里面所有订单项列表
             List<OrderItem> orderItemList = orderItemMapper.selectList(
                     new LambdaQueryWrapper<OrderItem>()
                             .eq(OrderItem::getOrderId, orderInfo.getId())
             );
-            //把订单项集合封装到每个订单里面
+            // 把订单项集合封装到每个订单里面
             orderInfo.setOrderItemList(orderItemList);
-            //封装订单状态名称
+            // 封装订单状态名称
             orderInfo.getParam().put("orderStatusName", orderInfo.getOrderStatus().getComment());
         }
         return pageModel;
+    }
+
+    public OrderInfo getOrderInfoDetail(Long orderId) {
+        OrderInfo orderInfo = baseMapper.selectById(orderId);
+        if (orderInfo == null) {
+            return null;
+        }
+        List<OrderItem> orderItemList = orderItemMapper.selectList(
+                new LambdaQueryWrapper<OrderItem>()
+                        .eq(OrderItem::getOrderId, orderInfo.getId())
+        );
+        orderInfo.setOrderItemList(orderItemList);
+        orderInfo.getParam().put("orderStatusName", orderInfo.getOrderStatus().getComment());
+        return orderInfo;
+    }
+
+    @Override
+    public IPage<OrderInfo> selectPage(
+            Page<OrderInfo> pageParam, 
+            OrderInfoQueryVo orderInfoQueryVo
+    ) {
+        return baseMapper.selectPage(pageParam,
+                new LambdaQueryWrapper<OrderInfo>()
+                        .eq(orderInfoQueryVo.getOrderStatus() != null, OrderInfo::getOrderStatus, orderInfoQueryVo.getOrderStatus())
+                        .eq(orderInfoQueryVo.getOrderType() != null, OrderInfo::getOrderType, orderInfoQueryVo.getOrderType())
+                        .eq(orderInfoQueryVo.getUserId() != null, OrderInfo::getUserId, orderInfoQueryVo.getUserId())
+                        .like(!StringUtils.isEmpty(orderInfoQueryVo.getOrderNo()), OrderInfo::getOrderNo, orderInfoQueryVo.getOrderNo())
+                        .like(!StringUtils.isEmpty(orderInfoQueryVo.getReceiverName()), OrderInfo::getReceiverName, orderInfoQueryVo.getReceiverName())
+                        .like(!StringUtils.isEmpty(orderInfoQueryVo.getLogisticsName()), OrderInfo::getLogisticsName, orderInfoQueryVo.getLogisticsName())
+                        .like(!StringUtils.isEmpty(orderInfoQueryVo.getCourierName()), OrderInfo::getCourierName, orderInfoQueryVo.getCourierName())
+        );
     }
 
     // 更新状态
