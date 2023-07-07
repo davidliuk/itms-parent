@@ -116,6 +116,7 @@ public class OrderInfoController {
     }
 
     // 根据orderNo查询订单信息
+    @ApiOperation("根据orderNo查询订单信息")
     @GetMapping("inner/getOrderInfo/{orderNo}")
     public OrderInfo getOrderInfo(@PathVariable("orderNo") String orderNo) {
         return orderInfoService.getOrderInfoByOrderNo(orderNo);

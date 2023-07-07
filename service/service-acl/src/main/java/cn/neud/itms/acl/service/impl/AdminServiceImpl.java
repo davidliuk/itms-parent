@@ -40,4 +40,11 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
                 new LambdaQueryWrapper<Admin>().eq(Admin::getUsername, username)
         );
     }
+
+    @Override
+    public Admin getAdminByEmail(String email) {
+        return baseMapper.selectOne(
+                new LambdaQueryWrapper<Admin>().eq(Admin::getEmail, email)
+        );
+    }
 }

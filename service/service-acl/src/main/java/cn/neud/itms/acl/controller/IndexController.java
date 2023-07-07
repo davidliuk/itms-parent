@@ -10,6 +10,7 @@ import cn.neud.itms.vo.user.PasswordLoginVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -32,7 +33,12 @@ public class IndexController {
     public Result login(@RequestBody PasswordLoginVo loginVo) {
         // 返回token值
         // 操作admin表
-        Admin admin = adminService.getAdminByUserName(loginVo.getUsername());
+        Admin admin = null;
+        if (!StringUtils.isEmpty(loginVo.getUsername())) {
+            admin = adminService.getAdminByUserName(loginVo.getUsername());
+        } else {
+            admin = adminService.getAdminByEmail(loginVo.getEmail());
+        }
         if (admin == null || !Objects.equals(admin.getPassword(), MD5.encrypt(loginVo.getPassword()))) {
             return Result.fail(null);
         }
