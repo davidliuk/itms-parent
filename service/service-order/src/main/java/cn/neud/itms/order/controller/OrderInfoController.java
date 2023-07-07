@@ -5,11 +5,14 @@ import cn.neud.itms.model.order.OrderInfo;
 import cn.neud.itms.order.service.OrderInfoService;
 import cn.neud.itms.vo.order.OrderInfoQueryVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/admin/order")
+@Api(tags = "订单管理")
+@RestController
+@RequestMapping(value = "/admin/order")
 public class OrderInfoController {
 
     @Autowired

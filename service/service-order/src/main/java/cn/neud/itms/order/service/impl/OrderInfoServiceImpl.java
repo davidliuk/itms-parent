@@ -407,7 +407,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 
     @Override
     public IPage<OrderInfo> selectPage(
-            Page<OrderInfo> pageParam, 
+            Page<OrderInfo> pageParam,
             OrderInfoQueryVo orderInfoQueryVo
     ) {
         return baseMapper.selectPage(pageParam,

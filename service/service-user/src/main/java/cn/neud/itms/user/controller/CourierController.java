@@ -1,6 +1,5 @@
 package cn.neud.itms.user.controller;
 
-import cn.neud.itms.common.auth.SaUserCheckLogin;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.user.CourierInfo;
 import cn.neud.itms.user.service.CourierService;
