@@ -22,5 +22,5 @@ public interface RegionStationService extends IService<RegionStation> {
 
     List<RegionStation> getRegionStationListByGroupId(Long regionId);
 
-    IPage<RegionStation> selectRole(Page<RegionStation> pageParam, RegionStation regionStation);
+    IPage<RegionStation> selectPage(Page<RegionStation> pageParam, RegionStation regionStation);
 }

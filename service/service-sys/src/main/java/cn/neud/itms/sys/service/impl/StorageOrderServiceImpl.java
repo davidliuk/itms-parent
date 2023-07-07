@@ -49,4 +49,11 @@ public class StorageOrderServiceImpl extends ServiceImpl<StorageOrderMapper, Sto
                 .eq(!StringUtils.isEmpty(storageType), StorageOrder::getStorageType, storageType));
     }
 
+    @Override
+    public int updateByOrderId(StorageOrder workOrder) {
+        return baseMapper.update(workOrder, new LambdaQueryWrapper<StorageOrder>()
+                .eq(StorageOrder::getOrderId, workOrder.getOrderId())
+        );
+    }
+
 }

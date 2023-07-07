@@ -2,8 +2,13 @@ server:
   port: 8202
 
 mybatis-plus:
+  type-enums-package: cn.neud.itms.enums
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/*.xml
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 spring:
   datasource:

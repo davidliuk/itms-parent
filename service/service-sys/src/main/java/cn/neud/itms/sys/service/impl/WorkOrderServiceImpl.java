@@ -51,8 +51,8 @@ public class WorkOrderServiceImpl extends ServiceImpl<WorkOrderMapper, WorkOrder
                 .eq(wareId != null, WorkOrder::getWareId, wareId)
                 .eq(stationId != null, WorkOrder::getStationId, stationId)
                 .eq(orderId != null, WorkOrder::getOrderId, orderId)
-                .eq(status != null, WorkOrder::getWorkStatus, status)
-                .eq(type != null, WorkOrder::getWorkType, type)
+                .eq(!StringUtils.isEmpty(status), WorkOrder::getWorkStatus, status)
+                .eq(!StringUtils.isEmpty(type), WorkOrder::getWorkType, type)
                 .ge(startTime != null, WorkOrder::getCreateTime, startTime)
                 .le(endTime != null, WorkOrder::getCreateTime, endTime));
     }

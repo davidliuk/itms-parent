@@ -4,13 +4,10 @@ package cn.neud.itms.sys.controller;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.enums.StorageType;
 import cn.neud.itms.enums.WorkStatus;
-import cn.neud.itms.model.sys.CheckOrder;
-import cn.neud.itms.model.sys.StorageOrder;
-import cn.neud.itms.model.sys.Ware;
-import cn.neud.itms.model.sys.WorkOrder;
-import cn.neud.itms.sys.service.TransferOrderService;
-import cn.neud.itms.sys.service.WareService;
-import cn.neud.itms.sys.service.WorkOrderService;
+import cn.neud.itms.model.sys.*;
+import cn.neud.itms.sys.service.*;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -38,10 +35,34 @@ public class WareController {
     private WareService wareService;
 
     @Autowired
-    private TransferOrderService transferOrderService;
+    private WorkOrderService workOrderService;
 
     @Autowired
-    private WorkOrderService workOrderService;
+    private StorageOrderService storageOrderService;
+
+    @Autowired
+    private CheckOrderService checkOrderService;
+
+    @Autowired
+    private TransferOrderService transferOrderService;
+
+    @ApiOperation("分站条件分页查询")
+    @PostMapping("{current}/{limit}")
+    public Result<IPage<Ware>> pageList(
+            @PathVariable Long current,
+            @PathVariable Long limit,
+            Ware ware
+    ) {
+        // 1 创建page对象，传递当前页和每页记录数
+        // current：当前页
+        // limit: 每页显示记录数
+        Page<Ware> pageParam = new Page<>(current, limit);
+
+        //2 调用service方法实现条件分页查询，返回分页对象
+        IPage<Ware> pageModel = wareService.selectPage(pageParam, ware);
+
+        return Result.ok(pageModel);
+    }
 
     //查询所有仓库列表
 //    url: `${api_name}/findAllList`,
@@ -88,28 +109,32 @@ public class WareController {
         return Result.ok(null);
     }
 
-    // 调拨出库
     @ApiOperation("调拨出库")
     @GetMapping("/out/{orderId}")
     public Result out(@PathVariable Long orderId) {
         // 获取任务单
         WorkOrder workOrder = workOrderService.getByOrderId(orderId);
+//        workOrder.setOrderId(orderId);
         workOrder.setWorkStatus(WorkStatus.OUT);
         workOrderService.updateByOrderId(workOrder);
 
-//        // 生成调拨单
-//        TransferOrder transferOrder = new TransferOrder();
-//        transferOrder.setOutTime(new Date());
-//        transferOrderService.save(transferOrder);
+        // 生成调拨单
+        TransferOrder transferOrder = new TransferOrder();
+        transferOrder.setOrderId(orderId);
+        transferOrder.setOutTime(new Date());
+        transferOrderService.save(transferOrder);
 
         // 生成库存单，应该每个item一个单
         StorageOrder storageOrder = new StorageOrder();
         BeanUtils.copyProperties(workOrder, storageOrder);
         storageOrder.setStorageType(StorageType.OUT);
+        storageOrderService.save(storageOrder);
+
         // 生成验货单
         CheckOrder checkOrder = new CheckOrder();
         BeanUtils.copyProperties(workOrder, checkOrder);
         checkOrder.setOutTime(new Date());
+        checkOrderService.save(checkOrder);
 
         return Result.ok(null);
     }

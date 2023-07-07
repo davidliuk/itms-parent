@@ -18,4 +18,6 @@ public interface StorageOrderService extends IService<StorageOrder> {
 
     IPage<StorageOrder> selectPage(Page<StorageOrder> pageParam, StorageOrderQueryVo workOrderQueryVo);
 
+    int updateByOrderId(StorageOrder workOrder);
+
 }

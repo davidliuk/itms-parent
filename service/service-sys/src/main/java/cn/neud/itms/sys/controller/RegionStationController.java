@@ -2,18 +2,14 @@ package cn.neud.itms.sys.controller;
 
 
 import cn.neud.itms.common.result.Result;
+import cn.neud.itms.enums.StorageType;
 import cn.neud.itms.enums.WorkStatus;
-import cn.neud.itms.model.sys.RegionStation;
-import cn.neud.itms.model.sys.TransferOrder;
-import cn.neud.itms.model.sys.WorkOrder;
-import cn.neud.itms.sys.service.RegionStationService;
-import cn.neud.itms.sys.service.TransferOrderService;
-import cn.neud.itms.sys.service.WorkOrderService;
+import cn.neud.itms.model.sys.*;
+import cn.neud.itms.sys.service.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,21 +37,28 @@ public class RegionStationController {
     private WorkOrderService workOrderService;
 
     @Autowired
+    private StorageOrderService storageOrderService;
+
+    @Autowired
+    private CheckOrderService checkOrderService;
+
+    @Autowired
     private TransferOrderService transferOrderService;
 
-    //1 分站列表（条件分页查询）
     @ApiOperation("分站条件分页查询")
     @PostMapping("{current}/{limit}")
-    public Result pageList(@PathVariable Long current,
-                           @PathVariable Long limit,
-                           RegionStation regionStation) {
+    public Result pageList(
+            @PathVariable Long current,
+            @PathVariable Long limit,
+            RegionStation regionStation
+    ) {
         // 1 创建page对象，传递当前页和每页记录数
         // current：当前页
         // limit: 每页显示记录数
         Page<RegionStation> pageParam = new Page<>(current, limit);
 
         //2 调用service方法实现条件分页查询，返回分页对象
-        IPage<RegionStation> pageModel = regionStationService.selectRole(pageParam, regionStation);
+        IPage<RegionStation> pageModel = regionStationService.selectPage(pageParam, regionStation);
 
         return Result.ok(pageModel);
     }
@@ -113,23 +116,30 @@ public class RegionStationController {
     }
 
     @ApiOperation("调拨入库")
-    @GetMapping("/in/{workOrderId}")
-    public Result out(@PathVariable Long workOrderId) {
-        // 获取任务单
-        WorkOrder workOrder = workOrderService.getById(workOrderId);
+    @GetMapping("/in/{orderId}")
+    public Result out(@PathVariable Long orderId) {
         // 修改任务单状态
+        WorkOrder workOrder = new WorkOrder();
+        workOrder.setOrderId(orderId);
         workOrder.setWorkStatus(WorkStatus.IN);
-        workOrderService.updateById(workOrder);
+        workOrderService.updateByOrderId(workOrder);
 
-        // 生成调拨单
+        // 修改调拨单
         TransferOrder transferOrder = new TransferOrder();
-        transferOrder.setWorkOrderId(workOrderId);
+        transferOrder.setOrderId(orderId);
         transferOrder.setInTime(new Date());
-        BeanUtils.copyProperties(workOrder, transferOrder);
-        transferOrderService.save(transferOrder);
+        transferOrderService.updateByOrderId(transferOrder);
 
-        // 更新调拨单
+        // 生成库存单，应该每个item一个单
+        StorageOrder storageOrder = new StorageOrder();
+        storageOrder.setOrderId(orderId);
+        storageOrder.setStorageType(StorageType.IN);
+        storageOrderService.save(storageOrder);
 
+        // 修改验货单
+        CheckOrder checkOrder = new CheckOrder();
+        checkOrder.setInTime(new Date());
+        checkOrderService.updateByOrderId(checkOrder);
 
         return Result.ok(null);
     }

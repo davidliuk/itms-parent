@@ -1,9 +1,12 @@
 package cn.neud.itms.enums;
 
+import com.alibaba.fastjson.annotation.JSONType;
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.databind.deser.std.EnumDeserializer;
+import com.fasterxml.jackson.databind.ser.std.EnumSerializer;
 import lombok.Getter;
 
-//@JSONType(serializer = EnumSerializer.class, deserializer = EnumDeserializer.class, serializeEnumAsJavaBean = true)
+@JSONType(serializer = EnumSerializer.class, deserializer = EnumDeserializer.class, serializeEnumAsJavaBean = true)
 @Getter
 public enum WorkType {
     DELIVERY(0, "送货"),

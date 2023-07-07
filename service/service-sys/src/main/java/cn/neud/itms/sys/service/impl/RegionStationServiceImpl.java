@@ -39,7 +39,7 @@ public class RegionStationServiceImpl extends ServiceImpl<RegionStationMapper, R
     }
 
     @Override
-    public IPage<RegionStation> selectRole(Page<RegionStation> pageParam, RegionStation regionStation) {
+    public IPage<RegionStation> selectPage(Page<RegionStation> pageParam, RegionStation regionStation) {
         Long id = regionStation.getId();
         Long wareId = regionStation.getWareId();
         String province = regionStation.getProvince();

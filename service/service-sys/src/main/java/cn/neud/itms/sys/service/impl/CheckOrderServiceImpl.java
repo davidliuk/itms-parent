@@ -50,4 +50,10 @@ public class CheckOrderServiceImpl extends ServiceImpl<CheckOrderMapper, CheckOr
         return baseMapper.selectOne(new LambdaQueryWrapper<CheckOrder>()
                 .eq(CheckOrder::getWorkOrderId, workOrderId));
     }
+
+    @Override
+    public int updateByOrderId(CheckOrder checkOrder) {
+        return baseMapper.update(checkOrder, new LambdaQueryWrapper<CheckOrder>()
+                .eq(CheckOrder::getWorkOrderId, checkOrder.getWorkOrderId()));
+    }
 }
