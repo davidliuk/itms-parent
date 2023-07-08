@@ -10,10 +10,12 @@ public enum OrderStatus {
     DISPATCH(2, "已调度"),
     OUT(3, "已出库"),
     IN(4, "已入库"),
-    WAITING_ASSIGN(5, "待分配"),
+    WAITING_ASSIGN(5, "待分配"), // 应该和已入库合并
     ASSIGN(6, "已分配"),
-    WAITING_TAKE(7, "待领货"),
-    FINISHED(8, "完成"),
+//    WAITING_TAKE(7, "待领货"),
+    WAITING_COURIER_TAKE(7, "待领货"),
+    WAITING_USER_TAKE(8, "待收货"),
+    FINISHED(9, "完成"),
     CANCEL(-1, "取消");
 //    WAITING_DELIVERY(1, "待发货"),
 //    WAITING_TAKE(2, "待提货"),

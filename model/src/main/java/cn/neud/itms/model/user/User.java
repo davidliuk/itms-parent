@@ -30,8 +30,8 @@ public class User extends BaseEntity {
     private UserType userType;
 
     @ApiModelProperty(value = "会员头像")
-    @TableField("photo_url")
-    private String photoUrl;
+    @TableField("avatar")
+    private String avatar;
 
     @ApiModelProperty(value = "昵称")
     @TableField("nick_name")

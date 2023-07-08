@@ -63,6 +63,7 @@ public class OrderInfo extends BaseEntity {
     private BigDecimal freightFeeReduce;
 
     @ApiModelProperty(value = "可退款日期（签收后1天）")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("refundable_time")
     private Date refundableTime;
 
@@ -143,10 +144,20 @@ public class OrderInfo extends BaseEntity {
     @TableField("payment_time")
     private Date paymentTime;
 
-    @ApiModelProperty(value = "发货时间")
+    @ApiModelProperty(value = "调度时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField("delivery_time")
-    private Date deliveryTime;
+    @TableField("dispatch_time")
+    private Date dispatchTime;
+
+    @ApiModelProperty(value = "出库时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField("out_time")
+    private Date outTime;
+
+    @ApiModelProperty(value = "入库时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField("in_time")
+    private Date inTime;
 
     @ApiModelProperty(value = "配送员提货时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

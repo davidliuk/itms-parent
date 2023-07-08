@@ -93,12 +93,18 @@ public class DispatchController {
             @PathVariable String orderNo
     ) {
         OrderInfo orderInfo = orderFeignClient.getOrderInfo(orderNo);
-        orderInfo.setStationId(orderInfo.getStationId());
         orderInfo.setOrderStatus(OrderStatus.DISPATCH);
+        if (orderInfo.getOrderStatus() != OrderStatus.WAITING_DISPATCH) {
+            return Result.fail("订单状态不是待调度状态");
+        }
 
+        // 分配运输公司
         Logistics logistics = logisticsService.getOne(new LambdaQueryWrapper<Logistics>()
                 .eq(Logistics::getWareId, orderInfo.getWareId())
         );
+        if (logistics == null) {
+            return Result.fail("没有找到运输公司");
+        }
         orderInfo.setLogisticsId(logistics.getId());
         orderInfo.setLogisticsName(logistics.getName());
         orderInfo.setLogisticsPhone(logistics.getPhone());
@@ -107,6 +113,7 @@ public class DispatchController {
         // 生成任务单
         WorkOrder workOrder = new WorkOrder();
         workOrder.setOrderId(orderInfo.getId());
+        BeanUtils.copyProperties(orderInfo, workOrder);
         workOrder.setStationId(orderInfo.getStationId());
         workOrder.setLogisticsId(logistics.getId());
         workOrder.setLogisticsName(logistics.getName());
@@ -116,7 +123,7 @@ public class DispatchController {
         // 生成调拨单
         TransferOrder transferOrder = new TransferOrder();
         BeanUtils.copyProperties(workOrder, transferOrder);
-        transferOrder.setOutTime(new Date());
+//        transferOrder.setOutTime(new Date());
         transferOrder.setWorkOrderId(workOrder.getId());
         transferOrderService.save(transferOrder);
         return Result.ok(null);

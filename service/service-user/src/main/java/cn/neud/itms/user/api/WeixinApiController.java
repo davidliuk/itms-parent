@@ -79,7 +79,7 @@ public class WeixinApiController {
             user = new User();
             user.setOpenId(openid);
             user.setNickName(openid);
-            user.setPhotoUrl("");
+            user.setAvatar("");
             user.setUserType(UserType.USER);
             user.setIsNew(0);
             userService.save(user);
@@ -116,7 +116,7 @@ public class WeixinApiController {
         User user1 = userService.getById(AuthContextHolder.getUserId());
         //把昵称更新为微信用户
         user1.setNickName(user.getNickName().replaceAll("[ue000-uefff]", "*"));
-        user1.setPhotoUrl(user.getPhotoUrl());
+        user1.setAvatar(user.getAvatar());
         userService.updateById(user1);
         return Result.ok(null);
     }

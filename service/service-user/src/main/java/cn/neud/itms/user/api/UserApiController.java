@@ -101,7 +101,7 @@ public class UserApiController {
             user = new User();
             user.setEmail(loginVo.getEmail());
             user.setNickName("邮箱用户" + loginVo.getEmail());
-            user.setPhotoUrl("");
+            user.setAvatar("");
             user.setUserType(UserType.USER);
             user.setIsNew(0);
             userService.save(user);
@@ -144,7 +144,7 @@ public class UserApiController {
         // 设置到user对象里面
         user.setPassword(passwordMD5);
         user.setNickName("邮箱用户" + userRegisterVo.getEmail());
-        user.setPhotoUrl("");
+        user.setAvatar("");
         user.setUserType(UserType.USER);
         user.setIsNew(0);
         // 调用方法添加

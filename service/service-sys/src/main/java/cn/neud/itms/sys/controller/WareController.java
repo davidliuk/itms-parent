@@ -2,9 +2,12 @@ package cn.neud.itms.sys.controller;
 
 
 import cn.neud.itms.common.result.Result;
+import cn.neud.itms.enums.OrderStatus;
 import cn.neud.itms.enums.StorageType;
 import cn.neud.itms.enums.WorkStatus;
+import cn.neud.itms.model.order.OrderInfo;
 import cn.neud.itms.model.sys.*;
+import cn.neud.itms.order.client.OrderFeignClient;
 import cn.neud.itms.sys.service.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -45,6 +48,9 @@ public class WareController {
 
     @Autowired
     private TransferOrderService transferOrderService;
+
+    @Autowired
+    private OrderFeignClient orderFeignClient;
 
     @ApiOperation("分站条件分页查询")
     @PostMapping("{current}/{limit}")
@@ -112,9 +118,53 @@ public class WareController {
     @ApiOperation("调拨出库")
     @GetMapping("/out/{orderId}")
     public Result out(@PathVariable Long orderId) {
+        // 修改订单状态
+        OrderInfo orderInfo = new OrderInfo();
+        orderInfo.setId(orderId);
+        orderInfo.setOrderStatus(OrderStatus.OUT);
+        orderInfo.setOutTime(new Date());
+        orderFeignClient.updateOrderInfo(orderInfo);
+
+        // 修改任务单
+        WorkOrder workOrder = workOrderService.getByOrderId(orderId);
+        workOrder.setOrderId(orderId);
+        workOrder.setWorkStatus(WorkStatus.OUT);
+        workOrderService.updateByOrderId(workOrder);
+
+        // 修改调拨单
+        TransferOrder transferOrder = new TransferOrder();
+        transferOrder.setOrderId(orderId);
+        transferOrder.setOutTime(new Date());
+        transferOrderService.updateByOrderId(transferOrder);
+
+        // 生成库存单，应该每个item一个单
+        StorageOrder storageOrder = new StorageOrder();
+        BeanUtils.copyProperties(workOrder, storageOrder);
+        storageOrder.setStorageType(StorageType.OUT);
+        storageOrderService.save(storageOrder);
+
+        // 生成验货单
+        CheckOrder checkOrder = new CheckOrder();
+        BeanUtils.copyProperties(workOrder, checkOrder);
+        checkOrder.setOutTime(new Date());
+        checkOrderService.save(checkOrder);
+
+        return Result.ok(null);
+    }
+
+    @ApiOperation("退货入库")
+    @GetMapping("/in/{orderId}")
+    public Result in(@PathVariable Long orderId) {
+        // 修改订单状态
+        OrderInfo orderInfo = new OrderInfo();
+        orderInfo.setId(orderId);
+        orderInfo.setOrderStatus(OrderStatus.OUT);
+        orderInfo.setInTime(new Date());
+        orderFeignClient.updateOrderInfo(orderInfo);
+
         // 获取任务单
         WorkOrder workOrder = workOrderService.getByOrderId(orderId);
-//        workOrder.setOrderId(orderId);
+        workOrder.setOrderId(orderId);
         workOrder.setWorkStatus(WorkStatus.OUT);
         workOrderService.updateByOrderId(workOrder);
 

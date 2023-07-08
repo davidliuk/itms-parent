@@ -263,7 +263,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         orderInfo.setReceiverDistrict(addressVo.getDistrict());
         orderInfo.setReceiverAddress(addressVo.getDetailAddress());
         orderInfo.setWareId(cartInfoList.get(0).getWareId());
-        orderInfo.setProcessStatus(ProcessStatus.UNPAID);
+//        orderInfo.setProcessStatus(ProcessStatus.UNPAID);
 
         // 计算订单金额
         BigDecimal originalTotalAmount = this.computeTotalAmount(cartInfoList);
@@ -426,7 +426,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     private void updateOrderStatus(Long id) {
         OrderInfo orderInfo = baseMapper.selectById(id);
         orderInfo.setOrderStatus(OrderStatus.WAITING_DISPATCH);
-        orderInfo.setProcessStatus(ProcessStatus.WAITING_DISPATCH);
+//        orderInfo.setProcessStatus(ProcessStatus.WAITING_DISPATCH);
         baseMapper.updateById(orderInfo);
     }
 

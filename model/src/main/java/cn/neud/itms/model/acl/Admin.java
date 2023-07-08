@@ -32,6 +32,10 @@ public class Admin extends BaseEntity {
     @TableField("password")
     private String password;
 
+    @ApiModelProperty(value = "头像")
+    @TableField("avatar")
+    private String avatar;
+
     @ApiModelProperty(value = "昵称")
     @TableField("name")
     private String name;
@@ -54,9 +58,9 @@ public class Admin extends BaseEntity {
 
     @ApiModelProperty(value = "角色列表")
     @TableField(exist = false)
-    private List<String> roleCodes;
+    private List<String> roles;
 
     @ApiModelProperty(value = "权限列表")
     @TableField(exist = false)
-    private List<String> permissionCodes;
+    private List<String> permissions;
 }

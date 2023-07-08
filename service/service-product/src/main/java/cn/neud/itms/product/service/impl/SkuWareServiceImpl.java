@@ -36,11 +36,13 @@ public class SkuWareServiceImpl extends ServiceImpl<SkuWareMapper, SkuWare> impl
         Long id = skuWare.getId();
         Long wareId = skuWare.getWareId();
         Long skuId = skuWare.getSkuId();
+        String skuName = skuWare.getSkuName();
 
         return baseMapper.selectPage(pageParam, new LambdaQueryWrapper<SkuWare>()
                 .eq(!StringUtils.isEmpty(id), SkuWare::getId, id)
                 .eq(!StringUtils.isEmpty(wareId), SkuWare::getWareId, wareId)
                 .eq(!StringUtils.isEmpty(skuId), SkuWare::getSkuId, skuId)
+                .like(!StringUtils.isEmpty(skuName), SkuWare::getSkuName, skuName)
         );
     }
 }

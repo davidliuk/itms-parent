@@ -13,6 +13,6 @@ public interface OrderFeignClient {
     @GetMapping("/api/order/inner/getOrderInfo/{orderNo}")
     public OrderInfo getOrderInfo(@PathVariable("orderNo") String orderNo);
 
-    @PutMapping("/api/order/inner/updateOrderInfo/}")
-    public boolean updateOrderInfo(@RequestBody OrderInfo orderInfo);
+    @PutMapping("/api/order/inner/updateOrderInfo")
+    public void updateOrderInfo(@RequestBody OrderInfo orderInfo);
 }

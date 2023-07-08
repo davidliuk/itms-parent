@@ -52,6 +52,20 @@ public class WorkOrderController {
         return Result.ok(pageModel);
     }
 
+    @ApiOperation("修改任务单")
+    @PutMapping
+    public Result update(@RequestBody WorkOrder workOrder) {
+        workOrderService.updateById(workOrder);
+        return Result.ok(null);
+    }
+
+    @ApiOperation("删除任务单")
+    @DeleteMapping
+    public Result delete(@RequestBody WorkOrder workOrder) {
+        workOrderService.updateById(workOrder);
+        return Result.ok(null);
+    }
+
     // 分配任务单
     @ApiOperation("分配任务单")
     @GetMapping("/assign/{workOrderId}/{courierId}")

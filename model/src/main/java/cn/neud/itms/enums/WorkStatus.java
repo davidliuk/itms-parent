@@ -9,7 +9,7 @@ public enum WorkStatus {
     DISPATCH(0, "已调度"),
     OUT(1, "已出库"),
     IN(2, "已入库"),
-    WAITING_ASSIGN(3, "待分配"),
+    WAITING_ASSIGN(3, "待分配"), // 应该和已入库合并
     ASSIGN(4, "已分配"),
     WAITING_COURIER_TAKE(5, "待领货"),
     WAITING_USER_TAKE(6, "待收货"),

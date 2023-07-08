@@ -2,9 +2,12 @@ package cn.neud.itms.sys.controller;
 
 
 import cn.neud.itms.common.result.Result;
+import cn.neud.itms.enums.OrderStatus;
 import cn.neud.itms.enums.StorageType;
 import cn.neud.itms.enums.WorkStatus;
+import cn.neud.itms.model.order.OrderInfo;
 import cn.neud.itms.model.sys.*;
+import cn.neud.itms.order.client.OrderFeignClient;
 import cn.neud.itms.sys.service.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -44,6 +47,9 @@ public class RegionStationController {
 
     @Autowired
     private TransferOrderService transferOrderService;
+
+    @Autowired
+    private OrderFeignClient orderFeignClient;
 
     @ApiOperation("分站条件分页查询")
     @PostMapping("{current}/{limit}")
@@ -118,7 +124,14 @@ public class RegionStationController {
     @ApiOperation("调拨入库")
     @GetMapping("/in/{orderId}")
     public Result out(@PathVariable Long orderId) {
-        // 修改任务单状态
+        // 修改订单状态
+        OrderInfo orderInfo = new OrderInfo();
+        orderInfo.setId(orderId);
+        orderInfo.setOrderStatus(OrderStatus.IN);
+        orderInfo.setInTime(new Date());
+        orderFeignClient.updateOrderInfo(orderInfo);
+
+        // 修改任务单
         WorkOrder workOrder = new WorkOrder();
         workOrder.setOrderId(orderId);
         workOrder.setWorkStatus(WorkStatus.IN);

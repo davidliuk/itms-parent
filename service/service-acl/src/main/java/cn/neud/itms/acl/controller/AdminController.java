@@ -1,26 +1,35 @@
 package cn.neud.itms.acl.controller;
 
 import cn.dev33.satoken.annotation.SaCheckRole;
+import cn.dev33.satoken.stp.StpUtil;
 import cn.neud.itms.acl.service.AdminService;
 import cn.neud.itms.acl.service.RoleService;
 import cn.neud.itms.common.auth.RoleConstant;
 import cn.neud.itms.common.result.Result;
+import cn.neud.itms.common.utils.JwtHelper;
 import cn.neud.itms.common.utils.MD5;
 import cn.neud.itms.model.acl.Admin;
+import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.vo.acl.AdminQueryVo;
+import cn.neud.itms.vo.user.AddressVo;
+import cn.neud.itms.vo.user.EmailLoginVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @Api(tags = "用户管理")
 @RestController
-@RequestMapping("/admin/acl/user")
+@RequestMapping("/admin/acl/admin")
 //@CrossOrigin
 public class AdminController {
 
@@ -37,6 +46,7 @@ public class AdminController {
 //        adminId,
 //        roleId
 //    }
+    
     //参数有用户id 和 多个角色id
     @ApiOperation("为用户进行角色分配")
     @PostMapping("doAssign/{adminId}")
@@ -86,7 +96,7 @@ public class AdminController {
     //3 添加用户
 //    url: `${api_name}/save`,
 //    method: 'post',
-//    data: user
+//    data: admin
     @ApiOperation("添加用户")
     @PostMapping("")
     @SaCheckRole(RoleConstant.SYSTEM)
@@ -105,7 +115,7 @@ public class AdminController {
     //4 修改用户(不能修改密码)，传入的密码值为null的时候不会改密码
 //    url: `${api_name}/update`,
 //    method: 'put',
-//    data: user
+//    data: admin
     @ApiOperation("修改用户")
     @PutMapping("")
     public Result update(@RequestBody Admin admin) {

@@ -30,7 +30,7 @@ import java.util.Date;
  * @author neud
  * @since 2023-04-18
  */
-@Api(tags = "订单管理")
+@Api(tags = "订单接口")
 @RestController
 @RequestMapping(value = "/api/order")
 public class OrderInfoApiController {
@@ -82,6 +82,14 @@ public class OrderInfoApiController {
         return Result.ok(orderConfirmVo);
     }
 
+    @ApiOperation("退货订单")
+    @GetMapping("auth/returnOrder")
+    @SaUserCheckLogin
+    public Result returnOrder() {
+        OrderConfirmVo orderConfirmVo = orderInfoService.confirmOrder();
+        return Result.ok(orderConfirmVo);
+    }
+
     @SaUserCheckLogin
     @ApiOperation("生成订单")
     @PostMapping("auth/submitOrder")
@@ -122,10 +130,9 @@ public class OrderInfoApiController {
         return orderInfoService.getOrderInfoByOrderNo(orderNo);
     }
 
-    // 根据orderNo查询订单信息
     @PutMapping("inner/updateOrderInfo")
-    public boolean updateOrderInfo(@RequestBody OrderInfo orderInfo) {
-        return orderInfoService.updateById(orderInfo);
+    public void updateOrderInfo(@RequestBody OrderInfo orderInfo) {
+        orderInfoService.updateById(orderInfo);
     }
 }
 
