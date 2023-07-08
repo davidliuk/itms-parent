@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 
 @Api(tags = "用户管理")
 @RestController
-@RequestMapping("/admin/acl/admin")
+@RequestMapping("/admin/acl/user")
 //@CrossOrigin
 public class AdminController {
 
