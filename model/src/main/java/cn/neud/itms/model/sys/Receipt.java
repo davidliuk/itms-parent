@@ -46,6 +46,10 @@ public class Receipt extends BaseEntity {
     @TableField("post_code")
     private String postCode;
 
+    @ApiModelProperty(value = "送货要求")
+    @TableField("requirement")
+    private String requirement;
+
     @ApiModelProperty(value = "省")
     @TableField("province")
     private String province;
