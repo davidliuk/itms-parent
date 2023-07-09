@@ -45,7 +45,7 @@ public class WorkOrderController {
     public Result list(
             @PathVariable Long page,
             @PathVariable Long limit,
-            WorkOrderQueryVo workOrderQueryVo
+            @RequestBody WorkOrderQueryVo workOrderQueryVo
     ) {
         Page<WorkOrder> pageParam = new Page<>(page, limit);
         IPage<WorkOrder> pageModel = workOrderService.selectPage(pageParam, workOrderQueryVo);
@@ -77,7 +77,7 @@ public class WorkOrderController {
         if (workOrder == null) {
             return Result.fail("任务单不存在");
         }
-        if (workOrder.getWorkStatus() != WorkStatus.WAITING_ASSIGN && workOrder.getWorkStatus() != WorkStatus.ASSIGN) {
+        if (workOrder.getWorkStatus() != WorkStatus.IN && workOrder.getWorkStatus() != WorkStatus.ASSIGN) {
             return Result.fail("任务单状态不正确");
         }
         OrderInfo orderInfo = new OrderInfo();

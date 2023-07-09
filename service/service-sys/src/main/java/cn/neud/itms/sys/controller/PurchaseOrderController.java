@@ -37,7 +37,7 @@ public class PurchaseOrderController {
     public Result list(
             @PathVariable Long page,
             @PathVariable Long limit,
-            PurchaseOrder purchaseOrder
+            @RequestBody PurchaseOrder purchaseOrder
     ) {
         Page<PurchaseOrder> pageParam = new Page<>(page, limit);
         IPage<PurchaseOrder> pageModel = purchaseOrderService.selectPage(pageParam, purchaseOrder);

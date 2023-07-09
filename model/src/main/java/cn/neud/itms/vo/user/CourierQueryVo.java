@@ -16,4 +16,3 @@ public class CourierQueryVo {
     private String idNo;
 
 }
-

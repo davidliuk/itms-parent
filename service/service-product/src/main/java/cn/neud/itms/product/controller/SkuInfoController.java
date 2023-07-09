@@ -53,7 +53,7 @@ public class SkuInfoController {
     public Result list(
             @PathVariable Long page,
             @PathVariable Long limit,
-            SkuInfoQueryVo skuInfoQueryVo
+            @RequestBody SkuInfoQueryVo skuInfoQueryVo
     ) {
         Page<SkuInfo> pageParam = new Page<>(page, limit);
         IPage<SkuInfo> pageModel = skuInfoService.selectPageSkuInfo(pageParam, skuInfoQueryVo);

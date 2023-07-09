@@ -49,4 +49,11 @@ public class TransferOrderServiceImpl extends ServiceImpl<TransferOrderMapper, T
                 .eq(TransferOrder::getOrderId, workOrder.getOrderId())
         );
     }
+
+    @Override
+    public TransferOrder getByOrderId(Long orderId) {
+        return baseMapper.selectOne(new LambdaQueryWrapper<TransferOrder>()
+                .eq(TransferOrder::getOrderId, orderId)
+        );
+    }
 }

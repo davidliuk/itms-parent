@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.neud.itms.user.mapper.CourierMapper">
+    <resultMap id="courierInfoMap" type="cn.neud.itms.model.user.CourierInfo" autoMapping="true"></resultMap>
+
+    <!--减库存-->
+    <update id="addWorkNum">
+        update courier_info
+        set work_num = work_num + #{workNum}
+        where courier_id = #{courierId}
+    </update>
+</mapper>

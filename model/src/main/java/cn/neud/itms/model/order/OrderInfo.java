@@ -4,6 +4,7 @@ import cn.neud.itms.enums.OrderStatus;
 import cn.neud.itms.enums.OrderType;
 import cn.neud.itms.enums.ProcessStatus;
 import cn.neud.itms.model.base.BaseEntity;
+import cn.neud.itms.model.sys.*;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -159,6 +160,11 @@ public class OrderInfo extends BaseEntity {
     @TableField("in_time")
     private Date inTime;
 
+    @ApiModelProperty(value = "分配时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField("assign_time")
+    private Date assignTime;
+
     @ApiModelProperty(value = "配送员提货时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("take_time")
@@ -205,5 +211,25 @@ public class OrderInfo extends BaseEntity {
     @ApiModelProperty(value = "订单项列表")
     @TableField(exist = false)
     private List<OrderItem> orderItemList;
+
+    @ApiModelProperty(value = "调拨单")
+    @TableField(exist = false)
+    private TransferOrder transferOrder;
+
+    @ApiModelProperty(value = "库存单")
+    @TableField(exist = false)
+    private StorageOrder storageOrder;
+
+    @ApiModelProperty(value = "任务单")
+    @TableField(exist = false)
+    private WorkOrder workOrder;
+
+    @ApiModelProperty(value = "回执单")
+    @TableField(exist = false)
+    private Receipt receipt;
+
+    @ApiModelProperty(value = "验货单")
+    @TableField(exist = false)
+    private CheckOrder checkOrder;
 
 }

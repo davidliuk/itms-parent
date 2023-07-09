@@ -17,8 +17,10 @@ public interface CheckOrderService extends IService<CheckOrder> {
 
     IPage<CheckOrder> selectPage(Page<CheckOrder> pageParam, CheckOrder checkOrder);
 
-//    CheckOrder selectByOrderId(String orderId);
+    //    CheckOrder selectByOrderId(String orderId);
     CheckOrder selectByWorkOrderId(Long workOrderId);
 
     int updateByOrderId(CheckOrder checkOrder);
+
+    CheckOrder getByOrderId(Long orderId);
 }

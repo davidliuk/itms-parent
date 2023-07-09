@@ -37,7 +37,7 @@ public class TransferOrderController {
     public Result list(
             @PathVariable Long page,
             @PathVariable Long limit,
-            TransferOrder transferOrder
+            @RequestBody TransferOrder transferOrder
     ) {
         Page<TransferOrder> pageParam = new Page<>(page, limit);
         IPage<TransferOrder> pageModel = transferOrderService.selectPage(pageParam, transferOrder);

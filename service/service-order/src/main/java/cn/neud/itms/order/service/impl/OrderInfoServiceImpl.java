@@ -8,7 +8,10 @@ import cn.neud.itms.common.auth.StpUserUtil;
 import cn.neud.itms.common.exception.ItmsException;
 import cn.neud.itms.common.result.ResultCodeEnum;
 import cn.neud.itms.common.utils.DateUtil;
-import cn.neud.itms.enums.*;
+import cn.neud.itms.enums.ActivityType;
+import cn.neud.itms.enums.CouponType;
+import cn.neud.itms.enums.OrderStatus;
+import cn.neud.itms.enums.SkuType;
 import cn.neud.itms.model.activity.ActivityRule;
 import cn.neud.itms.model.activity.CouponInfo;
 import cn.neud.itms.model.order.CartInfo;
@@ -425,7 +428,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     // 更新状态
     private void updateOrderStatus(Long id) {
         OrderInfo orderInfo = baseMapper.selectById(id);
-        orderInfo.setOrderStatus(OrderStatus.WAITING_DISPATCH);
+        orderInfo.setOrderStatus(OrderStatus.PAID);
 //        orderInfo.setProcessStatus(ProcessStatus.WAITING_DISPATCH);
         baseMapper.updateById(orderInfo);
     }

@@ -37,7 +37,7 @@ public class CheckOrderController {
     public Result list(
             @PathVariable Long page,
             @PathVariable Long limit,
-            CheckOrder checkOrder
+            @RequestBody CheckOrder checkOrder
     ) {
         Page<CheckOrder> pageParam = new Page<>(page, limit);
         IPage<CheckOrder> pageModel = checkOrderService.selectPage(pageParam, checkOrder);

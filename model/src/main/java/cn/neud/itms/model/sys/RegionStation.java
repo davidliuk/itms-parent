@@ -30,6 +30,10 @@ public class RegionStation extends BaseEntity {
     @TableField("phone")
     private String phone;
 
+    @ApiModelProperty(value = "邮编")
+    @TableField("post_code")
+    private String postCode;
+
     @ApiModelProperty(value = "省")
     @TableField("province")
     private String province;

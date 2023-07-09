@@ -1,5 +1,6 @@
 package cn.neud.itms.model.sys;
 
+import cn.neud.itms.enums.TransferStatus;
 import cn.neud.itms.model.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -51,7 +52,7 @@ public class TransferOrder extends BaseEntity {
 
     @ApiModelProperty(value = "状态")
     @TableField("status")
-    private Integer status;
+    private TransferStatus status;
 
     @ApiModelProperty(value = "出库时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

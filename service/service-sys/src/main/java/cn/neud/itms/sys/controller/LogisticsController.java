@@ -37,7 +37,7 @@ public class LogisticsController {
     public Result list(
             @PathVariable Long page,
             @PathVariable Long limit,
-            Logistics logistics
+            @RequestBody Logistics logistics
     ) {
         Page<Logistics> pageParam = new Page<>(page, limit);
         IPage<Logistics> pageModel = logisticsService.selectPage(pageParam, logistics);

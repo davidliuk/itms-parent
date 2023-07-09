@@ -56,7 +56,7 @@ public class RegionStationController {
     public Result pageList(
             @PathVariable Long current,
             @PathVariable Long limit,
-            RegionStation regionStation
+            @RequestBody RegionStation regionStation
     ) {
         // 1 创建page对象，传递当前页和每页记录数
         // current：当前页

@@ -22,6 +22,10 @@ public class CourierInfo extends BaseEntity {
     @TableField("station_id")
     private Long stationId;
 
+    @ApiModelProperty(value = "分站名称")
+    @TableField("station_name")
+    private String stationName;
+
     @ApiModelProperty(value = "名称")
     @TableField("name")
     private String name;
@@ -41,5 +45,9 @@ public class CourierInfo extends BaseEntity {
     @ApiModelProperty(value = "身份证图片路径")
     @TableField("id_no_url2")
     private String idNoUrl2;
+
+    @ApiModelProperty(value = "任务数")
+    @TableField("work_num")
+    private Integer workNum;
 
 }

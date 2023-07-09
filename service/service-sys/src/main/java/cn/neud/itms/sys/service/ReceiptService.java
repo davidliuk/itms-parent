@@ -1,6 +1,6 @@
 package cn.neud.itms.sys.service;
 
-import cn.neud.itms.model.sys.TransferOrder;
+import cn.neud.itms.model.sys.Receipt;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -13,11 +13,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author neud
  * @since 2023-04-03
  */
-public interface TransferOrderService extends IService<TransferOrder> {
+public interface ReceiptService extends IService<Receipt> {
 
-    IPage<TransferOrder> selectPage(Page<TransferOrder> pageParam, TransferOrder workOrder);
+    IPage<Receipt> selectPage(Page<Receipt> pageParam, Receipt receipt);
 
-    void updateByOrderId(TransferOrder workOrder);
-
-    TransferOrder getByOrderId(Long orderId);
+    Receipt getByOrderId(Long orderId);
 }

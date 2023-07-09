@@ -17,4 +17,10 @@ public interface UserFeignClient {
     @GetMapping("/api/user/courier/inner/getAddressByUserId/{userId}")
     public AddressVo getAddressByUserId(@PathVariable("userId") Long userId);
 
+    @GetMapping("/api/user/courier/inner/addWorkNum/{courierId}/{workNum}")
+    public void addWorkNum(
+            @PathVariable("courierId") Long courierId,
+            @PathVariable("workNum") Integer workNum
+    );
+
 }

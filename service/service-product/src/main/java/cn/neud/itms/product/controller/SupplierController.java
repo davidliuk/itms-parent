@@ -38,7 +38,7 @@ public class SupplierController {
     public Result list(
             @PathVariable Long page,
             @PathVariable Long limit,
-            Supplier skuWare
+            @RequestBody Supplier skuWare
     ) {
         Page<Supplier> pageParam = new Page<>(page, limit);
         IPage<Supplier> pageModel = supplierService.selectPage(pageParam, skuWare);

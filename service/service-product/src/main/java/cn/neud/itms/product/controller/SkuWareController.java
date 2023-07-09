@@ -9,10 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -40,7 +37,7 @@ public class SkuWareController {
     public Result list(
             @PathVariable Long page,
             @PathVariable Long limit,
-            SkuWare skuWare
+            @RequestBody SkuWare skuWare
     ) {
         Page<SkuWare> pageParam = new Page<>(page, limit);
         IPage<SkuWare> pageModel = skuWareService.selectPage(pageParam, skuWare);

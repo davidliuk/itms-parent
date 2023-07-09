@@ -1,5 +1,6 @@
 package cn.neud.itms.model.sys;
 
+import cn.neud.itms.enums.CheckStatus;
 import cn.neud.itms.model.base.BaseEntity;
 import cn.neud.itms.model.order.OrderInfo;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -61,7 +62,7 @@ public class CheckOrder extends BaseEntity {
 
     @ApiModelProperty(value = "状态")
     @TableField("status")
-    private Integer status;
+    private CheckStatus status;
 
     @ApiModelProperty(value = "出库时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

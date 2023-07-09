@@ -57,7 +57,7 @@ public class WareController {
     public Result<IPage<Ware>> pageList(
             @PathVariable Long current,
             @PathVariable Long limit,
-            Ware ware
+            @RequestBody Ware ware
     ) {
         // 1 创建page对象，传递当前页和每页记录数
         // current：当前页

@@ -24,9 +24,14 @@ public class CourierServiceImpl extends ServiceImpl<CourierMapper, CourierInfo> 
         // 调用方法实现条件分页查询
         // 返回分页对象
         return baseMapper.selectPage(pageParam, new LambdaQueryWrapper<CourierInfo>()
-                .eq(stationId != null, CourierInfo::getStationId, stationId)
+                .eq(!StringUtils.isEmpty(stationId), CourierInfo::getStationId, stationId)
                 .like(!StringUtils.isEmpty(name), CourierInfo::getName, name)
                 .like(!StringUtils.isEmpty(idNo), CourierInfo::getIdNo, idNo));
+    }
+
+    @Override
+    public void addWorkNum(Long courierId, Integer workNum) {
+        baseMapper.addWorkNum(courierId, workNum);
     }
 
 }

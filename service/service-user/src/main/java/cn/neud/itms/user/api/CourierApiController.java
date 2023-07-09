@@ -4,6 +4,7 @@ import cn.neud.itms.common.auth.SaUserCheckLogin;
 import cn.neud.itms.common.auth.StpUserUtil;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.sys.client.SysFeignClient;
+import cn.neud.itms.user.service.CourierService;
 import cn.neud.itms.user.service.UserService;
 import cn.neud.itms.vo.sys.WorkOrderQueryVo;
 import cn.neud.itms.vo.user.AddressVo;
@@ -20,6 +21,9 @@ public class CourierApiController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CourierService courierService;
 
     @Autowired
     private SysFeignClient sysFeignClient;
@@ -46,5 +50,14 @@ public class CourierApiController {
         WorkOrderQueryVo workOrderQueryVo = new WorkOrderQueryVo();
         workOrderQueryVo.setCourierId(StpUserUtil.getLoginIdAsLong());
         return sysFeignClient.list(current, limit, workOrderQueryVo);
+    }
+
+    //根据userId查询提货点和配送员信息
+    @GetMapping("/inner/addWorkNum/{courierId}/{workNum}")
+    public void addWorkNum(
+            @PathVariable("courierId") Long courierId,
+            @PathVariable("workNum") Integer workNum
+    ) {
+        courierService.addWorkNum(courierId, workNum);
     }
 }

@@ -38,7 +38,7 @@ public class RegionWareController {
     public Result list(
             @PathVariable Long page,
             @PathVariable Long limit,
-            RegionWareQueryVo regionWareQueryVo
+            @RequestBody RegionWareQueryVo regionWareQueryVo
     ) {
         Page<RegionWare> pageParam = new Page<>(page, limit);
         IPage<RegionWare> pageModel = regionWareService.selectPageRegionWare(pageParam, regionWareQueryVo);

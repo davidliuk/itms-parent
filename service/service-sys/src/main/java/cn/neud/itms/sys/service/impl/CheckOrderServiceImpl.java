@@ -1,5 +1,6 @@
 package cn.neud.itms.sys.service.impl;
 
+import cn.neud.itms.enums.CheckStatus;
 import cn.neud.itms.model.sys.CheckOrder;
 import cn.neud.itms.sys.mapper.CheckOrderMapper;
 import cn.neud.itms.sys.service.CheckOrderService;
@@ -29,7 +30,7 @@ public class CheckOrderServiceImpl extends ServiceImpl<CheckOrderMapper, CheckOr
         Long id = checkOrder.getId();
         Long wareId = checkOrder.getWareId();
         Long stationId = checkOrder.getStationId();
-        Integer status = checkOrder.getStatus();
+        CheckStatus status = checkOrder.getStatus();
         Date inTime = checkOrder.getInTime();
         Date outTime = checkOrder.getOutTime();
 //        String skuName = checkOrder.getSkuName();
@@ -54,6 +55,14 @@ public class CheckOrderServiceImpl extends ServiceImpl<CheckOrderMapper, CheckOr
     @Override
     public int updateByOrderId(CheckOrder checkOrder) {
         return baseMapper.update(checkOrder, new LambdaQueryWrapper<CheckOrder>()
-                .eq(CheckOrder::getWorkOrderId, checkOrder.getWorkOrderId()));
+                .eq(CheckOrder::getWorkOrderId, checkOrder.getWorkOrderId())
+        );
+    }
+
+    @Override
+    public CheckOrder getByOrderId(Long orderId) {
+        return baseMapper.selectOne(new LambdaQueryWrapper<CheckOrder>()
+                .eq(CheckOrder::getWorkOrderId, orderId)
+        );
     }
 }

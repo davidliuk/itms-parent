@@ -24,6 +24,6 @@ public interface SysFeignClient {
     public Result list(
             @PathVariable Long page,
             @PathVariable Long limit,
-            WorkOrderQueryVo workOrderQueryVo
+            @RequestBody WorkOrderQueryVo workOrderQueryVo
     );
 }

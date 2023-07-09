@@ -1,5 +1,6 @@
 package cn.neud.itms.model.sys;
 
+import cn.neud.itms.enums.InvoiceStatus;
 import cn.neud.itms.model.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -43,4 +44,8 @@ public class Invoice extends BaseEntity {
     @ApiModelProperty(value = "总金额")
     @TableField("total_amount")
     private BigDecimal totalAmount;
+
+    @ApiModelProperty(value = "状态")
+    @TableField("status")
+    private InvoiceStatus status;
 }

@@ -18,4 +18,6 @@ public interface CourierService extends IService<CourierInfo> {
 
     IPage<CourierInfo> selectPage(Page<CourierInfo> pageParam, CourierQueryVo courierQueryVo);
 
+    void addWorkNum(Long courierId, Integer workNum);
+
 }

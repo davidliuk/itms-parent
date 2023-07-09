@@ -26,14 +26,16 @@ public class RoleController {
     //1 角色列表（条件分页查询）
     @ApiOperation("角色条件分页查询")
     @PostMapping("{current}/{limit}")
-    public Result pageList(@PathVariable Long current,
-                           @PathVariable Long limit,
-                           RoleQueryVo roleQueryVo) {
+    public Result pageList(
+            @PathVariable Long current,
+            @PathVariable Long limit,
+            @RequestBody RoleQueryVo roleQueryVo
+    ) {
         // 1 创建page对象，传递当前页和每页记录数
         // current：当前页
         // limit: 每页显示记录数
         Page<Role> pageParam = new Page<>(current, limit);
-
+        System.out.println(roleQueryVo.toString());
         //2 调用service方法实现条件分页查询，返回分页对象
         IPage<Role> pageModel = roleService.selectRolePage(pageParam, roleQueryVo);
 

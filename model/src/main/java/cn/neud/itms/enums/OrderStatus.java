@@ -5,23 +5,18 @@ import lombok.Getter;
 
 @Getter
 public enum OrderStatus {
-    UNPAID(0, "待支付"),
-    WAITING_DISPATCH(1, "可调度"),
-    DISPATCH(2, "已调度"),
-    OUT(3, "已出库"),
+    UNPAID(0, "待支付"), // 用户支付
+    PAID(1, "已支付"), // 调度
+    DISPATCH(2, "已调度"), // 区域中心库房出库
+    OUT(3, "已出库"), // 分站库房出库
     IN(4, "已入库"),
-    WAITING_ASSIGN(5, "待分配"), // 应该和已入库合并
-    ASSIGN(6, "已分配"),
+//    WAITING_ASSIGN(5, "待分配"), // 应该和已入库合并
+    ASSIGN(5, "已分配"),
 //    WAITING_TAKE(7, "待领货"),
-    WAITING_COURIER_TAKE(7, "待领货"),
-    WAITING_USER_TAKE(8, "待收货"),
-    FINISHED(9, "完成"),
+//    WAITING_COURIER_TAKE(7, "待领货"), // 应该和已分配合并
+    TAKE(6, "已领货"), // 待收货
+    RECEIVE(7 , "完成"), //
     CANCEL(-1, "取消");
-//    WAITING_DELIVERY(1, "待发货"),
-//    WAITING_TAKE(2, "待提货"),
-//    WAITING_COMMENT(3, "待评论"),
-//    FINISHED(4, "已完结"),
-//    CANCEL(-1, "已取消");
 
     @EnumValue
     private Integer code;
