@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +43,14 @@ public class SkuWareController {
         Page<SkuWare> pageParam = new Page<>(page, limit);
         IPage<SkuWare> pageModel = skuWareService.selectPage(pageParam, skuWare);
         return Result.ok(pageModel);
+    }
+
+    @ApiOperation("仓库库存求和")
+    @PostMapping("/sum")
+    public Result selectStockByIds(
+            @RequestBody Long[] ids
+    ) {
+        return Result.ok(skuWareService.selectStockByIds(ids));
     }
 
 }

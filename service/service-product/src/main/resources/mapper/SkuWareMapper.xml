@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.neud.itms.product.mapper.SkuWareMapper">
+
+    <select id="selectStockByIds" resultType="HashMap">
+        SELECT ware_id as id, sum(stock) as stock, sum(max_stock) as maxStock
+        from sku_ware
+        WHERE ware_id IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        GROUP BY ware_id
+    </select>
+
+</mapper>

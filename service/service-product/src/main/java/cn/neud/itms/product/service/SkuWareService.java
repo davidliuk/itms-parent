@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -21,4 +22,6 @@ public interface SkuWareService extends IService<SkuWare> {
     List<SkuWare> getSkuWareListBySkuId(Long id);
 
     IPage<SkuWare> selectPage(Page<SkuWare> pageParam, SkuWare skuWare);
+
+    Map<String, Object> selectStockByIds(Long[] ids);
 }

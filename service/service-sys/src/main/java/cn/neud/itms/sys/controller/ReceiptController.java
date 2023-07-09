@@ -24,7 +24,7 @@ public class ReceiptController {
     @Autowired
     private ReceiptService receiptService;
 
-    @ApiOperation("发票列表")
+    @ApiOperation("回执单列表")
     @PostMapping("/{page}/{limit}")
     public Result list(
             @PathVariable Long page,

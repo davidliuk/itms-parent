@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -44,5 +45,10 @@ public class SkuWareServiceImpl extends ServiceImpl<SkuWareMapper, SkuWare> impl
                 .eq(!StringUtils.isEmpty(skuId), SkuWare::getSkuId, skuId)
                 .like(!StringUtils.isEmpty(skuName), SkuWare::getSkuName, skuName)
         );
+    }
+
+    @Override
+    public Map<String, Object> selectStockByIds(Long[] ids) {
+        return baseMapper.selectStockByIds(ids);
     }
 }

@@ -38,6 +38,10 @@ public class SkuWare extends BaseEntity {
     @TableField("low_stock")
     private Integer lowStock;
 
+    @ApiModelProperty(value = "最大库存")
+    @TableField("max_stock")
+    private Integer maxStock;
+
     @ApiModelProperty(value = "销量")
     @TableField("sale")
     private Integer sale;
