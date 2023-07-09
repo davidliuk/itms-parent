@@ -83,12 +83,23 @@ public class WorkOrder extends BaseEntity {
 
     @ApiModelProperty(value = "配送类型")
     @TableField("work_type")
-    //	private DeliveryType deliveryType;
     private WorkType workType;
 
     @ApiModelProperty(value = "状态")
     @TableField("work_status")
     private WorkStatus workStatus;
+
+    @ApiModelProperty(value = "备注")
+    @TableField("remark")
+    private String remark;
+
+    @ApiModelProperty(value = "用户满意度")
+    @TableField("mark")
+    private Integer mark;
+
+    @ApiModelProperty(value = "反馈")
+    @TableField("feedback")
+    private String feedback;
 
     @ApiModelProperty(value = "订单")
     @TableField(exist = false)
