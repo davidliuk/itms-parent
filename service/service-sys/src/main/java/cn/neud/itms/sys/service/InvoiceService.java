@@ -17,4 +17,6 @@ public interface InvoiceService extends IService<Invoice> {
 
     IPage<Invoice> selectPage(Page<Invoice> pageParam, Invoice workOrderQueryVo);
 
+
+    Invoice getByOrderId(Long orderId);
 }

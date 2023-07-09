@@ -10,12 +10,12 @@ public enum OrderStatus {
     DISPATCH(2, "已调度"), // 区域中心库房出库
     OUT(3, "已出库"), // 分站库房出库
     IN(4, "已入库"),
-//    WAITING_ASSIGN(5, "待分配"), // 应该和已入库合并
+    //    WAITING_ASSIGN(5, "待分配"), // 应该和已入库合并
     ASSIGN(5, "已分配"),
-//    WAITING_TAKE(7, "待领货"),
+    //    WAITING_TAKE(7, "待领货"),
 //    WAITING_COURIER_TAKE(7, "待领货"), // 应该和已分配合并
     TAKE(6, "已领货"), // 待收货
-    RECEIVE(7 , "完成"), //
+    RECEIVE(7, "完成"), //
     CANCEL(-1, "取消");
 
     @EnumValue

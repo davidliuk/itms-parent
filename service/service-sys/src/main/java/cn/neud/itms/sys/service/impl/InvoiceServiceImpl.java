@@ -53,4 +53,11 @@ public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> impl
                 .ge(!StringUtils.isEmpty(totalAmount), Invoice::getTotalAmount, totalAmount));
     }
 
+    @Override
+    public Invoice getByOrderId(Long orderId) {
+        return baseMapper.selectOne(new LambdaQueryWrapper<Invoice>()
+                .eq(Invoice::getOrderId, orderId)
+        );
+    }
+
 }

@@ -51,6 +51,9 @@ public class DispatchController {
     @Autowired
     private ReceiptService receiptService;
 
+    @Autowired
+    private InvoiceService invoiceService;
+
     @ApiOperation("手动调度")
     @GetMapping("manual")
     @SaCheckRole(value = {RoleConstant.DISPATCH, RoleConstant.SYSTEM}, mode = SaMode.OR)
@@ -125,7 +128,6 @@ public class DispatchController {
         // 生成调拨单
         TransferOrder transferOrder = new TransferOrder();
         BeanUtils.copyProperties(workOrder, transferOrder);
-//        transferOrder.setOutTime(new Date());
         transferOrder.setWorkOrderId(workOrder.getId());
         transferOrderService.save(transferOrder);
         return Result.ok(null);
@@ -140,6 +142,7 @@ public class DispatchController {
         orderInfo.setTransferOrder(transferOrderService.getByOrderId(orderId));
         orderInfo.setCheckOrder(checkOrderService.getByOrderId(orderId));
         orderInfo.setReceipt(receiptService.getByOrderId(orderId));
+        orderInfo.setInvoice(invoiceService.getByOrderId(orderId));
         return Result.ok(orderInfo);
     }
 

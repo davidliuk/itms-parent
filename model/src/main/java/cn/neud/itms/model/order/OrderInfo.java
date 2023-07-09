@@ -228,6 +228,10 @@ public class OrderInfo extends BaseEntity {
     @TableField(exist = false)
     private Receipt receipt;
 
+    @ApiModelProperty(value = "发票单")
+    @TableField(exist = false)
+    private Invoice invoice;
+
     @ApiModelProperty(value = "验货单")
     @TableField(exist = false)
     private CheckOrder checkOrder;
