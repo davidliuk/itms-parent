@@ -20,5 +20,5 @@ public interface WorkOrderService extends IService<WorkOrder> {
 
     void updateByOrderId(WorkOrder workOrder);
 
-    WorkOrder getByOrderId(Long orderId);
+    WorkOrder getByOrderId(Long orderId, Integer status);
 }

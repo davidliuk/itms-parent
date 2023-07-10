@@ -1,7 +1,9 @@
 package cn.neud.itms.sys.service.impl;
 
 import cn.neud.itms.enums.CheckStatus;
+import cn.neud.itms.enums.WorkType;
 import cn.neud.itms.model.sys.CheckOrder;
+import cn.neud.itms.model.sys.TransferOrder;
 import cn.neud.itms.sys.mapper.CheckOrderMapper;
 import cn.neud.itms.sys.service.CheckOrderService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -26,13 +28,13 @@ public class CheckOrderServiceImpl extends ServiceImpl<CheckOrderMapper, CheckOr
 
     @Override
     public IPage<CheckOrder> selectPage(Page<CheckOrder> pageParam, CheckOrder checkOrder) {
-//        Long skuId = checkOrder.getSkuId();
         Long id = checkOrder.getId();
         Long wareId = checkOrder.getWareId();
         Long stationId = checkOrder.getStationId();
         CheckStatus status = checkOrder.getStatus();
         Date inTime = checkOrder.getInTime();
         Date outTime = checkOrder.getOutTime();
+//        Long skuId = checkOrder.getSkuId();
 //        String skuName = checkOrder.getSkuName();
 
         return baseMapper.selectPage(pageParam, new LambdaQueryWrapper<CheckOrder>()
@@ -60,9 +62,11 @@ public class CheckOrderServiceImpl extends ServiceImpl<CheckOrderMapper, CheckOr
     }
 
     @Override
-    public CheckOrder getByOrderId(Long orderId) {
+    public CheckOrder getByOrderId(Long orderId, Integer status) {
         return baseMapper.selectOne(new LambdaQueryWrapper<CheckOrder>()
                 .eq(CheckOrder::getWorkOrderId, orderId)
+                .le(CheckOrder::getStatus, status)
+                .eq(CheckOrder::getType, WorkType.DELIVERY)
         );
     }
 }

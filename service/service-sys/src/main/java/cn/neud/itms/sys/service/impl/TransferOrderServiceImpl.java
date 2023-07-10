@@ -1,6 +1,8 @@
 package cn.neud.itms.sys.service.impl;
 
+import cn.neud.itms.enums.WorkType;
 import cn.neud.itms.model.sys.TransferOrder;
+import cn.neud.itms.model.sys.WorkOrder;
 import cn.neud.itms.sys.mapper.TransferOrderMapper;
 import cn.neud.itms.sys.service.TransferOrderService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -51,9 +53,11 @@ public class TransferOrderServiceImpl extends ServiceImpl<TransferOrderMapper, T
     }
 
     @Override
-    public TransferOrder getByOrderId(Long orderId) {
+    public TransferOrder getByOrderId(Long orderId, Integer status) {
         return baseMapper.selectOne(new LambdaQueryWrapper<TransferOrder>()
                 .eq(TransferOrder::getOrderId, orderId)
+                .le(TransferOrder::getStatus, status)
+                .eq(TransferOrder::getType, WorkType.DELIVERY)
         );
     }
 }

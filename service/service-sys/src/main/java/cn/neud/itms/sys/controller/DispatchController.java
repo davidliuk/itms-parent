@@ -138,9 +138,9 @@ public class DispatchController {
     public Result getOrderDetail(@PathVariable String orderNo) {
         OrderInfo orderInfo = orderFeignClient.getOrderInfo(orderNo);
         Long orderId = orderInfo.getId();
-        orderInfo.setWorkOrder(workOrderService.getByOrderId(orderId));
-        orderInfo.setTransferOrder(transferOrderService.getByOrderId(orderId));
-        orderInfo.setCheckOrder(checkOrderService.getByOrderId(orderId));
+        orderInfo.setWorkOrder(workOrderService.getByOrderId(orderId, orderInfo.getOrderStatus().getCode()));
+        orderInfo.setTransferOrder(transferOrderService.getByOrderId(orderId, orderInfo.getOrderStatus().getCode()));
+        orderInfo.setCheckOrder(checkOrderService.getByOrderId(orderId, orderInfo.getOrderStatus().getCode()));
         orderInfo.setReceipt(receiptService.getByOrderId(orderId));
         orderInfo.setInvoice(invoiceService.getByOrderId(orderId));
         return Result.ok(orderInfo);

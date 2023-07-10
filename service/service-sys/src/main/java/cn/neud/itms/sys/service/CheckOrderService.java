@@ -22,5 +22,5 @@ public interface CheckOrderService extends IService<CheckOrder> {
 
     int updateByOrderId(CheckOrder checkOrder);
 
-    CheckOrder getByOrderId(Long orderId);
+    CheckOrder getByOrderId(Long orderId, Integer status);
 }

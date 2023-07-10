@@ -126,7 +126,7 @@ public class WareController {
         orderFeignClient.updateOrderInfo(orderInfo);
 
         // 修改任务单
-        WorkOrder workOrder = workOrderService.getByOrderId(orderId);
+        WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkStatus.DISPATCH.getCode());
         workOrder.setOrderId(orderId);
         workOrder.setWorkStatus(WorkStatus.OUT);
         workOrderService.updateByOrderId(workOrder);
@@ -163,7 +163,7 @@ public class WareController {
         orderFeignClient.updateOrderInfo(orderInfo);
 
         // 获取任务单
-        WorkOrder workOrder = workOrderService.getByOrderId(orderId);
+        WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkStatus.DISPATCH.getCode());
         workOrder.setOrderId(orderId);
         workOrder.setWorkStatus(WorkStatus.OUT);
         workOrderService.updateByOrderId(workOrder);

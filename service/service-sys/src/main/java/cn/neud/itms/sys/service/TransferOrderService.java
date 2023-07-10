@@ -19,5 +19,5 @@ public interface TransferOrderService extends IService<TransferOrder> {
 
     void updateByOrderId(TransferOrder workOrder);
 
-    TransferOrder getByOrderId(Long orderId);
+    TransferOrder getByOrderId(Long orderId, Integer status);
 }

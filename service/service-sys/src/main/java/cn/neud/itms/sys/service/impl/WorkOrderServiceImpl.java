@@ -65,9 +65,12 @@ public class WorkOrderServiceImpl extends ServiceImpl<WorkOrderMapper, WorkOrder
     }
 
     @Override
-    public WorkOrder getByOrderId(Long orderId) {
+    public WorkOrder getByOrderId(Long orderId, Integer status) {
+        // 判断任务单是否存在
         return baseMapper.selectOne(new LambdaQueryWrapper<WorkOrder>()
                 .eq(WorkOrder::getOrderId, orderId)
+                .le(WorkOrder::getWorkStatus, status)
+                .eq(WorkOrder::getWorkType, WorkType.DELIVERY)
         );
     }
 }
