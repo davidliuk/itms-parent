@@ -16,6 +16,8 @@ public enum OrderStatus {
 //    WAITING_COURIER_TAKE(7, "待领货"), // 应该和已分配合并
     TAKE(6, "已领货"), // 待收货
     RECEIVE(7, "完成"), //
+    REFUND(8, "退货退款"), //
+//    RETURN(9, "货物退回"), //
     CANCEL(-1, "取消");
 
     @EnumValue

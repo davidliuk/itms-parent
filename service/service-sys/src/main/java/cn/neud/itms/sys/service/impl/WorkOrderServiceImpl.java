@@ -58,19 +58,20 @@ public class WorkOrderServiceImpl extends ServiceImpl<WorkOrderMapper, WorkOrder
     }
 
     @Override
-    public void updateByOrderId(WorkOrder workOrder) {
+    public void updateByOrderId(WorkOrder workOrder, WorkType type) {
         baseMapper.update(workOrder, new LambdaQueryWrapper<WorkOrder>()
                 .eq(WorkOrder::getOrderId, workOrder.getOrderId())
+                .eq(WorkOrder::getWorkType, type)
         );
     }
 
     @Override
-    public WorkOrder getByOrderId(Long orderId, Integer status) {
+    public WorkOrder getByOrderId(Long orderId, WorkType type) {
         // 判断任务单是否存在
         return baseMapper.selectOne(new LambdaQueryWrapper<WorkOrder>()
-                .eq(WorkOrder::getOrderId, orderId)
-                .le(WorkOrder::getWorkStatus, status)
-                .eq(WorkOrder::getWorkType, WorkType.DELIVERY)
+                        .eq(WorkOrder::getOrderId, orderId)
+//                .le(WorkOrder::getWorkStatus, status)
+                        .eq(WorkOrder::getWorkType, type)
         );
     }
 }

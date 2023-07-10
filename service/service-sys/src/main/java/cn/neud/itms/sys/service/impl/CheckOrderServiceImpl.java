@@ -3,7 +3,6 @@ package cn.neud.itms.sys.service.impl;
 import cn.neud.itms.enums.CheckStatus;
 import cn.neud.itms.enums.WorkType;
 import cn.neud.itms.model.sys.CheckOrder;
-import cn.neud.itms.model.sys.TransferOrder;
 import cn.neud.itms.sys.mapper.CheckOrderMapper;
 import cn.neud.itms.sys.service.CheckOrderService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -55,18 +54,19 @@ public class CheckOrderServiceImpl extends ServiceImpl<CheckOrderMapper, CheckOr
     }
 
     @Override
-    public int updateByOrderId(CheckOrder checkOrder) {
+    public int updateByOrderId(CheckOrder checkOrder, WorkType type) {
         return baseMapper.update(checkOrder, new LambdaQueryWrapper<CheckOrder>()
                 .eq(CheckOrder::getWorkOrderId, checkOrder.getWorkOrderId())
+                .eq(CheckOrder::getType, type)
         );
     }
 
     @Override
-    public CheckOrder getByOrderId(Long orderId, Integer status) {
+    public CheckOrder getByOrderId(Long orderId, WorkType type) {
         return baseMapper.selectOne(new LambdaQueryWrapper<CheckOrder>()
-                .eq(CheckOrder::getWorkOrderId, orderId)
-                .le(CheckOrder::getStatus, status)
-                .eq(CheckOrder::getType, WorkType.DELIVERY)
+                        .eq(CheckOrder::getWorkOrderId, orderId)
+//                .le(CheckOrder::getStatus, type)
+                        .eq(CheckOrder::getType, type)
         );
     }
 }

@@ -40,4 +40,6 @@ public interface OrderInfoService extends IService<OrderInfo> {
     IPage<OrderInfo> selectPage(Page<OrderInfo> pageParam, OrderInfoQueryVo orderInfoQueryVo);
 
     OrderInfo getOrderInfoDetail(Long orderId);
+
+    void returnOrder(String orderNo);
 }

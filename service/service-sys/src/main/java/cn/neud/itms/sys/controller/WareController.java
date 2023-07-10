@@ -5,6 +5,7 @@ import cn.neud.itms.common.result.Result;
 import cn.neud.itms.enums.OrderStatus;
 import cn.neud.itms.enums.StorageType;
 import cn.neud.itms.enums.WorkStatus;
+import cn.neud.itms.enums.WorkType;
 import cn.neud.itms.model.order.OrderInfo;
 import cn.neud.itms.model.sys.*;
 import cn.neud.itms.order.client.OrderFeignClient;
@@ -126,16 +127,16 @@ public class WareController {
         orderFeignClient.updateOrderInfo(orderInfo);
 
         // 修改任务单
-        WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkStatus.DISPATCH.getCode());
+        WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.DELIVERY);
         workOrder.setOrderId(orderId);
         workOrder.setWorkStatus(WorkStatus.OUT);
-        workOrderService.updateByOrderId(workOrder);
+        workOrderService.updateByOrderId(workOrder, WorkType.DELIVERY);
 
         // 修改调拨单
         TransferOrder transferOrder = new TransferOrder();
         transferOrder.setOrderId(orderId);
         transferOrder.setOutTime(new Date());
-        transferOrderService.updateByOrderId(transferOrder);
+        transferOrderService.updateByOrderId(transferOrder, WorkType.DELIVERY);
 
         // 生成库存单，应该每个item一个单
         StorageOrder storageOrder = new StorageOrder();
@@ -147,32 +148,26 @@ public class WareController {
         CheckOrder checkOrder = new CheckOrder();
         BeanUtils.copyProperties(workOrder, checkOrder);
         checkOrder.setOutTime(new Date());
+        checkOrder.setType(WorkType.DELIVERY);
         checkOrderService.save(checkOrder);
 
         return Result.ok(null);
     }
 
     @ApiOperation("退货入库")
-    @GetMapping("/in/{orderId}")
+    @GetMapping("/returnOrder/in/{orderId}")
     public Result in(@PathVariable Long orderId) {
-        // 修改订单状态
-        OrderInfo orderInfo = new OrderInfo();
-        orderInfo.setId(orderId);
-        orderInfo.setOrderStatus(OrderStatus.OUT);
-        orderInfo.setInTime(new Date());
-        orderFeignClient.updateOrderInfo(orderInfo);
-
-        // 获取任务单
-        WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkStatus.DISPATCH.getCode());
+        // 修改任务单
+        WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.RETURN);
         workOrder.setOrderId(orderId);
-        workOrder.setWorkStatus(WorkStatus.OUT);
-        workOrderService.updateByOrderId(workOrder);
+        workOrder.setWorkStatus(WorkStatus.RETURN_IN);
+        workOrderService.updateByOrderId(workOrder, WorkType.RETURN);
 
-        // 生成调拨单
+        // 修改调拨单
         TransferOrder transferOrder = new TransferOrder();
         transferOrder.setOrderId(orderId);
-        transferOrder.setOutTime(new Date());
-        transferOrderService.save(transferOrder);
+        transferOrder.setInTime(new Date());
+        transferOrderService.updateByOrderId(transferOrder, WorkType.RETURN);
 
         // 生成库存单，应该每个item一个单
         StorageOrder storageOrder = new StorageOrder();
@@ -180,11 +175,11 @@ public class WareController {
         storageOrder.setStorageType(StorageType.OUT);
         storageOrderService.save(storageOrder);
 
-        // 生成验货单
+        // 修改验货单
         CheckOrder checkOrder = new CheckOrder();
-        BeanUtils.copyProperties(workOrder, checkOrder);
-        checkOrder.setOutTime(new Date());
-        checkOrderService.save(checkOrder);
+        checkOrder.setOrderId(orderId);
+        checkOrder.setInTime(new Date());
+        checkOrderService.updateByOrderId(checkOrder, WorkType.RETURN);
 
         return Result.ok(null);
     }

@@ -64,7 +64,8 @@ public class OrderInfoApiController {
     @GetMapping("/queryPayStatus/{orderNo}")
     public Result queryPayStatus(
             @ApiParam(name = "orderNo", value = "订单No", required = true)
-            @PathVariable("orderNo") String orderNo) {
+            @PathVariable("orderNo") String orderNo
+    ) {
         System.out.println(new Date().toLocaleString());
         for (int i = 0; i <= 3; i++) {
             if (i == 3) {
@@ -83,11 +84,14 @@ public class OrderInfoApiController {
     }
 
     @ApiOperation("退货订单")
-    @GetMapping("auth/returnOrder")
+    @GetMapping("auth/returnOrder/{orderNo}")
     @SaUserCheckLogin
-    public Result returnOrder() {
-        OrderConfirmVo orderConfirmVo = orderInfoService.confirmOrder();
-        return Result.ok(orderConfirmVo);
+    public Result returnOrder(
+            @ApiParam(name = "orderNo", value = "订单No", required = true)
+            @PathVariable("orderNo") String orderNo
+    ) {
+        orderInfoService.returnOrder(orderNo);
+        return Result.ok(null);
     }
 
     @SaUserCheckLogin
@@ -129,6 +133,13 @@ public class OrderInfoApiController {
     public OrderInfo getOrderInfo(@PathVariable("orderNo") String orderNo) {
         return orderInfoService.getOrderInfoByOrderNo(orderNo);
     }
+
+    // 根据orderNo查询订单信息
+//    @ApiOperation("根据orderId查询订单信息")
+//    @GetMapping("inner/getOrderInfo/{orderId}")
+//    public OrderInfo getOrderInfoById(@PathVariable("orderId") Long orderId) {
+//        return orderInfoService.getOrderInfoById(orderId);
+//    }
 
     @PutMapping("inner/updateOrderInfo")
     public void updateOrderInfo(@RequestBody OrderInfo orderInfo) {

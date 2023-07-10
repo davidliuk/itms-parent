@@ -13,6 +13,9 @@ public interface OrderFeignClient {
     @GetMapping("/api/order/inner/getOrderInfo/{orderNo}")
     public OrderInfo getOrderInfo(@PathVariable("orderNo") String orderNo);
 
+    @GetMapping("/api/order/auth/getOrderInfoById/{orderId}")
+    public OrderInfo getOrderInfoById(@PathVariable("orderId") Long orderId);
+
     @PutMapping("/api/order/inner/updateOrderInfo")
     public void updateOrderInfo(@RequestBody OrderInfo orderInfo);
 }

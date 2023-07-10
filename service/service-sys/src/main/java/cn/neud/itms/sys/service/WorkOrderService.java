@@ -1,5 +1,6 @@
 package cn.neud.itms.sys.service;
 
+import cn.neud.itms.enums.WorkType;
 import cn.neud.itms.model.sys.WorkOrder;
 import cn.neud.itms.vo.sys.WorkOrderQueryVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -18,7 +19,7 @@ public interface WorkOrderService extends IService<WorkOrder> {
 
     IPage<WorkOrder> selectPage(Page<WorkOrder> pageParam, WorkOrderQueryVo workOrderQueryVo);
 
-    void updateByOrderId(WorkOrder workOrder);
+    void updateByOrderId(WorkOrder workOrder, WorkType type);
 
-    WorkOrder getByOrderId(Long orderId, Integer status);
+    WorkOrder getByOrderId(Long orderId, WorkType type);
 }

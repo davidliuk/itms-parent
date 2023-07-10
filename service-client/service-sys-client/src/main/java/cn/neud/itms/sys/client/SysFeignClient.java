@@ -26,4 +26,7 @@ public interface SysFeignClient {
             @PathVariable Long limit,
             @RequestBody WorkOrderQueryVo workOrderQueryVo
     );
+
+    @GetMapping("/api/sys/dispatch/inner/returnOrder")
+    void returnOrder(String orderNo);
 }

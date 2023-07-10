@@ -409,6 +409,31 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     }
 
     @Override
+    public void returnOrder(String orderNo) {
+        // 根据订单号查询订单信息
+        OrderInfo orderInfo = this.getOrderInfoByOrderNo(orderNo);
+        if (orderInfo == null) {
+            return;
+        }
+        // 判断订单状态是否是已支付
+        if (orderInfo.getOrderStatus() == OrderStatus.UNPAID) {
+            return;
+        }
+        // 修改订单状态为已退款
+        orderInfo.setOrderStatus(OrderStatus.REFUND);
+        baseMapper.updateById(orderInfo);
+        sysFeignClient.returnOrder(orderNo);
+//        sysFeignClient.refundDispatch(orderNo);
+//        // 修改订单状态为已退款
+//        orderInfo.setOrderStatus(OrderStatus.REFUND);
+//        baseMapper.updateById(orderInfo);
+//        // 退款成功，发送消息给库存
+//        rabbitService.sendMessage(MqConstant.EXCHANGE_DIRECT_ORDER_CANCEL,
+//                MqConstant.ROUTING_ORDER_CANCEL,
+//                orderNo);
+    }
+
+    @Override
     public IPage<OrderInfo> selectPage(
             Page<OrderInfo> pageParam,
             OrderInfoQueryVo orderInfoQueryVo

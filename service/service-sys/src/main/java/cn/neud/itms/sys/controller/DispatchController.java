@@ -6,6 +6,9 @@ import cn.dev33.satoken.annotation.SaMode;
 import cn.neud.itms.common.auth.RoleConstant;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.enums.OrderStatus;
+import cn.neud.itms.enums.TransferStatus;
+import cn.neud.itms.enums.WorkStatus;
+import cn.neud.itms.enums.WorkType;
 import cn.neud.itms.model.order.OrderInfo;
 import cn.neud.itms.model.sys.Logistics;
 import cn.neud.itms.model.sys.TransferOrder;
@@ -82,12 +85,12 @@ public class DispatchController {
         workOrder.setLogisticsId(logisticsId);
         workOrder.setLogisticsName(logisticsName);
         workOrder.setLogisticsPhone(logisticsPhone);
-        workOrderService.updateByOrderId(workOrder);
+        workOrderService.updateByOrderId(workOrder, WorkType.DELIVERY);
 
         // 修改调拨单
         TransferOrder transferOrder = new TransferOrder();
         BeanUtils.copyProperties(workOrder, transferOrder);
-        transferOrderService.updateByOrderId(transferOrder);
+        transferOrderService.updateByOrderId(transferOrder, WorkType.DELIVERY);
 
         return Result.ok(null);
     }
@@ -129,6 +132,7 @@ public class DispatchController {
         TransferOrder transferOrder = new TransferOrder();
         BeanUtils.copyProperties(workOrder, transferOrder);
         transferOrder.setWorkOrderId(workOrder.getId());
+        transferOrder.setType(WorkType.DELIVERY);
         transferOrderService.save(transferOrder);
         return Result.ok(null);
     }
@@ -138,12 +142,74 @@ public class DispatchController {
     public Result getOrderDetail(@PathVariable String orderNo) {
         OrderInfo orderInfo = orderFeignClient.getOrderInfo(orderNo);
         Long orderId = orderInfo.getId();
-        orderInfo.setWorkOrder(workOrderService.getByOrderId(orderId, orderInfo.getOrderStatus().getCode()));
-        orderInfo.setTransferOrder(transferOrderService.getByOrderId(orderId, orderInfo.getOrderStatus().getCode()));
-        orderInfo.setCheckOrder(checkOrderService.getByOrderId(orderId, orderInfo.getOrderStatus().getCode()));
+        orderInfo.setWorkOrder(workOrderService.getByOrderId(orderId, WorkType.DELIVERY));
+        orderInfo.setTransferOrder(transferOrderService.getByOrderId(orderId, WorkType.DELIVERY));
+        orderInfo.setCheckOrder(checkOrderService.getByOrderId(orderId, WorkType.DELIVERY));
         orderInfo.setReceipt(receiptService.getByOrderId(orderId));
         orderInfo.setInvoice(invoiceService.getByOrderId(orderId));
         return Result.ok(orderInfo);
+    }
+
+    @ApiOperation("退货自动调度")
+    @GetMapping("/inner/returnOrder/{orderNo}")
+    void returnOrder(String orderNo) {
+        OrderInfo orderInfo = orderFeignClient.getOrderInfo(orderNo);
+        OrderStatus status = orderInfo.getOrderStatus();
+        Long orderId = orderInfo.getId();
+        WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.DELIVERY);
+        workOrder.setOrderId(orderId);
+        workOrder.setWorkStatus(WorkStatus.CANCEL);
+        workOrderService.updateByOrderId(workOrder, WorkType.DELIVERY);
+        if (status == OrderStatus.DISPATCH) {
+            // 没发货直接取消，无需生成退货任务单
+            // 修改调拨单
+            TransferOrder transferOrder = new TransferOrder();
+            transferOrder.setOrderId(orderId);
+            transferOrder.setStatus(TransferStatus.CANCEL);
+            transferOrderService.updateByOrderId(transferOrder, WorkType.DELIVERY);
+        } else if (status == OrderStatus.OUT) {
+            // 这种情况需要分站点到货，然后点退货
+            // 生成退货任务单
+            WorkOrder returnWorkOrder = new WorkOrder();
+            BeanUtils.copyProperties(orderInfo, returnWorkOrder);
+            returnWorkOrder.setWorkType(WorkType.RETURN);
+            returnWorkOrder.setWorkStatus(WorkStatus.RETURN_ASSIGN);
+            workOrderService.save(returnWorkOrder);
+            // 生成调拨单
+            TransferOrder transferOrder = new TransferOrder();
+            BeanUtils.copyProperties(workOrder, transferOrder);
+            transferOrder.setWorkOrderId(workOrder.getId());
+            transferOrder.setType(WorkType.RETURN);
+            transferOrderService.save(transferOrder);
+        } else if (status == OrderStatus.IN || status == OrderStatus.ASSIGN) {
+            // 这种情况需要分站点退货
+            // 到分站或者已分配状态，生成新的单并且退回
+            WorkOrder returnWorkOrder = new WorkOrder();
+            BeanUtils.copyProperties(orderInfo, returnWorkOrder);
+            returnWorkOrder.setWorkType(WorkType.RETURN);
+            returnWorkOrder.setWorkStatus(WorkStatus.RETURN_STATION);
+            workOrderService.save(returnWorkOrder);
+            // 生成调拨单
+            TransferOrder transferOrder = new TransferOrder();
+            BeanUtils.copyProperties(workOrder, transferOrder);
+            transferOrder.setWorkOrderId(workOrder.getId());
+            transferOrder.setType(WorkType.RETURN);
+            transferOrderService.save(transferOrder);
+        } else {
+            // 这种情况需要配送员去接货，配送员确认接货，配送员送回分站
+            WorkOrder returnWorkOrder = new WorkOrder();
+            BeanUtils.copyProperties(orderInfo, returnWorkOrder);
+            returnWorkOrder.setWorkType(WorkType.RETURN);
+            returnWorkOrder.setWorkStatus(WorkStatus.RETURN_UNASSIGNED);
+            workOrderService.save(returnWorkOrder);
+            // 生成调拨单
+            TransferOrder transferOrder = new TransferOrder();
+            BeanUtils.copyProperties(workOrder, transferOrder);
+            transferOrder.setWorkOrderId(workOrder.getId());
+            transferOrder.setType(WorkType.RETURN);
+            transferOrderService.save(transferOrder);
+        }
+
     }
 
 }

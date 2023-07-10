@@ -5,10 +5,9 @@ import lombok.Getter;
 
 @Getter
 public enum InvoiceStatus {
-    DISPATCH(2, "已调度"), // 区域中心库房出库
-    OUT(3, "已出库"), // 分站库房出库
-    IN(4, "已入库"),
-    CANCEL(-1, "取消");
+    UNUSED(1, "未领用"), // 区域中心库房出库
+    USED(2, "已领用"), // 分站库房出库
+    CANCEL(-1, "已作废");
 
     @EnumValue
     private Integer code;

@@ -5,6 +5,7 @@ import cn.neud.itms.common.result.Result;
 import cn.neud.itms.enums.OrderStatus;
 import cn.neud.itms.enums.StorageType;
 import cn.neud.itms.enums.WorkStatus;
+import cn.neud.itms.enums.WorkType;
 import cn.neud.itms.model.order.OrderInfo;
 import cn.neud.itms.model.sys.*;
 import cn.neud.itms.order.client.OrderFeignClient;
@@ -13,6 +14,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -125,23 +127,36 @@ public class RegionStationController {
     @GetMapping("/in/{orderId}")
     public Result out(@PathVariable Long orderId) {
         // 修改订单状态
-        OrderInfo orderInfo = new OrderInfo();
-        orderInfo.setId(orderId);
-        orderInfo.setOrderStatus(OrderStatus.IN);
-        orderInfo.setInTime(new Date());
-        orderFeignClient.updateOrderInfo(orderInfo);
-
-        // 修改任务单
-        WorkOrder workOrder = new WorkOrder();
-        workOrder.setOrderId(orderId);
-        workOrder.setWorkStatus(WorkStatus.IN);
-        workOrderService.updateByOrderId(workOrder);
+        OrderInfo orderInfo = orderFeignClient.getOrderInfoById(orderId);
+        if (orderInfo == null) {
+            return Result.fail("订单不存在");
+        }
+        if (orderInfo.getOrderStatus() != OrderStatus.OUT && orderInfo.getOrderStatus() != OrderStatus.CANCEL) {
+            return Result.fail("订单状态不正确");
+        }
+        if (orderInfo.getOrderStatus() == OrderStatus.OUT) {
+            orderInfo.setId(orderId);
+            orderInfo.setOrderStatus(OrderStatus.IN);
+            orderInfo.setInTime(new Date());
+            orderFeignClient.updateOrderInfo(orderInfo);
+            // 修改任务单
+            WorkOrder workOrder = new WorkOrder();
+            workOrder.setOrderId(orderId);
+            workOrder.setWorkStatus(WorkStatus.IN);
+            workOrderService.updateByOrderId(workOrder, WorkType.DELIVERY);
+        } else {
+            // 修改任务单
+            WorkOrder workOrder = new WorkOrder();
+            workOrder.setOrderId(orderId);
+            workOrder.setWorkStatus(WorkStatus.RETURN_STATION);
+            workOrderService.updateByOrderId(workOrder, WorkType.RETURN);
+        }
 
         // 修改调拨单
         TransferOrder transferOrder = new TransferOrder();
         transferOrder.setOrderId(orderId);
         transferOrder.setInTime(new Date());
-        transferOrderService.updateByOrderId(transferOrder);
+        transferOrderService.updateByOrderId(transferOrder, WorkType.DELIVERY);
 
         // 生成库存单，应该每个item一个单
         StorageOrder storageOrder = new StorageOrder();
@@ -151,8 +166,70 @@ public class RegionStationController {
 
         // 修改验货单
         CheckOrder checkOrder = new CheckOrder();
+        checkOrder.setOrderId(orderId);
         checkOrder.setInTime(new Date());
-        checkOrderService.updateByOrderId(checkOrder);
+        checkOrderService.updateByOrderId(checkOrder, WorkType.DELIVERY);
+
+        return Result.ok(null);
+    }
+
+    @ApiOperation("退货入站")
+    @GetMapping("/returnOrder/in/{orderId}")
+    public Result in(@PathVariable Long orderId) {
+        // 获取任务单
+        WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.RETURN);
+        workOrder.setOrderId(orderId);
+        workOrder.setWorkStatus(WorkStatus.RETURN_STATION);
+        workOrderService.updateByOrderId(workOrder, WorkType.RETURN);
+
+        // 修改调拨单
+        TransferOrder transferOrder = new TransferOrder();
+        transferOrder.setOrderId(orderId);
+        transferOrder.setOutTime(new Date());
+        transferOrderService.save(transferOrder);
+
+        // 生成库存单，应该每个item一个单
+        StorageOrder storageOrder = new StorageOrder();
+        BeanUtils.copyProperties(workOrder, storageOrder);
+        storageOrder.setStorageType(StorageType.OUT);
+        storageOrderService.save(storageOrder);
+
+        // 生成验货单
+        CheckOrder checkOrder = new CheckOrder();
+        BeanUtils.copyProperties(workOrder, checkOrder);
+        checkOrder.setOutTime(new Date());
+        checkOrderService.save(checkOrder);
+
+        return Result.ok(null);
+    }
+
+    @ApiOperation("退货出库")
+    @GetMapping("/returnOrderout/{orderId}")
+    public Result returnOrderOut(@PathVariable Long orderId) {
+        // 修改任务单
+        WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.RETURN);
+        workOrder.setOrderId(orderId);
+        workOrder.setWorkStatus(WorkStatus.OUT);
+        workOrderService.updateByOrderId(workOrder, WorkType.RETURN);
+
+        // 修改调拨单
+        TransferOrder transferOrder = new TransferOrder();
+        transferOrder.setOrderId(orderId);
+        transferOrder.setOutTime(new Date());
+        transferOrderService.updateByOrderId(transferOrder, WorkType.RETURN);
+
+        // 生成库存单，应该每个item一个单
+        StorageOrder storageOrder = new StorageOrder();
+        BeanUtils.copyProperties(workOrder, storageOrder);
+        storageOrder.setStorageType(StorageType.OUT);
+        storageOrderService.save(storageOrder);
+
+        // 生成验货单
+        CheckOrder checkOrder = new CheckOrder();
+        BeanUtils.copyProperties(workOrder, checkOrder);
+        checkOrder.setOutTime(new Date());
+        checkOrder.setType(WorkType.RETURN);
+        checkOrderService.save(checkOrder);
 
         return Result.ok(null);
     }

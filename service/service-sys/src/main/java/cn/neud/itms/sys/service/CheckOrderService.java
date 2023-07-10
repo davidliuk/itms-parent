@@ -1,5 +1,6 @@
 package cn.neud.itms.sys.service;
 
+import cn.neud.itms.enums.WorkType;
 import cn.neud.itms.model.sys.CheckOrder;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -20,7 +21,7 @@ public interface CheckOrderService extends IService<CheckOrder> {
     //    CheckOrder selectByOrderId(String orderId);
     CheckOrder selectByWorkOrderId(Long workOrderId);
 
-    int updateByOrderId(CheckOrder checkOrder);
+    int updateByOrderId(CheckOrder checkOrder, WorkType type);
 
-    CheckOrder getByOrderId(Long orderId, Integer status);
+    CheckOrder getByOrderId(Long orderId, WorkType type);
 }
