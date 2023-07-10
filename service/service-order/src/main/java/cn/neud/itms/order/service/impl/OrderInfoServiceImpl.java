@@ -327,7 +327,6 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         if (orderInfo == null) {
             return null;
         }
-
         // 根据orderId查询订单所有订单项list列表
         List<OrderItem> orderItemList = orderItemMapper.selectList(
                 new LambdaQueryWrapper<OrderItem>()

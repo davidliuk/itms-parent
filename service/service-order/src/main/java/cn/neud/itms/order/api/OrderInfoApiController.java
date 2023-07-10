@@ -134,6 +134,12 @@ public class OrderInfoApiController {
         return orderInfoService.getOrderInfoByOrderNo(orderNo);
     }
 
+    @ApiOperation("获取订单详情")
+    @GetMapping("inner/getOrderInfoById/{orderId}")
+    public OrderInfo getOrderById(@PathVariable("orderId") Long orderId) {
+        return orderInfoService.getOrderInfoById(orderId);
+    }
+
     // 根据orderNo查询订单信息
 //    @ApiOperation("根据orderId查询订单信息")
 //    @GetMapping("inner/getOrderInfo/{orderId}")
