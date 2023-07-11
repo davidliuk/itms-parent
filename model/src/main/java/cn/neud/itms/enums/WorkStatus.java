@@ -25,6 +25,7 @@ public enum WorkStatus {
     RECEIVE(7, "完成"), //
     RETURN_UNASSIGNED(8, "退货未分配"), //
     RETURN_ASSIGN(9, "退货分配"), //
+    RETURN_TAKE(9, "退货分配"), //
     RETURN_STATION(10, "退货入站"), //
     RETURN_OUT(11, "货物出库"), //
     RETURN_IN(12, "货物入库"), //

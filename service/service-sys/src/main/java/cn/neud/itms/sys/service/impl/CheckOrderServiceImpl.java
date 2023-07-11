@@ -50,13 +50,14 @@ public class CheckOrderServiceImpl extends ServiceImpl<CheckOrderMapper, CheckOr
     @Override
     public CheckOrder selectByWorkOrderId(Long workOrderId) {
         return baseMapper.selectOne(new LambdaQueryWrapper<CheckOrder>()
-                .eq(CheckOrder::getWorkOrderId, workOrderId));
+                .eq(CheckOrder::getWorkOrderId, workOrderId)
+        );
     }
 
     @Override
     public int updateByOrderId(CheckOrder checkOrder, WorkType type) {
         return baseMapper.update(checkOrder, new LambdaQueryWrapper<CheckOrder>()
-                .eq(CheckOrder::getWorkOrderId, checkOrder.getWorkOrderId())
+                .eq(CheckOrder::getOrderId, checkOrder.getOrderId())
                 .eq(CheckOrder::getType, type)
         );
     }
@@ -64,7 +65,7 @@ public class CheckOrderServiceImpl extends ServiceImpl<CheckOrderMapper, CheckOr
     @Override
     public CheckOrder getByOrderId(Long orderId, WorkType type) {
         return baseMapper.selectOne(new LambdaQueryWrapper<CheckOrder>()
-                        .eq(CheckOrder::getWorkOrderId, orderId)
+                        .eq(CheckOrder::getOrderId, orderId)
 //                .le(CheckOrder::getStatus, type)
                         .eq(CheckOrder::getType, type)
         );

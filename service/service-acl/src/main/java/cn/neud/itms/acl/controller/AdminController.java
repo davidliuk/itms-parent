@@ -109,6 +109,7 @@ public class AdminController {
     @ApiOperation("批量删除")
     @DeleteMapping("")
     public Result batchRemove(@RequestBody List<Long> idList) {
+        System.out.println(idList.toString());
         adminService.removeByIds(idList);
         return Result.ok(null);
     }
