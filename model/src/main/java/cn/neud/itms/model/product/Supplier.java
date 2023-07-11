@@ -54,8 +54,8 @@ public class Supplier extends BaseEntity {
     @TableField("work_time")
     private String workTime;
 
-    @ApiModelProperty(value = "营业状态")
-    @TableField("work_status")
-    private Integer workStatus;
+//    @ApiModelProperty(value = "营业状态")
+//    @TableField("work_status")
+//    private Integer workStatus;
 
 }

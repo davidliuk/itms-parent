@@ -2,10 +2,7 @@ package cn.neud.itms.sys.controller;
 
 
 import cn.neud.itms.common.result.Result;
-import cn.neud.itms.enums.OrderStatus;
-import cn.neud.itms.enums.StorageType;
-import cn.neud.itms.enums.WorkStatus;
-import cn.neud.itms.enums.WorkType;
+import cn.neud.itms.enums.*;
 import cn.neud.itms.model.order.OrderInfo;
 import cn.neud.itms.model.sys.*;
 import cn.neud.itms.order.client.OrderFeignClient;
@@ -136,6 +133,7 @@ public class WareController {
         TransferOrder transferOrder = new TransferOrder();
         transferOrder.setOrderId(orderId);
         transferOrder.setOutTime(new Date());
+        transferOrder.setStatus(TransferStatus.OUT);
         transferOrderService.updateByOrderId(transferOrder, WorkType.DELIVERY);
 
         // 生成库存单，应该每个item一个单
@@ -149,6 +147,7 @@ public class WareController {
         BeanUtils.copyProperties(workOrder, checkOrder);
         checkOrder.setOutTime(new Date());
         checkOrder.setType(WorkType.DELIVERY);
+        checkOrder.setStatus(CheckStatus.OUT);
         checkOrderService.save(checkOrder);
 
         return Result.ok(null);
@@ -167,18 +166,20 @@ public class WareController {
         TransferOrder transferOrder = new TransferOrder();
         transferOrder.setOrderId(orderId);
         transferOrder.setInTime(new Date());
+        transferOrder.setStatus(TransferStatus.IN);
         transferOrderService.updateByOrderId(transferOrder, WorkType.RETURN);
 
         // 生成库存单，应该每个item一个单
         StorageOrder storageOrder = new StorageOrder();
         BeanUtils.copyProperties(workOrder, storageOrder);
-        storageOrder.setStorageType(StorageType.OUT);
+        storageOrder.setStorageType(StorageType.IN);
         storageOrderService.save(storageOrder);
 
         // 修改验货单
         CheckOrder checkOrder = new CheckOrder();
         checkOrder.setOrderId(orderId);
         checkOrder.setInTime(new Date());
+        checkOrder.setStatus(CheckStatus.IN);
         checkOrderService.updateByOrderId(checkOrder, WorkType.RETURN);
 
         return Result.ok(null);

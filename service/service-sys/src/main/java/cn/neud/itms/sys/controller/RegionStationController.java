@@ -2,10 +2,7 @@ package cn.neud.itms.sys.controller;
 
 
 import cn.neud.itms.common.result.Result;
-import cn.neud.itms.enums.OrderStatus;
-import cn.neud.itms.enums.StorageType;
-import cn.neud.itms.enums.WorkStatus;
-import cn.neud.itms.enums.WorkType;
+import cn.neud.itms.enums.*;
 import cn.neud.itms.model.order.OrderInfo;
 import cn.neud.itms.model.sys.*;
 import cn.neud.itms.order.client.OrderFeignClient;
@@ -155,6 +152,7 @@ public class RegionStationController {
         // 修改调拨单
         TransferOrder transferOrder = new TransferOrder();
         transferOrder.setOrderId(orderId);
+        transferOrder.setStatus(TransferStatus.IN);
         transferOrder.setInTime(new Date());
         transferOrderService.updateByOrderId(transferOrder, WorkType.DELIVERY);
 
@@ -168,6 +166,7 @@ public class RegionStationController {
         CheckOrder checkOrder = new CheckOrder();
         checkOrder.setOrderId(orderId);
         checkOrder.setInTime(new Date());
+        checkOrder.setStatus(CheckStatus.IN);
         checkOrderService.updateByOrderId(checkOrder, WorkType.DELIVERY);
 
         return Result.ok(null);
@@ -182,29 +181,31 @@ public class RegionStationController {
         workOrder.setWorkStatus(WorkStatus.RETURN_STATION);
         workOrderService.updateByOrderId(workOrder, WorkType.RETURN);
 
-        // 修改调拨单
-        TransferOrder transferOrder = new TransferOrder();
-        transferOrder.setOrderId(orderId);
-        transferOrder.setOutTime(new Date());
-        transferOrderService.save(transferOrder);
-
-        // 生成库存单，应该每个item一个单
-        StorageOrder storageOrder = new StorageOrder();
-        BeanUtils.copyProperties(workOrder, storageOrder);
-        storageOrder.setStorageType(StorageType.OUT);
-        storageOrderService.save(storageOrder);
-
-        // 生成验货单
-        CheckOrder checkOrder = new CheckOrder();
-        BeanUtils.copyProperties(workOrder, checkOrder);
-        checkOrder.setOutTime(new Date());
-        checkOrderService.save(checkOrder);
+//        // 修改调拨单
+//        TransferOrder transferOrder = new TransferOrder();
+//        transferOrder.setOrderId(orderId);
+//        transferOrder.setOutTime(new Date());
+//        transferOrderService.save(transferOrder);
+//
+//        // 生成库存单，应该每个item一个单
+//        StorageOrder storageOrder = new StorageOrder();
+//        BeanUtils.copyProperties(workOrder, storageOrder);
+//        storageOrder.setStorageType(StorageType.OUT);
+//        storageOrderService.save(storageOrder);
+//
+//        // 生成验货单
+//        CheckOrder checkOrder = new CheckOrder();
+//        BeanUtils.copyProperties(workOrder, checkOrder);
+//        checkOrder.setOutTime(new Date());
+//        checkOrder.setType(WorkType.RETURN);
+//        checkOrder.setStatus(CheckStatus.OUT);
+//        checkOrderService.save(checkOrder);
 
         return Result.ok(null);
     }
 
     @ApiOperation("退货出库")
-    @GetMapping("/returnOrderout/{orderId}")
+    @GetMapping("/returnOrder/out/{orderId}")
     public Result returnOrderOut(@PathVariable Long orderId) {
         // 修改任务单
         WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.RETURN);
@@ -216,6 +217,7 @@ public class RegionStationController {
         TransferOrder transferOrder = new TransferOrder();
         transferOrder.setOrderId(orderId);
         transferOrder.setOutTime(new Date());
+        transferOrder.setStatus(TransferStatus.OUT);
         transferOrderService.updateByOrderId(transferOrder, WorkType.RETURN);
 
         // 生成库存单，应该每个item一个单
@@ -229,6 +231,7 @@ public class RegionStationController {
         BeanUtils.copyProperties(workOrder, checkOrder);
         checkOrder.setOutTime(new Date());
         checkOrder.setType(WorkType.RETURN);
+        checkOrder.setStatus(CheckStatus.OUT);
         checkOrderService.save(checkOrder);
 
         return Result.ok(null);
