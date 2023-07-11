@@ -23,18 +23,20 @@ import org.springframework.util.StringUtils;
 public class TransferOrderServiceImpl extends ServiceImpl<TransferOrderMapper, TransferOrder> implements TransferOrderService {
 
     @Override
-    public IPage<TransferOrder> selectPage(Page<TransferOrder> pageParam, TransferOrder workOrder) {
-        Long id = workOrder.getId();
-        Long orderId = workOrder.getOrderId();
-        Long workOrderId = workOrder.getWorkOrderId();
-        Long wareId = workOrder.getWareId();
-        Long stationId = workOrder.getStationId();
-        Long logisticsId = workOrder.getLogisticsId();
-        String logisticsName = workOrder.getLogisticsName();
-        String stationName = workOrder.getStationName();
+    public IPage<TransferOrder> selectPage(Page<TransferOrder> pageParam, TransferOrder transferOrder) {
+        Long id = transferOrder.getId();
+        Long orderId = transferOrder.getOrderId();
+        Long workOrderId = transferOrder.getWorkOrderId();
+        Long wareId = transferOrder.getWareId();
+        Long stationId = transferOrder.getStationId();
+        Long logisticsId = transferOrder.getLogisticsId();
+        String logisticsName = transferOrder.getLogisticsName();
+        String stationName = transferOrder.getStationName();
+        WorkType type = transferOrder.getType();
 
         return baseMapper.selectPage(pageParam, new LambdaQueryWrapper<TransferOrder>()
                 .eq(!StringUtils.isEmpty(id), TransferOrder::getId, id)
+                .eq(!StringUtils.isEmpty(type), TransferOrder::getType, type)
                 .eq(!StringUtils.isEmpty(orderId), TransferOrder::getOrderId, orderId)
                 .eq(!StringUtils.isEmpty(workOrderId), TransferOrder::getWorkOrderId, workOrderId)
                 .eq(!StringUtils.isEmpty(wareId), TransferOrder::getWareId, wareId)

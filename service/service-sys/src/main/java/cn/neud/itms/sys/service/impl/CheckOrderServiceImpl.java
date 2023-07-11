@@ -31,6 +31,7 @@ public class CheckOrderServiceImpl extends ServiceImpl<CheckOrderMapper, CheckOr
         Long wareId = checkOrder.getWareId();
         Long stationId = checkOrder.getStationId();
         CheckStatus status = checkOrder.getStatus();
+        WorkType type = checkOrder.getType();
         Date inTime = checkOrder.getInTime();
         Date outTime = checkOrder.getOutTime();
 //        Long skuId = checkOrder.getSkuId();
@@ -40,6 +41,7 @@ public class CheckOrderServiceImpl extends ServiceImpl<CheckOrderMapper, CheckOr
 //                .eq(!StringUtils.isEmpty(skuId), CheckOrder::getSkuId, skuId)
 //                .like(!StringUtils.isEmpty(skuName), CheckOrder::getSkuName, skuName)
                 .eq(!StringUtils.isEmpty(id), CheckOrder::getId, id)
+                .eq(!StringUtils.isEmpty(type), CheckOrder::getType, type)
                 .eq(!StringUtils.isEmpty(wareId), CheckOrder::getWareId, wareId)
                 .eq(!StringUtils.isEmpty(stationId), CheckOrder::getStationId, stationId)
                 .eq(!StringUtils.isEmpty(status), CheckOrder::getStatus, status)

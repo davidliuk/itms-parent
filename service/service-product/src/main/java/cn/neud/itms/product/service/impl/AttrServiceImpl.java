@@ -23,8 +23,8 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
     //根据平台属性分组id查询
     @Override
     public List<Attr> getAttrListByGroupId(Long groupId) {
-        LambdaQueryWrapper<Attr> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Attr::getAttrGroupId, groupId);
-        return baseMapper.selectList(wrapper);
+        return baseMapper.selectList(new LambdaQueryWrapper<Attr>()
+                .eq(Attr::getAttrGroupId, groupId)
+        );
     }
 }
