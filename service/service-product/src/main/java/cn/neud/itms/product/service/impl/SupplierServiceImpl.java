@@ -23,9 +23,16 @@ public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> i
 
     @Override
     public IPage<Supplier> selectPage(Page<Supplier> pageParam, Supplier supplier) {
+        Long id = supplier.getId();
         String name = supplier.getName();
+        String province = supplier.getProvince();
         return baseMapper.selectPage(pageParam, new LambdaQueryWrapper<Supplier>()
+                        .eq(!StringUtils.isEmpty(id), Supplier::getId, id)
                 .like(!StringUtils.isEmpty(name), Supplier::getName, name)
+                .like(!StringUtils.isEmpty(province), Supplier::getProvince, province)
+                .like(!StringUtils.isEmpty(province), Supplier::getCity, province)
+                .like(!StringUtils.isEmpty(province), Supplier::getDistrict, province)
+                .like(!StringUtils.isEmpty(province), Supplier::getDetailAddress, province)
         );
     }
 }

@@ -71,25 +71,6 @@ public class SkuInfoController {
         return Result.ok(null);
     }
 
-    @ApiOperation("进货")
-    @PostMapping("stock")
-    public Result stock(@RequestBody SkuWare skuWare) {
-        if (skuWareService.count(new LambdaQueryWrapper<SkuWare>()
-                .eq(SkuWare::getSkuId, skuWare.getSkuId())
-                .eq(SkuWare::getWareId, skuWare.getWareId())) > 0) {
-//            return Result.fail("该仓库已经存在该商品库存");
-            skuInfoService.addStock(skuWare.getWareId(), skuWare.getSkuId(), skuWare.getStock());
-        } else {
-            skuWareService.save(skuWare);
-        }
-        SkuInfo skuInfo = skuInfoService.getById(skuWare.getSkuId());
-        PurchaseOrder purchaseOrder = new PurchaseOrder();
-        BeanUtils.copyProperties(skuWare, purchaseOrder);
-        BeanUtils.copyProperties(skuInfo, purchaseOrder);
-        sysFeignClient.savePurchaseOrder(purchaseOrder);
-        return Result.ok(null);
-    }
-
     //    url: `${api_name}/get/${id}`,
 //    method: 'get'
     @ApiOperation("获取sku信息")

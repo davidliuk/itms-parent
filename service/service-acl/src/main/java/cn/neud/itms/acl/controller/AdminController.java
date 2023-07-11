@@ -73,6 +73,14 @@ public class AdminController {
         return Result.ok(admin);
     }
 
+    //2 id查询用户
+    @ApiOperation("根据roleId查询")
+    @GetMapping("/role/{id}")
+    public Result getByRoleId(@PathVariable Long id) {
+        List<Admin> admins = adminService.getByRoleId(id);
+        return Result.ok(admins);
+    }
+
     //3 添加用户
     @ApiOperation("添加用户")
     @PostMapping("")

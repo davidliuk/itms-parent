@@ -210,7 +210,7 @@ public class RegionStationController {
         // 修改任务单
         WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.RETURN);
         workOrder.setOrderId(orderId);
-        workOrder.setWorkStatus(WorkStatus.OUT);
+        workOrder.setWorkStatus(WorkStatus.RETURN_OUT);
         workOrderService.updateByOrderId(workOrder, WorkType.RETURN);
 
         // 修改调拨单
@@ -223,7 +223,7 @@ public class RegionStationController {
         // 生成库存单，应该每个item一个单
         StorageOrder storageOrder = new StorageOrder();
         BeanUtils.copyProperties(workOrder, storageOrder);
-        storageOrder.setStorageType(StorageType.OUT);
+        storageOrder.setStorageType(StorageType.RETURN_OUT);
         storageOrderService.save(storageOrder);
 
         // 生成验货单

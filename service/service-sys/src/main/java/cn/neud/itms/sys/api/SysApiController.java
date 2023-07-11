@@ -2,6 +2,7 @@ package cn.neud.itms.sys.api;
 
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.sys.PurchaseOrder;
+import cn.neud.itms.model.sys.StorageOrder;
 import cn.neud.itms.sys.service.PurchaseOrderService;
 import cn.neud.itms.sys.service.StorageOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,12 @@ public class SysApiController {
     public Result savePurchaseOrder(@RequestBody PurchaseOrder purchaseOrder) {
         purchaseOrderService.save(purchaseOrder);
 
+        return Result.ok(null);
+    }
+
+    @PostMapping("inner/storageOrder")
+    public Result saveStorageOrder(@RequestBody StorageOrder storageOrder) {
+        storageOrderService.save(storageOrder);
         return Result.ok(null);
     }
 

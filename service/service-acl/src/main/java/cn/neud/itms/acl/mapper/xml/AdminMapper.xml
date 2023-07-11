@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.neud.itms.acl.mapper.AdminMapper">
+
+    <select id="selectByRoleId" resultType="cn.neud.itms.model.acl.Admin">
+        select admin.*
+        from admin JOIN admin_role ON admin.id = admin_role.admin_id
+        where role_id = #{roleId}
+    </select>
+</mapper>

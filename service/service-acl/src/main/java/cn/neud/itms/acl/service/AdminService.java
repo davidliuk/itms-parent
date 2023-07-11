@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 public interface AdminService extends IService<Admin> {
 
     //1 用户列表
@@ -14,4 +16,6 @@ public interface AdminService extends IService<Admin> {
     Admin getAdminByUserName(String username);
 
     Admin getAdminByEmail(String email);
+
+    List<Admin> getByRoleId(Long id);
 }

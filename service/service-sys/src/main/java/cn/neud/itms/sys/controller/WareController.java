@@ -172,7 +172,7 @@ public class WareController {
         // 生成库存单，应该每个item一个单
         StorageOrder storageOrder = new StorageOrder();
         BeanUtils.copyProperties(workOrder, storageOrder);
-        storageOrder.setStorageType(StorageType.IN);
+        storageOrder.setStorageType(StorageType.RETURN_IN);
         storageOrderService.save(storageOrder);
 
         // 修改验货单
