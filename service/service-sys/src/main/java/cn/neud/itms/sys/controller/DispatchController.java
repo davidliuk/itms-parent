@@ -5,11 +5,9 @@ import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.annotation.SaMode;
 import cn.neud.itms.common.auth.RoleConstant;
 import cn.neud.itms.common.result.Result;
-import cn.neud.itms.enums.OrderStatus;
-import cn.neud.itms.enums.TransferStatus;
-import cn.neud.itms.enums.WorkStatus;
-import cn.neud.itms.enums.WorkType;
+import cn.neud.itms.enums.*;
 import cn.neud.itms.model.order.OrderInfo;
+import cn.neud.itms.model.sys.Invoice;
 import cn.neud.itms.model.sys.Logistics;
 import cn.neud.itms.model.sys.TransferOrder;
 import cn.neud.itms.model.sys.WorkOrder;
@@ -134,6 +132,13 @@ public class DispatchController {
         transferOrder.setWorkOrderId(workOrder.getId());
         transferOrder.setType(WorkType.DELIVERY);
         transferOrderService.save(transferOrder);
+
+        // 生成发票
+        Invoice invoice = new Invoice();
+        invoice.setOrderId(orderInfo.getId());
+        BeanUtils.copyProperties(orderInfo, invoice);
+        invoice.setStatus(InvoiceStatus.UNUSED);
+        invoiceService.save(invoice);
         return Result.ok(null);
     }
 
@@ -156,13 +161,20 @@ public class DispatchController {
         OrderInfo orderInfo = orderFeignClient.getOrderInfo(orderNo);
         OrderStatus status = orderInfo.getOrderStatus();
         Long orderId = orderInfo.getId();
+        // 修改订单状态
         WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.DELIVERY);
         workOrder.setOrderId(orderId);
         workOrder.setWorkStatus(WorkStatus.CANCEL);
         workOrderService.updateByOrderId(workOrder, WorkType.DELIVERY);
+        // 修改发票状态：作废
+        Invoice invoice = new Invoice();
+        invoice.setOrderId(orderInfo.getId());
+        invoice.setStatus(InvoiceStatus.CANCEL);
+        invoiceService.updateByOrderId(invoice);
+
         if (status == OrderStatus.DISPATCH) {
             // 没发货直接取消，无需生成退货任务单
-            // 修改调拨单
+            // 修改调拨单状态
             TransferOrder transferOrder = new TransferOrder();
             transferOrder.setOrderId(orderId);
             transferOrder.setStatus(TransferStatus.CANCEL);
@@ -173,7 +185,7 @@ public class DispatchController {
             WorkOrder returnWorkOrder = new WorkOrder();
             BeanUtils.copyProperties(orderInfo, returnWorkOrder);
             returnWorkOrder.setWorkType(WorkType.RETURN);
-            returnWorkOrder.setWorkStatus(WorkStatus.RETURN_ASSIGN);
+            returnWorkOrder.setWorkStatus(WorkStatus.RETURN_TAKE);
             workOrderService.save(returnWorkOrder);
             // 生成调拨单
             TransferOrder transferOrder = new TransferOrder();
@@ -184,10 +196,24 @@ public class DispatchController {
         } else if (status == OrderStatus.IN || status == OrderStatus.ASSIGN) {
             // 这种情况需要分站点退货
             // 到分站或者已分配状态，生成新的单并且退回
+            // 生成退货任务单
             WorkOrder returnWorkOrder = new WorkOrder();
             BeanUtils.copyProperties(orderInfo, returnWorkOrder);
             returnWorkOrder.setWorkType(WorkType.RETURN);
             returnWorkOrder.setWorkStatus(WorkStatus.RETURN_STATION);
+            workOrderService.save(returnWorkOrder);
+            // 生成调拨单
+            TransferOrder transferOrder = new TransferOrder();
+            BeanUtils.copyProperties(workOrder, transferOrder);
+            transferOrder.setWorkOrderId(workOrder.getId());
+            transferOrder.setType(WorkType.RETURN);
+            transferOrderService.save(transferOrder);
+        } else if (status == OrderStatus.TAKE) {
+            // 生成退货任务单，原配送员
+            WorkOrder returnWorkOrder = new WorkOrder();
+            BeanUtils.copyProperties(orderInfo, returnWorkOrder);
+            returnWorkOrder.setWorkType(WorkType.RETURN);
+            returnWorkOrder.setWorkStatus(WorkStatus.RETURN_TAKE);
             workOrderService.save(returnWorkOrder);
             // 生成调拨单
             TransferOrder transferOrder = new TransferOrder();

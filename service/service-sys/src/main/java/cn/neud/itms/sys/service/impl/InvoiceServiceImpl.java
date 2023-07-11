@@ -60,4 +60,11 @@ public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> impl
         );
     }
 
+    @Override
+    public void updateByOrderId(Invoice invoice) {
+        baseMapper.update(invoice, new LambdaQueryWrapper<Invoice>()
+                .eq(Invoice::getOrderId, invoice.getOrderId())
+        );
+    }
+
 }

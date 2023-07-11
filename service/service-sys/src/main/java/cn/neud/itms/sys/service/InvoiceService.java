@@ -19,4 +19,6 @@ public interface InvoiceService extends IService<Invoice> {
 
 
     Invoice getByOrderId(Long orderId);
+
+    void updateByOrderId(Invoice invoice);
 }

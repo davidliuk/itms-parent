@@ -83,6 +83,7 @@ public class WorkOrderController {
         if (workOrder == null) {
             return Result.fail("任务单不存在");
         }
+        // 未分配或已分配
         if (workOrder.getWorkStatus() != WorkStatus.IN && workOrder.getWorkStatus() != WorkStatus.ASSIGN) {
             return Result.fail("任务单状态不正确");
         }
@@ -111,7 +112,8 @@ public class WorkOrderController {
         if (workOrder == null) {
             return Result.fail("任务单不存在");
         }
-        if (workOrder.getWorkStatus() != WorkStatus.RETURN_UNASSIGNED) {
+        // 未分配或已分配
+        if (workOrder.getWorkStatus() != WorkStatus.RETURN_ASSIGN && workOrder.getWorkStatus() != WorkStatus.RETURN_UNASSIGNED) {
             return Result.fail("任务单状态不正确");
         }
         // 修改任务单状态
