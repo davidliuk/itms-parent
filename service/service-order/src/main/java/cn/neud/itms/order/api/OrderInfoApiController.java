@@ -102,16 +102,8 @@ public class OrderInfoApiController {
         return Result.ok(orderId);
     }
 
-    @SaUserCheckLogin
-    @ApiOperation("获取订单详情")
-    @GetMapping("auth/getOrderInfoById/{orderId}")
-    public Result getOrderInfoById(@PathVariable("orderId") Long orderId) {
-        OrderInfo orderInfo = orderInfoService.getOrderInfoById(orderId);
-        return Result.ok(orderInfo);
-    }
-
     @ApiOperation("修改订单地址")
-    @SaUserCheckLogin
+//    @SaUserCheckLogin
     // 根据orderNo查询订单信息
     @PutMapping("auth/changeOrderAddress/{orderNo}")
     public Result changeOrderAddress(@PathVariable("orderNo") String orderNo, @RequestBody Address address) {
@@ -127,20 +119,34 @@ public class OrderInfoApiController {
         return Result.ok(null);
     }
 
+    @SaUserCheckLogin
+    @ApiOperation("获取订单详情")
+    @GetMapping("auth/getOrderDetailById/{orderId}")
+    public Result getOrderInfoById(@PathVariable("orderId") Long orderId) {
+        OrderInfo orderInfo = orderInfoService.getOrderInfoById(orderId);
+        return Result.ok(orderInfo);
+    }
+
     // 根据orderNo查询订单信息
-    @ApiOperation("根据orderNo查询订单信息")
-    @GetMapping("inner/getOrderInfo/{orderNo}")
-    public OrderInfo getOrderInfo(@PathVariable("orderNo") String orderNo) {
+    @ApiOperation("根据orderNo查询订单基础信息")
+    @GetMapping("inner/getOrderInfoByNo/{orderNo}")
+    public OrderInfo getOrderInfoByNo(@PathVariable("orderNo") String orderNo) {
         return orderInfoService.getOrderInfoByOrderNo(orderNo);
     }
 
+    // 根据orderNo查询订单信息
+    @ApiOperation("根据orderNo查询订单详情")
+    @GetMapping("inner/getOrderDetailByNo/{orderNo}")
+    public OrderInfo getOrderDetailByNo(@PathVariable("orderNo") String orderNo) {
+        return orderInfoService.getOrderDetailByOrderNo(orderNo);
+    }
+
     @ApiOperation("获取订单详情")
-    @GetMapping("inner/getOrderInfoById/{orderId}")
+    @GetMapping("inner/getOrderDetaiById/{orderId}")
     public OrderInfo getOrderById(@PathVariable("orderId") Long orderId) {
         return orderInfoService.getOrderInfoById(orderId);
     }
 
-    // 根据orderNo查询订单信息
 //    @ApiOperation("根据orderId查询订单信息")
 //    @GetMapping("inner/getOrderInfo/{orderId}")
 //    public OrderInfo getOrderInfoById(@PathVariable("orderId") Long orderId) {

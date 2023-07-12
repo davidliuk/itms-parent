@@ -20,12 +20,14 @@ public class CourierServiceImpl extends ServiceImpl<CourierMapper, CourierInfo> 
         Long stationId = courierQueryVo.getStationId();
         String name = courierQueryVo.getName();
         String idNo = courierQueryVo.getIdNo();
+        String phone = courierQueryVo.getPhone();
 
         // 调用方法实现条件分页查询
         // 返回分页对象
         return baseMapper.selectPage(pageParam, new LambdaQueryWrapper<CourierInfo>()
                 .eq(!StringUtils.isEmpty(stationId), CourierInfo::getStationId, stationId)
                 .like(!StringUtils.isEmpty(name), CourierInfo::getName, name)
+                .like(!StringUtils.isEmpty(phone), CourierInfo::getPhone, phone)
                 .like(!StringUtils.isEmpty(idNo), CourierInfo::getIdNo, idNo));
     }
 

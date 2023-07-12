@@ -40,7 +40,7 @@ public class StockReceiver {
                            Message message,
                            Channel channel) throws IOException {
         if (!StringUtils.isEmpty(orderNo)) {
-            OrderInfo order = orderFeignClient.getOrderInfo(orderNo);
+            OrderInfo order = orderFeignClient.getOrderDetailByNo(orderNo);
             skuInfoService.minusStock(order.getWareId(), orderNo);
         }
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);

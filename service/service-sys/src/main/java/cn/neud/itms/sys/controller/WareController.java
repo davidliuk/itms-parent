@@ -4,6 +4,7 @@ package cn.neud.itms.sys.controller;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.enums.*;
 import cn.neud.itms.model.order.OrderInfo;
+import cn.neud.itms.model.order.OrderItem;
 import cn.neud.itms.model.sys.*;
 import cn.neud.itms.order.client.OrderFeignClient;
 import cn.neud.itms.sys.service.*;
@@ -117,14 +118,18 @@ public class WareController {
     @GetMapping("/out/{orderId}")
     public Result out(@PathVariable Long orderId) {
         // 修改订单状态
-        OrderInfo orderInfo = new OrderInfo();
+        OrderInfo orderInfo = orderFeignClient.getOrderDetailById(orderId);
+        if (orderInfo.getOrderStatus() != OrderStatus.DISPATCH) {
+            return Result.fail("订单状态不正确");
+        }
         orderInfo.setId(orderId);
         orderInfo.setOrderStatus(OrderStatus.OUT);
         orderInfo.setOutTime(new Date());
         orderFeignClient.updateOrderInfo(orderInfo);
 
         // 修改任务单
-        WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.DELIVERY);
+//        WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.DELIVERY);
+        WorkOrder workOrder = new WorkOrder();
         workOrder.setOrderId(orderId);
         workOrder.setWorkStatus(WorkStatus.OUT);
         workOrderService.updateByOrderId(workOrder, WorkType.DELIVERY);
@@ -137,14 +142,17 @@ public class WareController {
         transferOrderService.updateByOrderId(transferOrder, WorkType.DELIVERY);
 
         // 生成库存单，应该每个item一个单
-        StorageOrder storageOrder = new StorageOrder();
-        BeanUtils.copyProperties(workOrder, storageOrder);
-        storageOrder.setStorageType(StorageType.OUT);
-        storageOrderService.save(storageOrder);
+        for (OrderItem orderItem : orderInfo.getOrderItemList()) {
+            StorageOrder storageOrder = new StorageOrder();
+            BeanUtils.copyProperties(orderInfo, storageOrder);
+            BeanUtils.copyProperties(orderItem, storageOrder);
+            storageOrder.setStorageType(StorageType.OUT);
+            storageOrderService.save(storageOrder);
+        }
 
         // 生成验货单
         CheckOrder checkOrder = new CheckOrder();
-        BeanUtils.copyProperties(workOrder, checkOrder);
+        BeanUtils.copyProperties(orderInfo, checkOrder);
         checkOrder.setOutTime(new Date());
         checkOrder.setType(WorkType.DELIVERY);
         checkOrder.setStatus(CheckStatus.OUT);
@@ -156,8 +164,17 @@ public class WareController {
     @ApiOperation("退货入库")
     @GetMapping("/returnOrder/in/{orderId}")
     public Result in(@PathVariable Long orderId) {
+        // 修改订单状态
+        OrderInfo orderInfo = orderFeignClient.getOrderDetailById(orderId);
+        if (orderInfo.getOrderStatus() != OrderStatus.REFUND) {
+            return Result.fail("订单状态不正确");
+        }
+
         // 修改任务单
         WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.RETURN);
+        if (workOrder.getWorkStatus() != WorkStatus.RETURN_OUT) {
+            return Result.fail("任务单状态不正确");
+        }
         workOrder.setOrderId(orderId);
         workOrder.setWorkStatus(WorkStatus.RETURN_IN);
         workOrderService.updateByOrderId(workOrder, WorkType.RETURN);
@@ -170,10 +187,13 @@ public class WareController {
         transferOrderService.updateByOrderId(transferOrder, WorkType.RETURN);
 
         // 生成库存单，应该每个item一个单
-        StorageOrder storageOrder = new StorageOrder();
-        BeanUtils.copyProperties(workOrder, storageOrder);
-        storageOrder.setStorageType(StorageType.RETURN_IN);
-        storageOrderService.save(storageOrder);
+        for (OrderItem orderItem : orderInfo.getOrderItemList()) {
+            StorageOrder storageOrder = new StorageOrder();
+            BeanUtils.copyProperties(orderInfo, storageOrder);
+            BeanUtils.copyProperties(orderItem, storageOrder);
+            storageOrder.setStorageType(StorageType.RETURN_IN);
+            storageOrderService.save(storageOrder);
+        }
 
         // 修改验货单
         CheckOrder checkOrder = new CheckOrder();

@@ -40,7 +40,7 @@ public class PaymentInfoServiceImpl extends ServiceImpl<PaymentInfoMappper, Paym
     @Override
     public PaymentInfo savePaymentInfo(String orderNo) {
         //远程调用调用，根据orderNo查询订单信息
-        OrderInfo orderInfo = orderFeignClient.getOrderInfo(orderNo);
+        OrderInfo orderInfo = orderFeignClient.getOrderDetailByNo(orderNo);
         if (orderInfo == null) {
             throw new ItmsException(ResultCodeEnum.DATA_ERROR);
         }

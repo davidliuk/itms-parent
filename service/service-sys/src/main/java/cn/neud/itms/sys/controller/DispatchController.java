@@ -55,6 +55,31 @@ public class DispatchController {
     @Autowired
     private InvoiceService invoiceService;
 
+    @ApiOperation("获取订单详情")
+    @GetMapping("orderDetail/{orderNo}")
+    public Result getOrderDetail(@PathVariable String orderNo) {
+        OrderInfo orderInfo = orderFeignClient.getOrderDetailByNo(orderNo);
+        Long orderId = orderInfo.getId();
+        orderInfo.setWorkOrder(workOrderService.getByOrderId(orderId, WorkType.DELIVERY));
+        orderInfo.setTransferOrder(transferOrderService.getByOrderId(orderId, WorkType.DELIVERY));
+        orderInfo.setCheckOrder(checkOrderService.getByOrderId(orderId, WorkType.DELIVERY));
+        orderInfo.setReceipt(receiptService.getByOrderId(orderId));
+        orderInfo.setInvoice(invoiceService.getByOrderId(orderId));
+        return Result.ok(orderInfo);
+    }
+
+    @ApiOperation("获取订单详情根据ID")
+    @GetMapping("orderDetailById/{orderId}")
+    public Result getOrderDetailById(@PathVariable Long orderId) {
+        OrderInfo orderInfo = orderFeignClient.getOrderDetailById(orderId);
+        orderInfo.setWorkOrder(workOrderService.getByOrderId(orderId, WorkType.DELIVERY));
+        orderInfo.setTransferOrder(transferOrderService.getByOrderId(orderId, WorkType.DELIVERY));
+        orderInfo.setCheckOrder(checkOrderService.getByOrderId(orderId, WorkType.DELIVERY));
+        orderInfo.setReceipt(receiptService.getByOrderId(orderId));
+        orderInfo.setInvoice(invoiceService.getByOrderId(orderId));
+        return Result.ok(orderInfo);
+    }
+
     @ApiOperation("手动调度")
     @GetMapping("manual")
     @SaCheckRole(value = {RoleConstant.DISPATCH, RoleConstant.SYSTEM}, mode = SaMode.OR)
@@ -66,7 +91,7 @@ public class DispatchController {
             @RequestParam("logisticsName") String logisticsName,
             @RequestParam("logisticsPhone") String logisticsPhone
     ) {
-        OrderInfo orderInfo = orderFeignClient.getOrderInfo(orderNo);
+        OrderInfo orderInfo = orderFeignClient.getOrderInfoByNo(orderNo);
         orderInfo.setStationId(stationId);
         orderInfo.setStationName(stationName);
         orderInfo.setOrderStatus(OrderStatus.DISPATCH);
@@ -98,7 +123,7 @@ public class DispatchController {
     public Result autoDispatch(
             @PathVariable String orderNo
     ) {
-        OrderInfo orderInfo = orderFeignClient.getOrderInfo(orderNo);
+        OrderInfo orderInfo = orderFeignClient.getOrderInfoByNo(orderNo);
         orderInfo.setOrderStatus(OrderStatus.DISPATCH);
         if (orderInfo.getOrderStatus() != OrderStatus.PAID) {
             return Result.fail("订单状态不是待调度状态");
@@ -142,23 +167,10 @@ public class DispatchController {
         return Result.ok(null);
     }
 
-    @ApiOperation("获取订单详情")
-    @GetMapping("orderDetail/{orderNo}")
-    public Result getOrderDetail(@PathVariable String orderNo) {
-        OrderInfo orderInfo = orderFeignClient.getOrderInfo(orderNo);
-        Long orderId = orderInfo.getId();
-        orderInfo.setWorkOrder(workOrderService.getByOrderId(orderId, WorkType.DELIVERY));
-        orderInfo.setTransferOrder(transferOrderService.getByOrderId(orderId, WorkType.DELIVERY));
-        orderInfo.setCheckOrder(checkOrderService.getByOrderId(orderId, WorkType.DELIVERY));
-        orderInfo.setReceipt(receiptService.getByOrderId(orderId));
-        orderInfo.setInvoice(invoiceService.getByOrderId(orderId));
-        return Result.ok(orderInfo);
-    }
-
     @ApiOperation("退货自动调度")
     @GetMapping("/inner/returnOrder/{orderNo}")
-    void returnOrder(String orderNo) {
-        OrderInfo orderInfo = orderFeignClient.getOrderInfo(orderNo);
+    void returnOrder(@PathVariable String orderNo) {
+        OrderInfo orderInfo = orderFeignClient.getOrderInfoByNo(orderNo);
         OrderStatus status = orderInfo.getOrderStatus();
         Long orderId = orderInfo.getId();
         // 修改订单状态

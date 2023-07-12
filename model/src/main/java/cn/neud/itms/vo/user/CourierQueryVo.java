@@ -12,6 +12,9 @@ public class CourierQueryVo {
     @ApiModelProperty(value = "姓名")
     private String name;
 
+    @ApiModelProperty(value = "手机号")
+    private String phone;
+
     @ApiModelProperty(value = "身份证号")
     private String idNo;
 
