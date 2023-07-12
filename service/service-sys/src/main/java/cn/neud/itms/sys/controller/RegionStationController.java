@@ -7,6 +7,7 @@ import cn.neud.itms.model.order.OrderInfo;
 import cn.neud.itms.model.sys.*;
 import cn.neud.itms.order.client.OrderFeignClient;
 import cn.neud.itms.sys.service.*;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -50,6 +51,14 @@ public class RegionStationController {
     @Autowired
     private OrderFeignClient orderFeignClient;
 
+    @ApiOperation(value = "根据仓库ID获取")
+    @GetMapping("getByWareId/{wareId}")
+    public Result getByWareId(@PathVariable Long wareId) {
+        List<RegionStation> stations = regionStationService.list(new LambdaQueryWrapper<RegionStation>()
+                .eq(RegionStation::getWareId, wareId));
+        return Result.ok(stations);
+    }
+
     @ApiOperation("分站条件分页查询")
     @PostMapping("{current}/{limit}")
     public Result pageList(
@@ -78,7 +87,7 @@ public class RegionStationController {
         return Result.ok(list);
     }
 
-    @ApiOperation("根据平台属性分组id查询")
+    @ApiOperation("根据地区id查询")
     @GetMapping("{regionId}")
     public Result list(@PathVariable Long regionId) {
         List<RegionStation> list = regionStationService.getRegionStationListByGroupId(regionId);

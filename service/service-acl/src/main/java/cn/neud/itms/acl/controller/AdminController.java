@@ -8,6 +8,7 @@ import cn.neud.itms.common.result.Result;
 import cn.neud.itms.common.utils.MD5;
 import cn.neud.itms.model.acl.Admin;
 import cn.neud.itms.vo.acl.AdminQueryVo;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -30,7 +31,7 @@ public class AdminController {
     @Autowired
     private RoleService roleService;
 
-    //参数有用户id 和 多个角色id
+    // 参数有用户id 和 多个角色id
     @ApiOperation("为用户进行角色分配")
     @PostMapping("doAssign/{adminId}")
     @SaCheckRole(RoleConstant.SYSTEM)
@@ -42,7 +43,7 @@ public class AdminController {
         return Result.ok(null);
     }
 
-    //获取所有角色，和根据用户id查询用户分配角色列表
+    // 获取所有角色，和根据用户id查询用户分配角色列表
     @ApiOperation("获取用户角色")
     @GetMapping("toAssign/{adminId}")
     public Result toAssign(@PathVariable Long adminId) {
@@ -51,7 +52,7 @@ public class AdminController {
         return Result.ok(map);
     }
 
-    //1 用户列表
+    // 1 用户列表
     @ApiOperation("用户列表")
     @PostMapping("/{current}/{limit}")
     public Result list(
@@ -65,7 +66,7 @@ public class AdminController {
         return Result.ok(pageModel);
     }
 
-    //2 id查询用户
+    // 2 id查询用户
     @ApiOperation("根据id查询")
     @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
@@ -73,7 +74,7 @@ public class AdminController {
         return Result.ok(admin);
     }
 
-    //2 id查询用户
+    // 2 id查询用户
     @ApiOperation("根据roleId查询")
     @GetMapping("/role/{id}")
     public Result getByRoleId(@PathVariable Long id) {
@@ -81,7 +82,25 @@ public class AdminController {
         return Result.ok(admins);
     }
 
-    //3 添加用户
+    // 2 id查询用户
+    @ApiOperation("根据wareId查询")
+    @GetMapping("/ware/{id}")
+    public Result getByWareId(@PathVariable Long id) {
+        List<Admin> admins = adminService.list(new LambdaQueryWrapper<Admin>()
+                .eq(Admin::getWareId, id));
+        return Result.ok(admins);
+    }
+
+    // 2 id查询用户
+    @ApiOperation("根据stationId查询")
+    @GetMapping("/ware/{id}")
+    public Result getByStationId(@PathVariable Long id) {
+        List<Admin> admins = adminService.list(new LambdaQueryWrapper<Admin>()
+                .eq(Admin::getStationId, id));
+        return Result.ok(admins);
+    }
+
+    // 3 添加用户
     @ApiOperation("添加用户")
     @PostMapping("")
     @SaCheckRole(RoleConstant.SYSTEM)
@@ -97,7 +116,7 @@ public class AdminController {
         return Result.ok(null);
     }
 
-    //4 修改用户(不能修改密码)，传入的密码值为null的时候不会改密码
+    // 4 修改用户(不能修改密码)，传入的密码值为null的时候不会改密码
     @ApiOperation("修改用户")
     @PutMapping("")
     public Result update(@RequestBody Admin admin) {
@@ -105,7 +124,7 @@ public class AdminController {
         return Result.ok(null);
     }
 
-    //5 id删除
+    // 5 id删除
     @ApiOperation("根据id删除用户")
     @DeleteMapping("/{id}")
     public Result remove(@PathVariable Long id) {
@@ -113,7 +132,7 @@ public class AdminController {
         return Result.ok(null);
     }
 
-    //6 批量删除
+    // 6 批量删除
     @ApiOperation("批量删除")
     @DeleteMapping("")
     public Result batchRemove(@RequestBody List<Long> idList) {
