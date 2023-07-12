@@ -2,6 +2,7 @@ package cn.neud.itms.product.controller;
 
 
 import cn.neud.itms.common.result.Result;
+import cn.neud.itms.enums.StorageType;
 import cn.neud.itms.model.product.SkuInfo;
 import cn.neud.itms.model.product.SkuWare;
 import cn.neud.itms.model.sys.PurchaseOrder;
@@ -99,6 +100,7 @@ public class SkuWareController {
         skuInfoService.addStock(skuWare.getWareId(), skuWare.getSkuId(), -skuWare.getStock());
         SkuInfo skuInfo = skuInfoService.getById(skuWare.getSkuId());
         StorageOrder storageOrder = new StorageOrder();
+        storageOrder.setStorageType(StorageType.RETURN_SUPPLIER);
         BeanUtils.copyProperties(skuWare, storageOrder);
         BeanUtils.copyProperties(skuInfo, storageOrder);
         sysFeignClient.saveStorageOrder(storageOrder);

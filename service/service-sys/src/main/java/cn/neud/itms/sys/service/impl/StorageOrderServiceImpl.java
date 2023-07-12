@@ -30,10 +30,12 @@ public class StorageOrderServiceImpl extends ServiceImpl<StorageOrderMapper, Sto
             StorageOrderQueryVo storageOrderQueryVo
     ) {
         //1 获取查询条件值
+        Long id = storageOrderQueryVo.getId();
         Long stationId = storageOrderQueryVo.getStationId();
         Long wareId = storageOrderQueryVo.getWareId();
         Long skuId = storageOrderQueryVo.getSkuId();
         Long supplierId = storageOrderQueryVo.getSupplierId();
+        String supplierName = storageOrderQueryVo.getSupplierName();
         String skuName = storageOrderQueryVo.getSkuName();
         StorageType storageType = storageOrderQueryVo.getStorageType();
 
@@ -41,6 +43,7 @@ public class StorageOrderServiceImpl extends ServiceImpl<StorageOrderMapper, Sto
         //3 调用方法实现条件分页查询
         //4 数据返回
         return baseMapper.selectPage(pageParam, new LambdaQueryWrapper<StorageOrder>()
+                .eq(!StringUtils.isEmpty(id), StorageOrder::getId, id)
                 .eq(!StringUtils.isEmpty(stationId), StorageOrder::getStationId, stationId)
                 .eq(!StringUtils.isEmpty(wareId), StorageOrder::getWareId, wareId)
                 .eq(!StringUtils.isEmpty(skuId), StorageOrder::getSkuId, skuId)

@@ -1,5 +1,6 @@
 package cn.neud.itms.sys.service.impl;
 
+import cn.neud.itms.enums.TransferStatus;
 import cn.neud.itms.enums.WorkType;
 import cn.neud.itms.model.sys.TransferOrder;
 import cn.neud.itms.sys.mapper.TransferOrderMapper;
@@ -30,11 +31,13 @@ public class TransferOrderServiceImpl extends ServiceImpl<TransferOrderMapper, T
         Long wareId = transferOrder.getWareId();
         Long stationId = transferOrder.getStationId();
         Long logisticsId = transferOrder.getLogisticsId();
+        TransferStatus status = transferOrder.getStatus();
         String logisticsName = transferOrder.getLogisticsName();
         String stationName = transferOrder.getStationName();
         WorkType type = transferOrder.getType();
 
         return baseMapper.selectPage(pageParam, new LambdaQueryWrapper<TransferOrder>()
+                .eq(!StringUtils.isEmpty(status), TransferOrder::getStatus, status)
                 .eq(!StringUtils.isEmpty(id), TransferOrder::getId, id)
                 .eq(!StringUtils.isEmpty(type), TransferOrder::getType, type)
                 .eq(!StringUtils.isEmpty(orderId), TransferOrder::getOrderId, orderId)

@@ -23,7 +23,7 @@ public class OrderInfoController {
     public Result page(
             @PathVariable("current") Long current,
             @PathVariable("limit") Long limit,
-            OrderInfoQueryVo orderInfoQueryVo
+            @RequestBody OrderInfoQueryVo orderInfoQueryVo
     ) {
         Page<OrderInfo> pageParam = new Page<>(current, limit);
         return Result.ok(orderInfoService.selectPage(pageParam, orderInfoQueryVo));

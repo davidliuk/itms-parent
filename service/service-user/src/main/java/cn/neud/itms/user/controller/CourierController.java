@@ -22,7 +22,7 @@ public class CourierController {
     public Result page(
             @PathVariable("current") Long current,
             @PathVariable("limit") Long limit,
-            CourierQueryVo courierQueryVo
+            @RequestBody CourierQueryVo courierQueryVo
     ) {
         Page<CourierInfo> pageParam = new Page<>(current, limit);
         return Result.ok(courierService.selectPage(pageParam, courierQueryVo));

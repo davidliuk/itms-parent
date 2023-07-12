@@ -53,7 +53,6 @@ public class AttrGroupController {
         List<AttrGroup> list = attrGroupService.findAllListAttrGroup();
         return Result.ok(list);
     }
-
     @ApiOperation(value = "获取")
     @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {

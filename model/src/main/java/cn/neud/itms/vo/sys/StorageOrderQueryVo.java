@@ -10,6 +10,9 @@ import java.util.Date;
 @Data
 public class StorageOrderQueryVo {
 
+    @ApiModelProperty(value = "ID")
+    private Long id;
+
     @ApiModelProperty(value = "仓库ID")
     private Long wareId;
 
