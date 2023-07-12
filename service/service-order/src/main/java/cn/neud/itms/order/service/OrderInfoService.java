@@ -14,7 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * 订单 服务类
  * </p>
  *
- * @author neud
+ * @author david
  * @since 2023-04-18
  */
 public interface OrderInfoService extends IService<OrderInfo> {

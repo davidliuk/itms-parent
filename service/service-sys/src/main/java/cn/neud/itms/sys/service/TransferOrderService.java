@@ -11,8 +11,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * 仓库表 服务类
  * </p>
  *
- * @author neud
- * @since 2023-04-03
+ * @author david
+ * @since 2023-06-10
  */
 public interface TransferOrderService extends IService<TransferOrder> {
 

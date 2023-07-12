@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  * 优惠券范围表 Mapper 接口
  * </p>
  *
- * @author neud
+ * @author david
  * @since 2023-04-07
  */
 @Repository

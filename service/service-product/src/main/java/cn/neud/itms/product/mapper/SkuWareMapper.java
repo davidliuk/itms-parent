@@ -12,7 +12,7 @@ import java.util.Map;
  * spu属性值 Mapper 接口
  * </p>
  *
- * @author neud
+ * @author david
  * @since 2023-04-04
  */
 public interface SkuWareMapper extends BaseMapper<SkuWare> {

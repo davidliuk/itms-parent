@@ -23,8 +23,8 @@ import java.util.List;
  * 仓库表 前端控制器
  * </p>
  *
- * @author neud
- * @since 2023-04-03
+ * @author david
+ * @since 2023-06-10
  */
 @Api(tags = "区域中心仓库管理接口")
 @RestController

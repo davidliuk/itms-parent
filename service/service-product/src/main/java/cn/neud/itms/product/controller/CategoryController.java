@@ -19,7 +19,7 @@ import java.util.List;
  * 商品三级分类 前端控制器
  * </p>
  *
- * @author neud
+ * @author david
  * @since 2023-04-04
  */
 @Api(tags = "商品类别管理")

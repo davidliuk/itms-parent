@@ -1,9 +1,11 @@
 package cn.neud.itms.sys.controller;
 
 
+import cn.hutool.log.Log;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.sys.Logistics;
 import cn.neud.itms.sys.service.LogisticsService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -11,13 +13,15 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * <p>
  * 城市仓库关联表 前端控制器
  * </p>
  *
- * @author neud
- * @since 2023-04-03
+ * @author david
+ * @since 2023-06-10
  */
 @Api(tags = "运输公司管理")
 @RestController
@@ -28,10 +32,14 @@ public class LogisticsController {
     @Autowired
     private LogisticsService logisticsService;
 
-    //开通区域列表
-//    url: `${api_name}/${page}/${limit}`,
-//    method: 'get',
-//    params: searchObj
+    @ApiOperation(value = "根据仓库ID获取")
+    @GetMapping("getByWareId/{wareId}")
+    public Result getByWareId(@PathVariable Long wareId) {
+        List<Logistics> logistics = logisticsService.list(new LambdaQueryWrapper<Logistics>()
+                .eq(Logistics::getWareId, wareId));
+        return Result.ok(logistics);
+    }
+
     @ApiOperation("任务单列表")
     @PostMapping("/{page}/{limit}")
     public Result list(
@@ -69,6 +77,13 @@ public class LogisticsController {
     @DeleteMapping("/{id}")
     public Result remove(@PathVariable Long id) {
         logisticsService.removeById(id);
+        return Result.ok(null);
+    }
+
+    @ApiOperation(value = "批量删除")
+    @DeleteMapping("")
+    public Result remove(@RequestBody List<Long> ids) {
+        logisticsService.removeByIds(ids);
         return Result.ok(null);
     }
 

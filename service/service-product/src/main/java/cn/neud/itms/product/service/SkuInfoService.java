@@ -15,7 +15,7 @@ import java.util.List;
  * sku信息 服务类
  * </p>
  *
- * @author neud
+ * @author david
  * @since 2023-04-04
  */
 public interface SkuInfoService extends IService<SkuInfo> {

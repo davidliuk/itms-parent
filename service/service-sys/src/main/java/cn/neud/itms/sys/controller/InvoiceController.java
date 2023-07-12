@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @author neud
- * @since 2023-04-03
+ * @author david
+ * @since 2023-06-10
  */
 @Api(tags = "发票单管理")
 @RestController

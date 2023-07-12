@@ -14,7 +14,7 @@ import java.util.List;
  * spu属性值 服务实现类
  * </p>
  *
- * @author neud
+ * @author david
  * @since 2023-04-04
  */
 @Service

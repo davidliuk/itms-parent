@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * spu属性值 Mapper 接口
  * </p>
  *
- * @author neud
+ * @author david
  * @since 2023-04-04
  */
 public interface SupplierMapper extends BaseMapper<Supplier> {

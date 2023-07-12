@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * 属性分组 服务类
  * </p>
  *
- * @author neud
+ * @author david
  * @since 2023-04-04
  */
 public interface SupplierService extends IService<Supplier> {

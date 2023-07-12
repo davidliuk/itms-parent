@@ -17,8 +17,8 @@ import org.springframework.util.StringUtils;
  * 城市仓库关联表 服务实现类
  * </p>
  *
- * @author neud
- * @since 2023-04-03
+ * @author david
+ * @since 2023-06-10
  */
 @Service
 public class StorageOrderServiceImpl extends ServiceImpl<StorageOrderMapper, StorageOrder> implements StorageOrderService {
@@ -31,6 +31,7 @@ public class StorageOrderServiceImpl extends ServiceImpl<StorageOrderMapper, Sto
     ) {
         //1 获取查询条件值
         Long id = storageOrderQueryVo.getId();
+        Long orderId = storageOrderQueryVo.getOrderId();
         Long stationId = storageOrderQueryVo.getStationId();
         Long wareId = storageOrderQueryVo.getWareId();
         Long skuId = storageOrderQueryVo.getSkuId();
@@ -44,11 +45,13 @@ public class StorageOrderServiceImpl extends ServiceImpl<StorageOrderMapper, Sto
         //4 数据返回
         return baseMapper.selectPage(pageParam, new LambdaQueryWrapper<StorageOrder>()
                 .eq(!StringUtils.isEmpty(id), StorageOrder::getId, id)
+                .eq(!StringUtils.isEmpty(orderId), StorageOrder::getOrderId, orderId)
                 .eq(!StringUtils.isEmpty(stationId), StorageOrder::getStationId, stationId)
                 .eq(!StringUtils.isEmpty(wareId), StorageOrder::getWareId, wareId)
                 .eq(!StringUtils.isEmpty(skuId), StorageOrder::getSkuId, skuId)
                 .eq(!StringUtils.isEmpty(supplierId), StorageOrder::getSupplierId, supplierId)
                 .like(!StringUtils.isEmpty(skuName), StorageOrder::getSkuName, skuName)
+                .like(!StringUtils.isEmpty(supplierName), StorageOrder::getStationId, supplierName)
                 .eq(!StringUtils.isEmpty(storageType), StorageOrder::getStorageType, storageType));
     }
 

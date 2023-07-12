@@ -11,8 +11,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * 城市仓库关联表 服务类
  * </p>
  *
- * @author neud
- * @since 2023-04-03
+ * @author david
+ * @since 2023-06-10
  */
 public interface RegionWareService extends IService<RegionWare> {
 

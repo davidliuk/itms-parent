@@ -17,8 +17,8 @@ import java.math.BigDecimal;
  * 城市仓库关联表 服务实现类
  * </p>
  *
- * @author neud
- * @since 2023-04-03
+ * @author david
+ * @since 2023-06-10
  */
 @Service
 public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> implements InvoiceService {

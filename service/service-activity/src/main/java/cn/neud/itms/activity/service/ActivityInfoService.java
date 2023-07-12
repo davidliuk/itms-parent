@@ -19,7 +19,7 @@ import java.util.Map;
  * 活动表 服务类
  * </p>
  *
- * @author neud
+ * @author david
  * @since 2023-04-07
  */
 public interface ActivityInfoService extends IService<ActivityInfo> {

@@ -10,7 +10,7 @@ import java.util.List;
  * 商品属性 服务类
  * </p>
  *
- * @author neud
+ * @author david
  * @since 2023-04-04
  */
 public interface AttrService extends IService<Attr> {

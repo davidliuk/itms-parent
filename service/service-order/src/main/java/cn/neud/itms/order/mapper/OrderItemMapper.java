@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  * 订单项信息 Mapper 接口
  * </p>
  *
- * @author neud
+ * @author david
  * @since 2023-04-18
  */
 @Repository
