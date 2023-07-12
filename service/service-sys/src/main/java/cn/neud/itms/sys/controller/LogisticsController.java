@@ -1,7 +1,6 @@
 package cn.neud.itms.sys.controller;
 
 
-import cn.hutool.log.Log;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.sys.Logistics;
 import cn.neud.itms.sys.service.LogisticsService;

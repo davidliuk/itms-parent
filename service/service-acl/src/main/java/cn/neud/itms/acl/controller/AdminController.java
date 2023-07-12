@@ -93,7 +93,7 @@ public class AdminController {
 
     // 2 id查询用户
     @ApiOperation("根据stationId查询")
-    @GetMapping("/ware/{id}")
+    @GetMapping("/station/{id}")
     public Result getByStationId(@PathVariable Long id) {
         List<Admin> admins = adminService.list(new LambdaQueryWrapper<Admin>()
                 .eq(Admin::getStationId, id));

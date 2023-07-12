@@ -4,7 +4,8 @@
 
     <select id="selectByRoleId" resultType="cn.neud.itms.model.acl.Admin">
         select admin.*
-        from admin JOIN admin_role ON admin.id = admin_role.admin_id
+        from admin
+                 JOIN admin_role ON admin.id = admin_role.admin_id
         where role_id = #{roleId}
     </select>
 </mapper>

@@ -27,7 +27,7 @@ public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> i
         String name = supplier.getName();
         String province = supplier.getProvince();
         return baseMapper.selectPage(pageParam, new LambdaQueryWrapper<Supplier>()
-                        .eq(!StringUtils.isEmpty(id), Supplier::getId, id)
+                .eq(!StringUtils.isEmpty(id), Supplier::getId, id)
                 .like(!StringUtils.isEmpty(name), Supplier::getName, name)
                 .like(!StringUtils.isEmpty(province), Supplier::getProvince, province)
                 .like(!StringUtils.isEmpty(province), Supplier::getCity, province)
