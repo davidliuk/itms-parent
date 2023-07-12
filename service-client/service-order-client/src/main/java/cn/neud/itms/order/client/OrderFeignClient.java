@@ -9,17 +9,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient("service-order")
 public interface OrderFeignClient {
-
-    @GetMapping("/api/order/inner/getOrderDetailByNo/{orderNo}")
-    public OrderInfo getOrderDetailByNo(@PathVariable("orderNo") String orderNo);
-
     @GetMapping("/api/order/inner/getOrderInfoByNo/{orderNo}")
     public OrderInfo getOrderInfoByNo(@PathVariable("orderNo") String orderNo);
-//    @GetMapping("/api/order/auth/getOrderInfoById/{orderId}")
-//    public OrderInfo getOrderInfoById(@PathVariable("orderId") Long orderId);
 
     @GetMapping("/api/order/inner/getOrderInfoById/{orderId}")
     public OrderInfo getOrderInfoById(@PathVariable("orderId") Long orderId);
+
+    @GetMapping("/api/order/inner/getOrderDetailByNo/{orderNo}")
+    public OrderInfo getOrderDetailByNo(@PathVariable("orderNo") String orderNo);
 
     @GetMapping("/api/order/inner/getOrderDetailById/{orderId}")
     public OrderInfo getOrderDetailById(@PathVariable("orderId") Long orderId);

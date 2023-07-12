@@ -247,7 +247,6 @@ public class DispatchController {
             transferOrder.setType(WorkType.RETURN);
             transferOrderService.save(transferOrder);
         }
-
     }
 
 }
