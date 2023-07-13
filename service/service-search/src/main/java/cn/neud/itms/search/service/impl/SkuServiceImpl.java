@@ -40,13 +40,13 @@ public class SkuServiceImpl implements SkuService {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    //更新商品热度
+    // 更新商品热度
     @Override
     public void incrHotScore(Long skuId) {
         String key = "hotScore";
-        //redis保存数据，每次+1
+        // redis保存数据，每次+1
         Double hotScore = redisTemplate.opsForZSet().incrementScore(key, "skuId:" + skuId, 1);
-        //规则
+        // 规则
         if (hotScore % 10 == 0) {
             //更新es
             Optional<SkuEs> optional = skuRepository.findById(skuId);
@@ -79,8 +79,7 @@ public class SkuServiceImpl implements SkuService {
         //// 判断keyword是否为空，如果为空 ，根据仓库id + 分类id查询
         String keyword = skuEsQueryVo.getKeyword();
         if (StringUtils.isEmpty(keyword)) {
-            pageModel =
-                    skuRepository
+            pageModel = skuRepository
                             .findByCategoryIdAndWareId(
                                     skuEsQueryVo.getCategoryId(),
                                     skuEsQueryVo.getWareId(),
@@ -95,14 +94,14 @@ public class SkuServiceImpl implements SkuService {
         }
 
         //3 查询商品参加优惠活动
-        List<SkuEs> skuEsList = pageModel.getContent();
-
-        if (!CollectionUtils.isEmpty(skuEsList)) {
-            //遍历skuEsList，得到所有skuId
-            List<Long> skuIdList =
-                    skuEsList.stream()
-                            .map(item -> item.getId())
-                            .collect(Collectors.toList());
+//        List<SkuEs> skuEsList = pageModel.getContent();
+//
+//        if (!CollectionUtils.isEmpty(skuEsList)) {
+//            //遍历skuEsList，得到所有skuId
+//            List<Long> skuIdList =
+//                    skuEsList.stream()
+//                            .map(SkuEs::getId)
+//                            .collect(Collectors.toList());
             //根据skuId列表远程调用，调用service-activity里面的接口得到数据
             //返回Map<Long,List<String>>
             //// map集合key就是skuId值，Long类型
@@ -111,15 +110,15 @@ public class SkuServiceImpl implements SkuService {
             ////// 比如有活动：中秋节满减活动
             ////// 一个活动可以有多个规则：
             ////// 中秋节满减活动有两个规则：满20元减1元，满58元减5元
-            Map<Long, List<String>> skuIdToRuleListMap =
-                    activityFeignClient.findActivity(skuIdList);//远程调用
-            //封装获取数据到skuEs里面 ruleList属性里面
-            if (skuIdToRuleListMap != null) {
-                skuEsList.forEach(skuEs -> {
-                    skuEs.setRuleList(skuIdToRuleListMap.get(skuEs.getId()));
-                });
-            }
-        }
+//            Map<Long, List<String>> skuIdToRuleListMap =
+//                    activityFeignClient.findActivity(skuIdList);//远程调用
+//            //封装获取数据到skuEs里面 ruleList属性里面
+//            if (skuIdToRuleListMap != null) {
+//                skuEsList.forEach(skuEs -> {
+//                    skuEs.setRuleList(skuIdToRuleListMap.get(skuEs.getId()));
+//                });
+//            }
+//        }
         return pageModel;
     }
 
@@ -146,6 +145,10 @@ public class SkuServiceImpl implements SkuService {
         skuEs.setIsNewPerson(skuInfo.getIsNewPerson());
         skuEs.setImgUrl(skuInfo.getImgUrl());
         skuEs.setTitle(skuInfo.getSkuName());
+        System.out.println("+++++++++");
+        System.out.println(skuEs);
+        System.out.println(skuInfo);
+        System.out.println("+++++++++");
         if (Objects.equals(skuInfo.getSkuType(), SkuType.COMMON.getCode())) { //普通商品
             skuEs.setSkuType(0);
             skuEs.setPrice(skuInfo.getPrice().doubleValue());

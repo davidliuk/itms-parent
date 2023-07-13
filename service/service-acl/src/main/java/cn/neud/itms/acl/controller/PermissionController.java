@@ -1,6 +1,9 @@
 package cn.neud.itms.acl.controller;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.neud.itms.acl.service.PermissionService;
+import cn.neud.itms.common.auth.RoleConstant;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.acl.Permission;
 import io.swagger.annotations.Api;
@@ -9,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/acl/permission")
@@ -18,6 +22,26 @@ public class PermissionController {
 
     @Autowired
     private PermissionService permissionService;
+
+    // 参数有用户id 和 多个角色id
+    @ApiOperation("为用户进行角色分配")
+    @PostMapping("doAssign/{roleId}")
+    public Result doAssign(
+            @PathVariable Long roleId,
+            @RequestBody Long[] permissionId
+    ) {
+        permissionService.saveRolePermission(roleId, permissionId);
+        return Result.ok(null);
+    }
+
+    // 获取所有角色，和根据用户id查询用户分配角色列表
+    @ApiOperation("获取用户角色")
+    @GetMapping("toAssign/{roleId}")
+    public Result toAssign(@PathVariable Long roleId) {
+        //返回map集合包含两部分数据：所有角色 和 为用户分配角色列表
+        Map<String, Object> map = permissionService.getPermissionByRoleId(roleId);
+        return Result.ok(map);
+    }
 
     //查询所有菜单
 //    url: `${api_name}`,

@@ -20,6 +20,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * <p>
  * sku信息 前端控制器
@@ -54,6 +57,19 @@ public class SkuWareController {
         IPage<SkuWare> pageModel = skuWareService.selectPage(pageParam, skuWare);
         return Result.ok(pageModel);
     }
+
+    @ApiOperation("根据wareId获取所有sku库存列表")
+    @GetMapping("getByWareId/{wareId}")
+    public Result getByWareId(
+            @PathVariable Long wareId
+    ) {
+        List<SkuWare> skuWares = skuWareService.list(new LambdaQueryWrapper<SkuWare>()
+                .eq(SkuWare::getWareId, wareId)).stream()
+                .peek(skuWare -> skuWare.setSkuInfo(skuInfoService.getById(skuWare.getSkuId())))
+                .collect(Collectors.toList());
+        return Result.ok(skuWares);
+    }
+
 
     @ApiOperation("仓库库存求和")
     @PostMapping("/sum")

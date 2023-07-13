@@ -32,7 +32,7 @@ public class HomeServiceImpl implements HomeService {
     @Override
     public Map<String, Object> homeData(Long userId) {
         Map<String, Object> result = new HashMap<>();
-        //1 根据userId获取当前登录用户提货地址信息
+        // 1 根据userId获取当前登录用户提货地址信息
         // 远程调用service-user模块接口获取需要数据
         CourierAddressVo courierAddressVo = userFeignClient.getUserAddressByUserId(userId);
         result.put("courierAddressVo", courierAddressVo);

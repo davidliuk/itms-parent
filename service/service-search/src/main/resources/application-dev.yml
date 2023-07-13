@@ -13,7 +13,7 @@ spring:
     allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
   elasticsearch:
     rest:
-      uris: http://localhost:9200
+      uris: http://123.57.29.205:9200
 
   rabbitmq:
     host: 123.57.29.205

@@ -186,21 +186,29 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
     @Override
     public void publish(Long skuId, Integer status) {
         if (status == 1) { // 上架
-            SkuInfo skuInfo = baseMapper.selectById(skuId);
+//            SkuInfo skuInfo = baseMapper.selectById(skuId);
+            SkuInfo skuInfo = new SkuInfo();
+            skuInfo.setId(skuId);
             skuInfo.setPublishStatus(status);
             baseMapper.updateById(skuInfo);
             //整合mq把数据同步到es里面
-            rabbitService.sendMessage(MqConstant.EXCHANGE_GOODS_DIRECT,
+            rabbitService.sendMessage(
+                    MqConstant.EXCHANGE_GOODS_DIRECT,
                     MqConstant.ROUTING_GOODS_UPPER,
-                    skuId);
+                    skuId
+            );
         } else { // 下架
-            SkuInfo skuInfo = baseMapper.selectById(skuId);
+//            SkuInfo skuInfo = baseMapper.selectById(skuId);
+            SkuInfo skuInfo = new SkuInfo();
+            skuInfo.setId(skuId);
             skuInfo.setPublishStatus(status);
             baseMapper.updateById(skuInfo);
             //整合mq把数据同步到es里面
-            rabbitService.sendMessage(MqConstant.EXCHANGE_GOODS_DIRECT,
+            rabbitService.sendMessage(
+                    MqConstant.EXCHANGE_GOODS_DIRECT,
                     MqConstant.ROUTING_GOODS_LOWER,
-                    skuId);
+                    skuId
+            );
         }
     }
 

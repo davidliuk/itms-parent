@@ -62,10 +62,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         //2 根据用户id查询用户分配角色列表
         //2.1 根据用户id查询 用户角色关系表 admin_role 查询用户分配角色id列表
         // List<AdminRole>
-        LambdaQueryWrapper<AdminRole> wrapper = new LambdaQueryWrapper<>();
         //设置查询条件，根据用户id adminId
-        wrapper.eq(AdminRole::getAdminId, adminId);
-        List<AdminRole> adminRoleList = adminRoleService.list(wrapper);
+        List<AdminRole> adminRoleList = adminRoleService.list(new LambdaQueryWrapper<AdminRole>()
+                .eq(AdminRole::getAdminId, adminId)
+        );
 
         //2.2 通过第一步返回集合，获取所有角色id的列表List<AdminRole> -- List<Long>
         List<Long> roleIdsList = adminRoleList.stream()

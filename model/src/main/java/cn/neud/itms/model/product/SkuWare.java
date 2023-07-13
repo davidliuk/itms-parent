@@ -18,6 +18,10 @@ public class SkuWare extends BaseEntity {
     @TableField("sku_id")
     private Long skuId;
 
+    @ApiModelProperty(value = "商品")
+    @TableField(exist = false)
+    private SkuInfo skuInfo;
+
     @ApiModelProperty(value = "商品名称")
     @TableField("sku_name")
     private String skuName;

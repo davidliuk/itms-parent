@@ -21,38 +21,40 @@ public class SkuApiController {
     @Autowired
     private SkuService skuService;
 
-    //查询分类商品
+    // 查询分类商品
     @PostMapping("{page}/{limit}")
-    public Result listSku(@PathVariable Integer page,
-                          @PathVariable Integer limit,
-                          SkuEsQueryVo skuEsQueryVo) {
+    public Result listSku(
+            @PathVariable Integer page,
+            @PathVariable Integer limit,
+            @RequestBody SkuEsQueryVo skuEsQueryVo
+    ) {
         //创建pageable对象，0代表第一页
         Pageable pageable = PageRequest.of(page - 1, limit);
         Page<SkuEs> pageModel = skuService.search(pageable, skuEsQueryVo);
         return Result.ok(pageModel);
     }
 
-    //上架
+    // 上架
     @GetMapping("inner/upperSku/{skuId}")
     public Result upperSku(@PathVariable Long skuId) {
         skuService.upperSku(skuId);
         return Result.ok(null);
     }
 
-    //下架
+    // 下架
     @GetMapping("inner/lowerSku/{skuId}")
     public Result lowerSku(@PathVariable Long skuId) {
         skuService.lowerSku(skuId);
         return Result.ok(null);
     }
 
-    //获取爆款商品
+    // 获取爆款商品
     @GetMapping("inner/findHotSkuList")
     public List<SkuEs> findHotSkuList() {
         return skuService.findHotSkuList();
     }
 
-    //更新商品热度
+    // 更新商品热度
     @GetMapping("inner/incrHotScore/{skuId}")
     public Boolean incrHotScore(@PathVariable("skuId") Long skuId) {
         skuService.incrHotScore(skuId);
