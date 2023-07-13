@@ -112,16 +112,13 @@ public class IndexController {
         return Result.ok(StpUtil.getPermissionList());
     }
 
-    //    url: '/admin/acl/index/info',
-//    method: 'get',
-    //2 getInfo 获取信息
+    @SaCheckLogin
     @ApiOperation("获取信息")
     @GetMapping("info")
     public Result info() {
-        Map<String, String> map = new HashMap<>();
-        map.put("name", "admin");
-        map.put("avatar", "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
-        return Result.ok(map);
+        Admin admin = adminService.getById(StpUtil.getLoginIdAsLong());
+        admin.setRoles(StpUtil.getRoleList());
+        return Result.ok(admin);
     }
 
     //    url: '/admin/acl/index/logout',

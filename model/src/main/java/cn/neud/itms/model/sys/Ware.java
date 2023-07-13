@@ -18,6 +18,14 @@ public class Ware extends BaseEntity {
     @TableField("name")
     private String name;
 
+    @ApiModelProperty(value = "管理员ID")
+    @TableField("adminId")
+    private Long adminId;
+
+    @ApiModelProperty(value = "管理员名称")
+    @TableField("adminName")
+    private String adminName;
+
     @ApiModelProperty(value = "省code")
     @TableField("province")
     private String province;

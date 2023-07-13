@@ -12,6 +12,15 @@ public class SkuInfoQueryVo {
     @ApiModelProperty(value = "仓库id")
     private Long wareId;
 
+    @ApiModelProperty(value = "供应商id")
+    private Long supplierId;
+
+    @ApiModelProperty(value = "供应商名称")
+    private Long supplierName;
+
+    @ApiModelProperty(value = "商品类型：0->普通商品 1->秒杀商品")
+    private String skuName;
+
     @ApiModelProperty(value = "商品类型：0->普通商品 1->秒杀商品")
     private String skuType;
 

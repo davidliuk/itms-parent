@@ -25,6 +25,14 @@ public class SkuInfo extends BaseEntity {
     @TableField("attr_group_id")
     private Long attrGroupId;
 
+    @ApiModelProperty(value = "供应商id")
+    @TableField("supplier_id")
+    private Long supplierId;
+
+    @ApiModelProperty(value = "供应商名称")
+    @TableField("supplier_name")
+    private Long supplierName;
+
     @ApiModelProperty(value = "商品类型：0->普通商品 1->秒杀商品")
     @TableField("sku_type")
     private Integer skuType;

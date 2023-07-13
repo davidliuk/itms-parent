@@ -42,10 +42,6 @@ public class SkuWareController {
     @Autowired
     private SysFeignClient sysFeignClient;
 
-    // sku列表
-    //    url: `${api_name}/${page}/${limit}`,
-    //    method: 'get',
-    //    params: searchObj
     @ApiOperation("sku库存列表")
     @PostMapping("{page}/{limit}")
     public Result list(
