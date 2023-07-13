@@ -2,7 +2,6 @@ package cn.neud.itms.product.controller;
 
 
 import cn.neud.itms.common.result.Result;
-import cn.neud.itms.model.acl.Role;
 import cn.neud.itms.model.product.Supplier;
 import cn.neud.itms.product.service.SupplierService;
 import com.baomidou.mybatisplus.core.metadata.IPage;

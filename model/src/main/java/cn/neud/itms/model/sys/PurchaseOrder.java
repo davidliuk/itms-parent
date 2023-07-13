@@ -1,5 +1,6 @@
 package cn.neud.itms.model.sys;
 
+import cn.neud.itms.enums.PurchaseStatus;
 import cn.neud.itms.model.base.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -10,7 +11,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-@ApiModel(description = "验货单")
+@ApiModel(description = "购货单")
 @TableName("purchase_order")
 public class PurchaseOrder extends BaseEntity {
 
@@ -47,5 +48,9 @@ public class PurchaseOrder extends BaseEntity {
     @ApiModelProperty(value = "供应商名称")
     @TableField("supplier_name")
     private String supplierName;
+
+    @ApiModelProperty(value = "购货状态")
+    @TableField("status")
+    private PurchaseStatus status;
 
 }

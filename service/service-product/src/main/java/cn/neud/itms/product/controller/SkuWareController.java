@@ -2,6 +2,7 @@ package cn.neud.itms.product.controller;
 
 
 import cn.neud.itms.common.result.Result;
+import cn.neud.itms.enums.PurchaseStatus;
 import cn.neud.itms.enums.StorageType;
 import cn.neud.itms.model.product.SkuInfo;
 import cn.neud.itms.model.product.SkuWare;
@@ -65,6 +66,34 @@ public class SkuWareController {
     @ApiOperation("进货")
     @PostMapping("stock")
     public Result stock(@RequestBody SkuWare skuWare) {
+        SkuInfo skuInfo = skuInfoService.getById(skuWare.getSkuId());
+        if (skuInfo == null) {
+            return Result.fail("该商品不存在");
+        }
+        PurchaseOrder purchaseOrder = new PurchaseOrder();
+        BeanUtils.copyProperties(skuWare, purchaseOrder);
+        BeanUtils.copyProperties(skuInfo, purchaseOrder);
+        purchaseOrder.setStatus(PurchaseStatus.PAID);
+        sysFeignClient.savePurchaseOrder(purchaseOrder);
+        StorageOrder storageOrder = new StorageOrder();
+        BeanUtils.copyProperties(skuWare, storageOrder);
+        BeanUtils.copyProperties(skuInfo, storageOrder);
+        sysFeignClient.saveStorageOrder(storageOrder);
+        return Result.ok(null);
+    }
+
+    @ApiOperation("进货入库")
+    @GetMapping("stockIn/{purchaseOrderId}")
+    public Result stockIn(@PathVariable Long purchaseOrderId) {
+        PurchaseOrder purchaseOrder = sysFeignClient.getPurchaseOrder(purchaseOrderId);
+        if (purchaseOrder == null) {
+            return Result.fail("购货单不存在");
+        }
+        if (purchaseOrder.getStatus() != PurchaseStatus.PAID) {
+            return Result.fail("购货单状态错误");
+        }
+        SkuWare skuWare = new SkuWare();
+        BeanUtils.copyProperties(purchaseOrder, skuWare);
         if (skuWareService.count(new LambdaQueryWrapper<SkuWare>()
                 .eq(SkuWare::getSkuId, skuWare.getSkuId())
                 .eq(SkuWare::getWareId, skuWare.getWareId())) > 0) {
@@ -73,11 +102,8 @@ public class SkuWareController {
         } else {
             skuWareService.save(skuWare);
         }
-        SkuInfo skuInfo = skuInfoService.getById(skuWare.getSkuId());
-        PurchaseOrder purchaseOrder = new PurchaseOrder();
-        BeanUtils.copyProperties(skuWare, purchaseOrder);
-        BeanUtils.copyProperties(skuInfo, purchaseOrder);
-        sysFeignClient.savePurchaseOrder(purchaseOrder);
+        purchaseOrder.setStatus(PurchaseStatus.IN);
+        sysFeignClient.updatePurchaseOrder(purchaseOrder);
         return Result.ok(null);
     }
 

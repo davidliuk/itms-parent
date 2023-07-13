@@ -9,11 +9,9 @@ import cn.neud.itms.user.service.UserService;
 import cn.neud.itms.vo.sys.WorkOrderQueryVo;
 import cn.neud.itms.vo.user.AddressVo;
 import cn.neud.itms.vo.user.CourierAddressVo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user/courier")
@@ -41,15 +39,16 @@ public class CourierApiController {
     }
 
     // 根据配送员id分页查询配送任务单
+    @ApiOperation("根据当前登录的配送员id分页查询配送任务单")
     @SaUserCheckLogin
-    @GetMapping("/inner/getTaskByCourierId/{current}/{limit}")
+    @PostMapping("/inner/getTaskByCourierId/{current}/{limit}")
     public Result getTaskByCourierId(
             @PathVariable("current") Long current,
-            @PathVariable("limit") Long limit
+            @PathVariable("limit") Long limit,
+            @RequestBody WorkOrderQueryVo workOrderQueryVo
     ) {
-        WorkOrderQueryVo workOrderQueryVo = new WorkOrderQueryVo();
         workOrderQueryVo.setCourierId(StpUserUtil.getLoginIdAsLong());
-        return sysFeignClient.list(current, limit, workOrderQueryVo);
+        return sysFeignClient.listWorkOrder(current, limit, workOrderQueryVo);
     }
 
     //根据userId查询提货点和配送员信息
