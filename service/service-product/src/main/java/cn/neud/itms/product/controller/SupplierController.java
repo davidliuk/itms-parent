@@ -2,6 +2,7 @@ package cn.neud.itms.product.controller;
 
 
 import cn.neud.itms.common.result.Result;
+import cn.neud.itms.model.acl.Role;
 import cn.neud.itms.model.product.Supplier;
 import cn.neud.itms.product.service.SupplierService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -24,15 +25,19 @@ import java.util.List;
 @Api(tags = "供应商管理")
 @RestController
 @RequestMapping("/admin/product/supplier")
-//@CrossOrigin
 public class SupplierController {
 
     @Autowired
     private SupplierService supplierService;
 
-    //查询所有仓库列表
-//    url: `${api_name}/findAllList`,
-//    method: 'get'
+    //查询所有供应商列表
+    @ApiOperation("查询所有供应商")
+    @GetMapping("findAllList")
+    public Result findAllList() {
+        List<Supplier> list = supplierService.list();
+        return Result.ok(list);
+    }
+
     @ApiOperation("供应商库存列表")
     @PostMapping("{page}/{limit}")
     public Result list(
