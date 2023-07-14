@@ -70,7 +70,6 @@ public class SkuWareController {
         return Result.ok(skuWares);
     }
 
-
     @ApiOperation("仓库库存求和")
     @PostMapping("/sum")
     public Result selectStockByIds(

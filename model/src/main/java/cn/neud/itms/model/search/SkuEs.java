@@ -41,14 +41,14 @@ public class SkuEs {
     @Field(type = FieldType.Double)
     private Double price;
 
-//    @Field(type = FieldType.Integer, index = false)
-//    private Integer stock;
-//
-//    @Field(type = FieldType.Integer, index = false)
-//    private Integer sale;
-//
-//    @Field(type = FieldType.Long)
-//    private Long wareId;
+    @Field(type = FieldType.Integer, index = false)
+    private Integer stock;
+
+    @Field(type = FieldType.Integer, index = false)
+    private Integer sale;
+
+    @Field(type = FieldType.Long)
+    private Long wareId;
 
     @Field(type = FieldType.Integer, index = false)
     private Integer perLimit;

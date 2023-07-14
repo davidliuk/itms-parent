@@ -4,15 +4,18 @@ package cn.neud.itms.product.controller;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.product.Category;
 import cn.neud.itms.product.service.CategoryService;
+import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.vo.product.CategoryQueryVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -31,6 +34,9 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     //商品分类列表
 //    url: `${api_name}/${page}/${limit}`,
 //    method: 'get',
@@ -48,8 +54,16 @@ public class CategoryController {
     @ApiOperation(value = "获取商品分类信息")
     @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
-        Category category = categoryService.getById(id);
-        return Result.ok(category);
+        if (!redisTemplate.hasKey(RedisConstant.CATEGORY_KEY_PREFIX + id)) {
+            redisTemplate.opsForValue().set(RedisConstant.CATEGORY_KEY_PREFIX + id,
+                    categoryService.getById(id),
+                    RedisConstant.CATEGORY_KEY_TIMEOUT,
+                    TimeUnit.SECONDS
+            );
+        }
+        return Result.ok(redisTemplate.opsForValue().get(RedisConstant.CATEGORY_KEY_PREFIX + id));
+//        Category category = categoryService.getById(id);
+//        return Result.ok(category);
     }
 
     @ApiOperation(value = "新增商品分类")
@@ -82,12 +96,18 @@ public class CategoryController {
 
     //      url: `${api_name}/findAllList`,
     //      method: 'get'
-    //查询所有商品分类
+    // 查询所有商品分类
     @ApiOperation("查询所有商品分类")
     @GetMapping("findAllList")
     public Result findAllList() {
-        List<Category> list = categoryService.list();
-        return Result.ok(list);
+        // 用redis来写
+        if (!redisTemplate.hasKey(RedisConstant.CATEGORY_KEY_PREFIX + "all")) {
+            redisTemplate.opsForValue().set(RedisConstant.CATEGORY_KEY_PREFIX + "all",
+                    categoryService.list(),
+                    RedisConstant.CATEGORY_KEY_TIMEOUT,
+                    TimeUnit.SECONDS
+            );
+        }
+        return Result.ok(redisTemplate.opsForValue().get(RedisConstant.CATEGORY_KEY_PREFIX + "all"));
     }
 }
-

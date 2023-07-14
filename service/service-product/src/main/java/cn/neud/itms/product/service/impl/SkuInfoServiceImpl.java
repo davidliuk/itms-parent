@@ -310,7 +310,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
 
         //4 如果所有商品都锁定成功了，redis缓存相关数据，为了方便后面解锁和减库存
         redisTemplate.opsForValue()
-                .set(RedisConstant.SROCK_INFO + orderNo, skuStockLockVoList);
+                .set(RedisConstant.STOCK_INFO + orderNo, skuStockLockVoList);
         return true;
     }
 
@@ -319,7 +319,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
     public void minusStock(Long wareId, String orderNo) {
         //从redis获取锁定库存信息
         List<SkuStockLockVo> skuStockLockVoList =
-                (List<SkuStockLockVo>) redisTemplate.opsForValue().get(RedisConstant.SROCK_INFO + orderNo);
+                (List<SkuStockLockVo>) redisTemplate.opsForValue().get(RedisConstant.STOCK_INFO + orderNo);
         if (CollectionUtils.isEmpty(skuStockLockVoList)) {
             return;
         }
@@ -329,7 +329,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         });
 
         //删除redis数据
-        redisTemplate.delete(RedisConstant.SROCK_INFO + orderNo);
+        redisTemplate.delete(RedisConstant.STOCK_INFO + orderNo);
     }
 
     @Override

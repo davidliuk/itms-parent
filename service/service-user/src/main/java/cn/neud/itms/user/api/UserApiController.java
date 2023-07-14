@@ -62,7 +62,7 @@ public class UserApiController {
         redisTemplate.opsForValue()
                 .set(RedisConstant.USER_LOGIN_KEY_PREFIX + user.getId(),
                         userVo,
-                        RedisConstant.USERKEY_TIMEOUT,
+                        RedisConstant.USER_KEY_TIMEOUT,
                         TimeUnit.DAYS);
         StpUserUtil.login(user.getId());
         //8 需要数据封装到map返回
@@ -120,7 +120,7 @@ public class UserApiController {
         redisTemplate.opsForValue()
                 .set(RedisConstant.USER_LOGIN_KEY_PREFIX + user.getId(),
                         userVo,
-                        RedisConstant.USERKEY_TIMEOUT,
+                        RedisConstant.USER_KEY_TIMEOUT,
                         TimeUnit.DAYS);
         StpUserUtil.login(user.getId());
         //8 需要数据封装到map返回

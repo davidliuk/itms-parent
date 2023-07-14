@@ -55,6 +55,11 @@ public class IndexController {
         Map<String, Object> map = new HashMap<>();
         map.put("token", StpUtil.getTokenValue());
         map.put("user", admin);
+        redisTemplate.opsForValue()
+                .set(RedisConstant.ADMIN_LOGIN_KEY_PREFIX + admin.getId(),
+                        admin,
+                        RedisConstant.USER_KEY_TIMEOUT,
+                        TimeUnit.DAYS);
         return Result.ok(map);
     }
 
@@ -116,17 +121,22 @@ public class IndexController {
     @ApiOperation("获取信息")
     @GetMapping("info")
     public Result info() {
-        Admin admin = adminService.getById(StpUtil.getLoginIdAsLong());
-        admin.setRoles(StpUtil.getRoleList());
+        Admin admin = (Admin) redisTemplate.opsForValue()
+                .get(RedisConstant.ADMIN_LOGIN_KEY_PREFIX + StpUtil.getLoginIdAsLong());
+//        Admin admin = adminService.getById(StpUtil.getLoginIdAsLong());
+//        admin.setRoles(StpUtil.getRoleList());
         return Result.ok(admin);
     }
 
     //    url: '/admin/acl/index/logout',
 //    method: 'post'
     //3 logout 退出
+    @SaCheckLogin
     @ApiOperation("退出")
     @PostMapping("logout")
     public Result logout() {
+        StpUtil.logout();
+        redisTemplate.delete(RedisConstant.ADMIN_LOGIN_KEY_PREFIX + StpUtil.getLoginIdAsLong());
         return Result.ok(null);
     }
 }

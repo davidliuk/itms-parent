@@ -18,15 +18,20 @@ public interface RedisConstant {
     String USER_KEY_PREFIX = "user:";
     String USER_CART_KEY_SUFFIX = ":cart";
     long USER_CART_EXPIRE = 60 * 60 * 24 * 7;
-    String SROCK_INFO = "stock:info:";
+    String STOCK_INFO = "stock:info:";
     String ORDER_REPEAT = "order:repeat:";
 
     //用户登录
     String USER_LOGIN_KEY_PREFIX = "user:login:";
     String ADMIN_LOGIN_KEY_PREFIX = "admin:login:";
     //    String userinfoKey_suffix = ":info";
-    int USERKEY_TIMEOUT = 365;
+    int USER_KEY_TIMEOUT = 365;
     String ORDER_SKU_MAP = "order:sku:";
+
+    // 分类
+    String CATEGORY_KEY_PREFIX = "category:";
+    String CATEGORY_KEY_SUFFIX = ":info";
+    long CATEGORY_KEY_TIMEOUT = 24 * 60 * 60;
 
     //秒杀商品前缀
     String SECKILL_TIME_MAP = "seckill:time:map";

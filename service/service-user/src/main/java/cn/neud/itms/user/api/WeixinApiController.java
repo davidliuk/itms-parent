@@ -98,7 +98,7 @@ public class WeixinApiController {
         redisTemplate.opsForValue()
                 .set(RedisConstant.USER_LOGIN_KEY_PREFIX + user.getId(),
                         userVo,
-                        RedisConstant.USERKEY_TIMEOUT,
+                        RedisConstant.USER_KEY_TIMEOUT,
                         TimeUnit.DAYS);
 
         //8 需要数据封装到map返回
