@@ -36,6 +36,10 @@ public class Admin extends BaseEntity {
     @TableField("avatar")
     private String avatar;
 
+    @ApiModelProperty(value = "介绍")
+    @TableField("introduction")
+    private String introduction;
+
     @ApiModelProperty(value = "昵称")
     @TableField("name")
     private String name;

@@ -132,17 +132,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public UserVo getUserLoginVo(Long id) {
         User user = baseMapper.selectById(id);
         UserVo userVo = new UserVo();
-        userVo.setUserId(id);
-        userVo.setNickName(user.getNickName());
-        userVo.setPhotoUrl(user.getAvatar());
-        userVo.setIsNew(user.getIsNew());
-        userVo.setOpenId(user.getOpenId());
+        BeanUtils.copyProperties(user, userVo);
+//        userVo.setUserId(id);
+//        userVo.setNickName(user.getNickName());
+//        userVo.setAvatar(user.getAvatar());
+//        userVo.setIsNew(user.getIsNew());
+//        userVo.setOpenId(user.getOpenId());
 
 //        UserDelivery userDelivery = userDeliveryMapper.selectOne(
 //                new LambdaQueryWrapper<UserDelivery>().eq(UserDelivery::getUserId, id)
 //                        .eq(UserDelivery::getIsDefault, 1)
 //        );
-        //根据userId查询用户默认的配送员id
+        //根据userId查询用户默认的地址id
         Address address = addressMapper.selectOne(
                 new LambdaQueryWrapper<Address>()
                         .eq(Address::getUserId, id)

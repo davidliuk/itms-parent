@@ -127,7 +127,7 @@ public class UserApiController {
         //8 需要数据封装到map返回
         Map<String, Object> map = new HashMap<>();
         map.put("user", user);
-        map.put("token", token);
+        map.put("token", StpUserUtil.getTokenValue());
         map.put("addressVo", addressVo);
         return Result.ok(map);
     }
@@ -137,7 +137,7 @@ public class UserApiController {
     @GetMapping("info")
     public Result info() {
         // 获取当前登录用户id
-        Long userId = StpUtil.getLoginIdAsLong();
+        Long userId = StpUserUtil.getLoginIdAsLong();
         // 根据id查询用户信息
         UserVo userVo = userService.getUserLoginVo(userId);
         return Result.ok(userVo);
