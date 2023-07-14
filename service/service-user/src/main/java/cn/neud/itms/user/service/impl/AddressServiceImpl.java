@@ -23,9 +23,9 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, Address> impl
     //根据平台属性分组id查询
     @Override
     public List<Address> getAddressListByUserId(Long userId) {
-        LambdaQueryWrapper<Address> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Address::getUserId, userId);
-        return baseMapper.selectList(wrapper);
+        return baseMapper.selectList(new LambdaQueryWrapper<Address>()
+                .eq(Address::getUserId, userId)
+        );
     }
 
     @Override

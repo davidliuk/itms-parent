@@ -1,5 +1,6 @@
 package cn.neud.itms.user.api;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.neud.itms.common.auth.SaUserCheckLogin;
 import cn.neud.itms.common.auth.StpUserUtil;
 import cn.neud.itms.common.result.Result;
@@ -129,6 +130,17 @@ public class UserApiController {
         map.put("token", token);
         map.put("addressVo", addressVo);
         return Result.ok(map);
+    }
+
+    @ApiOperation(value = "当前登录的用户信息")
+    @SaUserCheckLogin
+    @GetMapping("info")
+    public Result info() {
+        // 获取当前登录用户id
+        Long userId = StpUtil.getLoginIdAsLong();
+        // 根据id查询用户信息
+        UserVo userVo = userService.getUserLoginVo(userId);
+        return Result.ok(userVo);
     }
 
     // 用户注册

@@ -28,7 +28,7 @@ public class AddressApiController {
     @Autowired
     private AddressService addressService;
 
-    @ApiOperation("获取所有地址信息")
+    @ApiOperation("获取登录用户所有地址信息")
     @GetMapping()
     @SaUserCheckLogin
     public Result addressGet() {
@@ -53,12 +53,14 @@ public class AddressApiController {
     //根据平台属性分组id查询
 //    url: `${api_name}/${userId}`,
 //    method: 'get'
-    @ApiOperation("根据用户id查询")
-    @GetMapping("{userId}")
-    public Result list(@PathVariable Long userId) {
-        List<Address> list = addressService.getAddressListByUserId(userId);
-        return Result.ok(list);
-    }
+//    @SaUserCheckLogin
+//    @ApiOperation("根据用户id查询")
+//    @GetMapping("")
+//    public Result list() {
+//        long userId = StpUserUtil.getLoginIdAsLong();
+//        List<Address> list = addressService.getAddressListByUserId(userId);
+//        return Result.ok(list);
+//    }
 
     @ApiOperation(value = "获取收货地址")
     @GetMapping("{id}")
