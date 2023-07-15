@@ -41,7 +41,7 @@ public enum ResultCodeEnum {
     PAYMENT_SUCCESS(241, "订单支付成功"),
     PAYMENT_FAIL(243, "订单支付失败"),
     ORDER_STATUS_ERROR(300, "订单状态异常"),
-    WORK_ORDER_STATUS_ERROR(301, "任务单状态异常"));
+    WORK_ORDER_STATUS_ERROR(301, "任务单状态异常");
 
     private Integer code;
 

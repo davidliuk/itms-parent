@@ -144,8 +144,8 @@ public class DispatchController {
             throw new ItmsException(ResultCodeEnum.ORDER_NOT_EXIST);
         }
         if (orderInfo.getOrderStatus() != OrderStatus.PAID) {
-            throw new ItmsException(ResultCodeEnum.ORDER_STATUS_ERROR);
 //            return Result.fail("订单状态不是待调度状态");
+            throw new ItmsException(ResultCodeEnum.ORDER_STATUS_ERROR);
         }
         orderInfo.setOrderStatus(OrderStatus.DISPATCH);
         // 分配运输公司

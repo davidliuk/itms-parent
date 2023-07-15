@@ -133,6 +133,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = baseMapper.selectById(id);
         UserVo userVo = new UserVo();
         BeanUtils.copyProperties(user, userVo);
+        if (user.getUserType() == UserType.COURIER) {
+            userVo.setCourierInfo(courierMapper.selectOne(new LambdaQueryWrapper<CourierInfo>()
+                    .eq(CourierInfo::getUserId, user.getId())
+            ));
+        }
 //        userVo.setUserId(id);
 //        userVo.setNickName(user.getNickName());
 //        userVo.setAvatar(user.getAvatar());

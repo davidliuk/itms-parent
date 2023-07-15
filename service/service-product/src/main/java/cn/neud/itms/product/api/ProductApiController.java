@@ -1,5 +1,6 @@
 package cn.neud.itms.product.api;
 
+import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.product.Category;
 import cn.neud.itms.model.product.SkuInfo;
 import cn.neud.itms.product.service.CategoryService;
@@ -21,6 +22,13 @@ public class ProductApiController {
 
     @Autowired
     private SkuInfoService skuInfoService;
+
+    @ApiOperation("获取sku信息")
+    @GetMapping("/skuInfo/{id}")
+    public Result get(@PathVariable Long id) {
+        SkuInfoVo skuInfoVo = skuInfoService.getSkuInfo(id);
+        return Result.ok(skuInfoVo);
+    }
 
     //根据分类id获取分类信息
     @GetMapping("inner/getCategory/{categoryId}")

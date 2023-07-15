@@ -1,5 +1,6 @@
 package cn.neud.itms.vo.user;
 
+import cn.neud.itms.model.user.CourierInfo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -46,5 +47,8 @@ public class UserVo implements Serializable {
 
     @ApiModelProperty(value = "仓库id")
     private Long wareId;
+
+    @ApiModelProperty(value = "配送员个人信息")
+    private CourierInfo courierInfo;
 
 }
