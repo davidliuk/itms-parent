@@ -17,7 +17,7 @@ public enum OrderStatus {
     TAKE(6, "已领货"), // 待收货
     RECEIVE(7, "完成"), //
     REFUND(8, "退货退款"), //
-//    RETURN(9, "货物退回"), //
+    //    RETURN(9, "货物退回"), //
     CANCEL(-1, "取消");
 
     @EnumValue

@@ -64,7 +64,7 @@ public class SkuWareController {
             @PathVariable Long wareId
     ) {
         List<SkuWare> skuWares = skuWareService.list(new LambdaQueryWrapper<SkuWare>()
-                .eq(SkuWare::getWareId, wareId)).stream()
+                        .eq(SkuWare::getWareId, wareId)).stream()
                 .peek(skuWare -> skuWare.setSkuInfo(skuInfoService.getById(skuWare.getSkuId())))
                 .collect(Collectors.toList());
         return Result.ok(skuWares);

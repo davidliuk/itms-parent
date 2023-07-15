@@ -64,6 +64,12 @@ public class ProductApiController {
         return skuInfoService.findNewPersonSkuInfoList();
     }
 
+    // 获取新人专享商品
+    @GetMapping("inner/findNewSkuInfoList")
+    public List<SkuInfo> findNewSkuInfoList() {
+        return skuInfoService.findNewSkuInfoList();
+    }
+
     // 根据skuId获取sku信息
     @GetMapping("inner/getSkuInfoVo/{skuId}")
     public SkuInfoVo getSkuInfoVo(@PathVariable Long skuId) {

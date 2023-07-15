@@ -49,4 +49,7 @@ public interface ProductFeignClient {
     @PostMapping("/api/product/inner/checkAndLock/{orderNo}")
     public Boolean checkAndLock(@RequestBody List<SkuStockLockVo> skuStockLockVoList,
                                 @PathVariable("orderNo") String orderNo);
+
+    @GetMapping("/api/product/inner/findNewSkuInfoList")
+    List<SkuInfo> findNewSkuInfoList();
 }

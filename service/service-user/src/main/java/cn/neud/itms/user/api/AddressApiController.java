@@ -49,19 +49,6 @@ public class AddressApiController {
         return Result.ok(null);
     }
 
-    //平台属性列表方法
-    //根据平台属性分组id查询
-//    url: `${api_name}/${userId}`,
-//    method: 'get'
-//    @SaUserCheckLogin
-//    @ApiOperation("根据用户id查询")
-//    @GetMapping("")
-//    public Result list() {
-//        long userId = StpUserUtil.getLoginIdAsLong();
-//        List<Address> list = addressService.getAddressListByUserId(userId);
-//        return Result.ok(list);
-//    }
-
     @ApiOperation(value = "获取收货地址")
     @GetMapping("{id}")
     public Result get(@PathVariable Long id) {
@@ -70,11 +57,13 @@ public class AddressApiController {
     }
 
     @ApiOperation(value = "新增")
+    @SaUserCheckLogin
     @PostMapping("")
     public Result save(@RequestBody Address address) {
         if (addressService.count(new LambdaQueryWrapper<Address>().eq(Address::getUserId, address.getUserId())) == 0) {
             address.setIsDefault(1);
         }
+        address.setUserId(StpUserUtil.getLoginIdAsLong());
         addressService.save(address);
         return Result.ok(null);
     }

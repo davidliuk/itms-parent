@@ -16,14 +16,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class SkuServiceImpl implements SkuService {
@@ -64,8 +61,7 @@ public class SkuServiceImpl implements SkuService {
         // 0代表第一页
         Pageable pageable = PageRequest.of(0, 10);
         Page<SkuEs> pageModel = skuRepository.findByOrderByHotScoreDesc(pageable);
-        List<SkuEs> skuEsList = pageModel.getContent();
-        return skuEsList;
+        return pageModel.getContent();
     }
 
     //查询分类商品
@@ -80,10 +76,10 @@ public class SkuServiceImpl implements SkuService {
         String keyword = skuEsQueryVo.getKeyword();
         if (StringUtils.isEmpty(keyword)) {
             pageModel = skuRepository
-                            .findByCategoryIdAndWareId(
-                                    skuEsQueryVo.getCategoryId(),
-                                    skuEsQueryVo.getWareId(),
-                                    pageable);
+                    .findByCategoryIdAndWareId(
+                            skuEsQueryVo.getCategoryId(),
+                            skuEsQueryVo.getWareId(),
+                            pageable);
         } else {
             ///如果keyword不为空根据仓库id + keyword进行查询
             pageModel = skuRepository
@@ -102,14 +98,14 @@ public class SkuServiceImpl implements SkuService {
 //                    skuEsList.stream()
 //                            .map(SkuEs::getId)
 //                            .collect(Collectors.toList());
-            //根据skuId列表远程调用，调用service-activity里面的接口得到数据
-            //返回Map<Long,List<String>>
-            //// map集合key就是skuId值，Long类型
-            //// map集合value是List集合，sku参与活动里面多个规则名称列表
-            ///// 一个商品参加一个活动，一个活动里面可以有多个规则
-            ////// 比如有活动：中秋节满减活动
-            ////// 一个活动可以有多个规则：
-            ////// 中秋节满减活动有两个规则：满20元减1元，满58元减5元
+        //根据skuId列表远程调用，调用service-activity里面的接口得到数据
+        //返回Map<Long,List<String>>
+        //// map集合key就是skuId值，Long类型
+        //// map集合value是List集合，sku参与活动里面多个规则名称列表
+        ///// 一个商品参加一个活动，一个活动里面可以有多个规则
+        ////// 比如有活动：中秋节满减活动
+        ////// 一个活动可以有多个规则：
+        ////// 中秋节满减活动有两个规则：满20元减1元，满58元减5元
 //            Map<Long, List<String>> skuIdToRuleListMap =
 //                    activityFeignClient.findActivity(skuIdList);//远程调用
 //            //封装获取数据到skuEs里面 ruleList属性里面

@@ -215,10 +215,10 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
     //新人专享
     @Override
     public void isNewPerson(Long skuId, Integer status) {
-        SkuInfo skuInfoUp = new SkuInfo();
-        skuInfoUp.setId(skuId);
-        skuInfoUp.setIsNewPerson(status);
-        baseMapper.updateById(skuInfoUp);
+        SkuInfo skuInfo = new SkuInfo();
+        skuInfo.setId(skuId);
+        skuInfo.setIsNewPerson(status);
+        baseMapper.updateById(skuInfo);
     }
 
     //根据skuId列表得到sku信息列表
@@ -242,7 +242,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         //条件2 ： publish_status=1
         //条件3 ：显示其中三个
         //获取第一页数据，每页显示三条记录
-        Page<SkuInfo> pageParam = new Page<>(1, 3);
+        Page<SkuInfo> pageParam = new Page<>(1, 4);
         //封装条件
         LambdaQueryWrapper<SkuInfo> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(SkuInfo::getIsNewPerson, 1);
@@ -335,6 +335,15 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
     @Override
     public void addStock(Long wareId, Long skuId, int skuNum) {
         baseMapper.addStock(wareId, skuId, skuNum);
+    }
+
+    @Override
+    public List<SkuInfo> findNewSkuInfoList() {
+        return baseMapper.selectList(new LambdaQueryWrapper<SkuInfo>()
+                .eq(SkuInfo::getPublishStatus, 1)
+                .orderByDesc(SkuInfo::getCreateTime)
+                .last("limit 8")
+        );
     }
 
     //2 遍历skuStockLockVoList得到每个商品，验证库存并锁定库存，具备原子性

@@ -2,6 +2,7 @@ package cn.neud.itms.cart.api;
 
 import cn.neud.itms.activity.client.ActivityFeignClient;
 import cn.neud.itms.cart.service.CartInfoService;
+import cn.neud.itms.common.auth.SaUserCheckLogin;
 import cn.neud.itms.common.auth.StpUserUtil;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.order.CartInfo;
@@ -22,6 +23,7 @@ public class CartApiController {
     private ActivityFeignClient activityFeignClient;
 
     //1 根据skuId选中
+    @SaUserCheckLogin
     @GetMapping("checkCart/{skuId}/{isChecked}")
     public Result checkCart(@PathVariable Long skuId,
                             @PathVariable Integer isChecked) {
@@ -34,6 +36,7 @@ public class CartApiController {
     }
 
     //2 全选
+    @SaUserCheckLogin
     @GetMapping("checkAllCart/{isChecked}")
     public Result checkAllCart(@PathVariable Integer isChecked) {
         // Long userId = AuthContextHolder.getUserId();
@@ -43,6 +46,7 @@ public class CartApiController {
     }
 
     //3 批量选中
+    @SaUserCheckLogin
     @PostMapping("batchCheckCart/{isChecked}")
     public Result batchCheckCart(@RequestBody List<Long> skuIdList,
                                  @PathVariable Integer isChecked) {
@@ -57,6 +61,7 @@ public class CartApiController {
      *
      * @return
      */
+    @SaUserCheckLogin
     @GetMapping("activityCartList")
     public Result activityCartList() {
         // 获取用户Id
@@ -69,6 +74,7 @@ public class CartApiController {
     }
 
     //购物车列表
+    @SaUserCheckLogin
     @GetMapping("cartList")
     public Result cartList() {
         //获取userId
@@ -80,6 +86,7 @@ public class CartApiController {
 
     //添加商品到购物车
     //添加内容：当前登录用户id，skuId，商品数量
+    @SaUserCheckLogin
     @GetMapping("addToCart/{skuId}/{skuNum}")
     public Result addToCart(@PathVariable("skuId") Long skuId,
                             @PathVariable("skuNum") Integer skuNum) {
@@ -91,6 +98,7 @@ public class CartApiController {
     }
 
     //根据skuId删除购物车
+    @SaUserCheckLogin
     @DeleteMapping("deleteCart/{skuId}")
     public Result deleteCart(@PathVariable("skuId") Long skuId) {
         // Long userId = AuthContextHolder.getUserId();
@@ -100,6 +108,7 @@ public class CartApiController {
     }
 
     //清空购物车
+    @SaUserCheckLogin
     @DeleteMapping("deleteAllCart")
     public Result deleteAllCart() {
         // Long userId = AuthContextHolder.getUserId();
@@ -109,6 +118,7 @@ public class CartApiController {
     }
 
     //批量删除购物车 多个skuId
+    @SaUserCheckLogin
     @DeleteMapping("batchDeleteCart")
     public Result batchDeleteCart(@RequestBody List<Long> skuIdList) {
         // Long userId = AuthContextHolder.getUserId();
@@ -125,6 +135,7 @@ public class CartApiController {
      * @param userId
      * @return
      */
+    @SaUserCheckLogin
     @GetMapping("inner/getCartCheckedList/{userId}")
     public List<CartInfo> getCartCheckedList(@PathVariable("userId") Long userId) {
         return cartInfoService.getCartCheckedList(userId);

@@ -8,7 +8,6 @@ import cn.neud.itms.model.product.Category;
 import cn.neud.itms.model.product.SkuInfo;
 import cn.neud.itms.model.search.SkuEs;
 import cn.neud.itms.vo.user.AddressVo;
-import cn.neud.itms.vo.user.CourierAddressVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +33,8 @@ public class HomeServiceImpl implements HomeService {
         Map<String, Object> result = new HashMap<>();
         // 1 根据userId获取当前登录用户提货地址信息
         // 远程调用service-user模块接口获取需要数据
-        CourierAddressVo courierAddressVo = userFeignClient.getUserAddressByUserId(userId);
-        result.put("courierAddressVo", courierAddressVo);
+//        CourierAddressVo courierAddressVo = userFeignClient.getUserAddressByUserId(userId);
+//        result.put("courierAddressVo", courierAddressVo);
         // 远程调用service-user模块接口获取需要数据
         AddressVo addressVo = userFeignClient.getAddressByUserId(userId);
         result.put("addressVo", addressVo);
@@ -48,7 +47,12 @@ public class HomeServiceImpl implements HomeService {
         //3 获取新人专享商品
         // 远程调用service-product模块接口
         List<SkuInfo> newPersonSkuInfoList = productFeignClient.findNewPersonSkuInfoList();
-        result.put("newPersonSkuInfoList", newPersonSkuInfoList);
+        result.put("newPersonSkuList", newPersonSkuInfoList);
+
+        //3 获取新人专享商品
+        // 远程调用service-product模块接口
+        List<SkuInfo> newSkuInfoList = productFeignClient.findNewSkuInfoList();
+        result.put("newSkuList", newSkuInfoList);
 
         //4 获取爆款商品
         // 远程调用service-search模块接口

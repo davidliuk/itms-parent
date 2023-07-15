@@ -60,4 +60,6 @@ public interface SkuInfoService extends IService<SkuInfo> {
     void minusStock(Long wareId, String orderNo);
 
     void addStock(Long wareId, Long skuId, int skuNum);
+
+    List<SkuInfo> findNewSkuInfoList();
 }

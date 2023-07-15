@@ -1,6 +1,5 @@
 package cn.neud.itms.user.api;
 
-import cn.dev33.satoken.stp.StpUtil;
 import cn.neud.itms.common.auth.SaUserCheckLogin;
 import cn.neud.itms.common.auth.StpUserUtil;
 import cn.neud.itms.common.result.Result;
@@ -33,9 +32,6 @@ public class UserApiController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private AddressService addressService;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -189,37 +185,4 @@ public class UserApiController {
         return Result.ok(null);
     }
 
-//    @ApiOperation("获取所有地址信息")
-//    @GetMapping("address")
-//    @SaUserCheckLogin
-//    public Result addressAll() {
-//        return Result.ok(addressService.getAddressListByUserId(StpUserUtil.getLoginIdAsLong()));
-//    }
-//
-//    @ApiOperation("获取地址信息")
-//    @GetMapping("address/{id}")
-//    public Result addressGet(@PathVariable Long id) {
-//        return Result.ok(addressService.getById(id));
-//    }
-//
-//    @ApiOperation("增加地址信息")
-//    @PostMapping("address")
-//    public Result addressAdd(@RequestBody Address address) {
-//        addressService.save(address);
-//        return Result.ok(null);
-//    }
-//
-//    @ApiOperation("修改地址信息")
-//    @PutMapping("address")
-//    public Result addressUpdate(@RequestBody Address address) {
-//        addressService.updateById(address);
-//        return Result.ok(null);
-//    }
-//
-//    @ApiOperation(value = "删除地址信息")
-//    @DeleteMapping("address/{id}")
-//    public Result remove(@PathVariable Long id) {
-//        addressService.removeById(id);
-//        return Result.ok(null);
-//    }
 }

@@ -1,5 +1,6 @@
 package cn.neud.itms.home.api;
 
+import cn.neud.itms.common.auth.SaUserCheckLogin;
 import cn.neud.itms.common.auth.StpUserUtil;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.home.service.HomeService;
@@ -22,6 +23,7 @@ public class HomeApiController {
     private HomeService homeService;
 
     @ApiOperation("首页数据显示接口")
+    @SaUserCheckLogin
     @GetMapping("index")
     public Result index(HttpServletRequest request) {
         // Long userId = AuthContextHolder.getUserId();

@@ -120,10 +120,12 @@ public class SkuInfoController {
         return Result.ok(null);
     }
 
-    // 新人专享
+    @ApiOperation("设置为新人专享")
     @GetMapping("isNewPerson/{skuId}/{status}")
-    public Result isNewPerson(@PathVariable("skuId") Long skuId,
-                              @PathVariable("status") Integer status) {
+    public Result isNewPerson(
+            @PathVariable("skuId") Long skuId,
+            @PathVariable("status") Integer status
+    ) {
         skuInfoService.isNewPerson(skuId, status);
         return Result.ok(null);
     }

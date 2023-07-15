@@ -1,13 +1,10 @@
 package cn.neud.itms.acl.service.impl;
 
 import cn.neud.itms.acl.mapper.PermissionMapper;
-import cn.neud.itms.acl.mapper.RolePermissionMapper;
 import cn.neud.itms.acl.service.PermissionService;
 import cn.neud.itms.acl.service.RolePermissionService;
 import cn.neud.itms.acl.utils.PermissionHelper;
-import cn.neud.itms.model.acl.AdminRole;
 import cn.neud.itms.model.acl.Permission;
-import cn.neud.itms.model.acl.Role;
 import cn.neud.itms.model.acl.RolePermission;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -25,7 +22,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
 
     @Autowired
     private RolePermissionService rolePermissionService;
-    
+
     // 查询所有菜单
     @Override
     public List<Permission> queryAllPermission() {
