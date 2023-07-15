@@ -4,7 +4,9 @@ package cn.neud.itms.sys.controller;
 import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.annotation.SaMode;
 import cn.neud.itms.common.auth.RoleConstant;
+import cn.neud.itms.common.exception.ItmsException;
 import cn.neud.itms.common.result.Result;
+import cn.neud.itms.common.result.ResultCodeEnum;
 import cn.neud.itms.enums.*;
 import cn.neud.itms.model.order.OrderInfo;
 import cn.neud.itms.model.sys.Invoice;
@@ -59,6 +61,9 @@ public class DispatchController {
     @GetMapping("orderDetail/{orderNo}")
     public Result getOrderDetail(@PathVariable String orderNo) {
         OrderInfo orderInfo = orderFeignClient.getOrderDetailByNo(orderNo);
+        if (orderInfo == null) {
+            throw new ItmsException(ResultCodeEnum.ORDER_NOT_EXIST);
+        }
         Long orderId = orderInfo.getId();
         orderInfo.setWorkOrder(workOrderService.getByOrderId(orderId, WorkType.DELIVERY));
         orderInfo.setTransferOrder(transferOrderService.getByOrderId(orderId, WorkType.DELIVERY));
@@ -72,6 +77,9 @@ public class DispatchController {
     @GetMapping("orderDetailById/{orderId}")
     public Result getOrderDetailById(@PathVariable Long orderId) {
         OrderInfo orderInfo = orderFeignClient.getOrderDetailById(orderId);
+        if (orderInfo == null) {
+            throw new ItmsException(ResultCodeEnum.ORDER_NOT_EXIST);
+        }
         orderInfo.setWorkOrder(workOrderService.getByOrderId(orderId, WorkType.DELIVERY));
         orderInfo.setTransferOrder(transferOrderService.getByOrderId(orderId, WorkType.DELIVERY));
         orderInfo.setCheckOrder(checkOrderService.getByOrderId(orderId, WorkType.DELIVERY));
@@ -92,6 +100,14 @@ public class DispatchController {
             @RequestParam("logisticsPhone") String logisticsPhone
     ) {
         OrderInfo orderInfo = orderFeignClient.getOrderInfoByNo(orderNo);
+        if (orderInfo == null) {
+            throw new ItmsException(ResultCodeEnum.ORDER_NOT_EXIST);
+        }
+        if (orderInfo.getOrderStatus() != OrderStatus.PAID ||
+                orderInfo.getWorkOrder().getWorkStatus() != WorkStatus.DISPATCH
+        ) {
+            throw new ItmsException(ResultCodeEnum.ORDER_STATUS_ERROR);
+        }
         orderInfo.setStationId(stationId);
         orderInfo.setStationName(stationName);
         orderInfo.setOrderStatus(OrderStatus.DISPATCH);
@@ -124,11 +140,14 @@ public class DispatchController {
             @PathVariable String orderNo
     ) {
         OrderInfo orderInfo = orderFeignClient.getOrderInfoByNo(orderNo);
-        orderInfo.setOrderStatus(OrderStatus.DISPATCH);
-        if (orderInfo.getOrderStatus() != OrderStatus.PAID) {
-            return Result.fail("订单状态不是待调度状态");
+        if (orderInfo == null) {
+            throw new ItmsException(ResultCodeEnum.ORDER_NOT_EXIST);
         }
-
+        if (orderInfo.getOrderStatus() != OrderStatus.PAID) {
+            throw new ItmsException(ResultCodeEnum.ORDER_STATUS_ERROR);
+//            return Result.fail("订单状态不是待调度状态");
+        }
+        orderInfo.setOrderStatus(OrderStatus.DISPATCH);
         // 分配运输公司
         Logistics logistics = logisticsService.getOne(new LambdaQueryWrapper<Logistics>()
                 .eq(Logistics::getWareId, orderInfo.getWareId())

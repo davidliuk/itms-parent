@@ -1,7 +1,9 @@
 package cn.neud.itms.sys.controller;
 
 
+import cn.neud.itms.common.exception.ItmsException;
 import cn.neud.itms.common.result.Result;
+import cn.neud.itms.common.result.ResultCodeEnum;
 import cn.neud.itms.enums.*;
 import cn.neud.itms.model.order.OrderInfo;
 import cn.neud.itms.model.order.OrderItem;
@@ -56,7 +58,8 @@ public class RegionStationController {
     @GetMapping("getByWareId/{wareId}")
     public Result getByWareId(@PathVariable Long wareId) {
         List<RegionStation> stations = regionStationService.list(new LambdaQueryWrapper<RegionStation>()
-                .eq(RegionStation::getWareId, wareId));
+                .eq(RegionStation::getWareId, wareId)
+        );
         return Result.ok(stations);
     }
 
@@ -136,10 +139,11 @@ public class RegionStationController {
         // 修改订单状态
         OrderInfo orderInfo = orderFeignClient.getOrderDetailById(orderId);
         if (orderInfo == null) {
-            return Result.fail("订单不存在");
+            throw new ItmsException(ResultCodeEnum.ORDER_NOT_EXIST);
         }
         if (orderInfo.getOrderStatus() != OrderStatus.OUT && orderInfo.getOrderStatus() != OrderStatus.CANCEL) {
-            return Result.fail("订单状态不正确");
+//            return Result.fail("订单状态不正确");
+            throw new ItmsException(ResultCodeEnum.ORDER_STATUS_ERROR);
         }
         if (orderInfo.getOrderStatus() == OrderStatus.OUT) {
             orderInfo.setId(orderId);
@@ -192,10 +196,12 @@ public class RegionStationController {
         // 修改订单状态
         OrderInfo orderInfo = orderFeignClient.getOrderDetailById(orderId);
         if (orderInfo == null) {
-            return Result.fail("订单不存在");
+//            return Result.fail("订单不存在");
+            throw new ItmsException(ResultCodeEnum.ORDER_NOT_EXIST);
         }
         if (orderInfo.getOrderStatus() != OrderStatus.REFUND) {
-            return Result.fail("订单状态不正确");
+//            return Result.fail("订单状态不正确");
+            throw new ItmsException(ResultCodeEnum.ORDER_STATUS_ERROR);
         }
         // 修改任务单
         WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.RETURN);
@@ -238,13 +244,17 @@ public class RegionStationController {
     public Result in(@PathVariable Long orderId) {
         // 获取任务单
         WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.RETURN);
-        if (workOrder.getWorkStatus() != WorkStatus.RETURN_TAKE) {
-            return Result.fail("任务单状态不正确");
+        if (workOrder == null) {
+            throw new ItmsException(ResultCodeEnum.WORK_ORDER_NOT_EXIST);
         }
+        if (workOrder.getWorkStatus() != WorkStatus.RETURN_TAKE) {
+//            return Result.fail("任务单状态不正确");
+            throw new ItmsException(ResultCodeEnum.ORDER_STATUS_ERROR);
+        }
+        // 修改任务单
         workOrder.setOrderId(orderId);
         workOrder.setWorkStatus(WorkStatus.RETURN_STATION);
         workOrderService.updateByOrderId(workOrder, WorkType.RETURN);
-
 //        // 修改调拨单
 //        TransferOrder transferOrder = new TransferOrder();
 //        transferOrder.setOrderId(orderId);
@@ -264,7 +274,6 @@ public class RegionStationController {
 //        checkOrder.setType(WorkType.RETURN);
 //        checkOrder.setStatus(CheckStatus.OUT);
 //        checkOrderService.save(checkOrder);
-
         return Result.ok(null);
     }
 

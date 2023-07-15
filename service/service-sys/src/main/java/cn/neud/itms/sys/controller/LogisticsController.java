@@ -35,7 +35,8 @@ public class LogisticsController {
     @GetMapping("getByWareId/{wareId}")
     public Result getByWareId(@PathVariable Long wareId) {
         List<Logistics> logistics = logisticsService.list(new LambdaQueryWrapper<Logistics>()
-                .eq(Logistics::getWareId, wareId));
+                .eq(Logistics::getWareId, wareId)
+        );
         return Result.ok(logistics);
     }
 

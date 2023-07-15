@@ -61,7 +61,7 @@ public class WeixinApiController {
         try {
             result = HttpClientUtils.get(tokenUrl);
         } catch (Exception e) {
-            throw new ItmsException(ResultCodeEnum.FETCH_ACCESSTOKEN_FAILD);
+            throw new ItmsException(ResultCodeEnum.FETCH_ACCESSTOKEN_FAILED);
         }
 
         //3 请求微信接口服务，返回两个值 session_key 和 openid

@@ -2,7 +2,9 @@ package cn.neud.itms.sys.controller;
 
 
 import cn.neud.itms.client.user.UserFeignClient;
+import cn.neud.itms.common.exception.ItmsException;
 import cn.neud.itms.common.result.Result;
+import cn.neud.itms.common.result.ResultCodeEnum;
 import cn.neud.itms.enums.OrderStatus;
 import cn.neud.itms.enums.WorkStatus;
 import cn.neud.itms.model.order.OrderInfo;
@@ -81,11 +83,13 @@ public class WorkOrderController {
     ) {
         WorkOrder workOrder = workOrderService.getById(workOrderId);
         if (workOrder == null) {
-            return Result.fail("任务单不存在");
+//            return Result.fail("任务单不存在");
+            throw new ItmsException(ResultCodeEnum.ORDER_NOT_EXIST);
         }
         // 未分配或已分配
         if (workOrder.getWorkStatus() != WorkStatus.IN && workOrder.getWorkStatus() != WorkStatus.ASSIGN) {
-            return Result.fail("任务单状态不正确");
+//            return Result.fail("任务单状态不正确");
+            throw new ItmsException(ResultCodeEnum.ORDER_STATUS_ERROR);
         }
         // 修改订单状态
         OrderInfo orderInfo = new OrderInfo();
@@ -110,11 +114,13 @@ public class WorkOrderController {
     ) {
         WorkOrder workOrder = workOrderService.getById(workOrderId);
         if (workOrder == null) {
-            return Result.fail("任务单不存在");
+//            return Result.fail("任务单不存在");
+            throw new ItmsException(ResultCodeEnum.WORK_ORDER_STATUS_ERROR);
         }
         // 未分配或已分配
         if (workOrder.getWorkStatus() != WorkStatus.RETURN_ASSIGN && workOrder.getWorkStatus() != WorkStatus.RETURN_UNASSIGNED) {
-            return Result.fail("任务单状态不正确");
+//            return Result.fail("任务单状态不正确");
+            throw new ItmsException(ResultCodeEnum.WORK_ORDER_STATUS_ERROR);
         }
         // 修改任务单状态
         workOrder.setCourierId(courierId);

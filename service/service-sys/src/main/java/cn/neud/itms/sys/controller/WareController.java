@@ -1,7 +1,9 @@
 package cn.neud.itms.sys.controller;
 
 
+import cn.neud.itms.common.exception.ItmsException;
 import cn.neud.itms.common.result.Result;
+import cn.neud.itms.common.result.ResultCodeEnum;
 import cn.neud.itms.enums.*;
 import cn.neud.itms.model.order.OrderInfo;
 import cn.neud.itms.model.order.OrderItem;
@@ -119,8 +121,13 @@ public class WareController {
     public Result out(@PathVariable Long orderId) {
         // 修改订单状态
         OrderInfo orderInfo = orderFeignClient.getOrderDetailById(orderId);
+        if (orderInfo == null) {
+//            return Result.fail("订单不存在");
+            throw new ItmsException(ResultCodeEnum.ORDER_NOT_EXIST);
+        }
         if (orderInfo.getOrderStatus() != OrderStatus.DISPATCH) {
-            return Result.fail("订单状态不正确");
+//            return Result.fail("订单状态不正确");
+            throw new ItmsException(ResultCodeEnum.ORDER_STATUS_ERROR);
         }
         orderInfo.setId(orderId);
         orderInfo.setOrderStatus(OrderStatus.OUT);
@@ -166,14 +173,20 @@ public class WareController {
     public Result in(@PathVariable Long orderId) {
         // 修改订单状态
         OrderInfo orderInfo = orderFeignClient.getOrderDetailById(orderId);
+        if (orderInfo == null) {
+//            return Result.fail("订单不存在");
+            throw new ItmsException(ResultCodeEnum.ORDER_NOT_EXIST);
+        }
         if (orderInfo.getOrderStatus() != OrderStatus.REFUND) {
-            return Result.fail("订单状态不正确");
+//            return Result.fail("订单状态不正确");
+            throw new ItmsException(ResultCodeEnum.ORDER_STATUS_ERROR);
         }
 
         // 修改任务单
         WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.RETURN);
         if (workOrder.getWorkStatus() != WorkStatus.RETURN_OUT) {
-            return Result.fail("任务单状态不正确");
+//            return Result.fail("任务单状态不正确");
+            throw new ItmsException(ResultCodeEnum.WORK_ORDER_STATUS_ERROR);
         }
         workOrder.setOrderId(orderId);
         workOrder.setWorkStatus(WorkStatus.RETURN_IN);
