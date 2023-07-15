@@ -60,10 +60,13 @@ public class AddressApiController {
     @SaUserCheckLogin
     @PostMapping("")
     public Result save(@RequestBody Address address) {
-        if (addressService.count(new LambdaQueryWrapper<Address>().eq(Address::getUserId, address.getUserId())) == 0) {
+        Long userId = StpUserUtil.getLoginIdAsLong();
+        if (addressService.count(new LambdaQueryWrapper<Address>()
+                .eq(Address::getUserId, userId)) == 0
+        ) {
             address.setIsDefault(1);
         }
-        address.setUserId(StpUserUtil.getLoginIdAsLong());
+        address.setUserId(userId);
         addressService.save(address);
         return Result.ok(null);
     }
@@ -71,7 +74,7 @@ public class AddressApiController {
     @ApiOperation(value = "修改")
     @PutMapping("")
     public Result updateById(@RequestBody Address address) {
-        if (address.getIsDefault().equals(1)) {
+        if (address.getIsDefault() != null && address.getIsDefault().equals(1)) {
             addressService.setAllUnDefault();
         }
         addressService.updateById(address);

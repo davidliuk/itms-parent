@@ -23,7 +23,7 @@ public class RedissonConfig {
 
     private String addresses;
 
-    private int timeout = 3000;
+    private int timeout = 5000;
     private int connectionPoolSize = 64;
     private int connectionMinimumIdleSize = 10;
     private int pingConnectionInterval = 60000;
