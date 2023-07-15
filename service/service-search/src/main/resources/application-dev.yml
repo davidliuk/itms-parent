@@ -14,7 +14,11 @@ spring:
   elasticsearch:
     rest:
       uris: http://123.57.29.205:9200
-
+      connection-timeout: 5000
+      connection-request-timeout: 5000
+      socket-timeout: 60000
+      max-connections: 100
+      max-connections-per-route: 50
   rabbitmq:
     host: 123.57.29.205
     port: 5672
