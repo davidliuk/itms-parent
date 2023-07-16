@@ -122,16 +122,22 @@ public class OrderInfoApiController {
     @SaUserCheckLogin
     @ApiOperation("获取订单详情")
     @GetMapping("auth/getOrderDetailById/{orderId}")
-    public Result getOrderInfoById(@PathVariable("orderId") Long orderId) {
+    public Result getOrderInfoDetailById(@PathVariable("orderId") Long orderId) {
         OrderInfo orderInfo = orderInfoService.getOrderInfoById(orderId);
         return Result.ok(orderInfo);
     }
 
-    // 根据orderNo查询订单信息
     @ApiOperation("根据orderNo查询订单基础信息")
     @GetMapping("inner/getOrderInfoByNo/{orderNo}")
     public OrderInfo getOrderInfoByNo(@PathVariable("orderNo") String orderNo) {
         return orderInfoService.getOrderInfoByOrderNo(orderNo);
+    }
+
+    // 根据orderNo查询订单信息
+    @ApiOperation("根据id查询订单基础信息")
+    @GetMapping("inner/getOrderInfoById/{orderId}")
+    public OrderInfo getOrderInfoById(@PathVariable("orderId") Long orderNo) {
+        return orderInfoService.getOrderInfoByOrderId(orderNo);
     }
 
     // 根据orderNo查询订单信息
@@ -141,9 +147,9 @@ public class OrderInfoApiController {
         return orderInfoService.getOrderDetailByOrderNo(orderNo);
     }
 
-    @ApiOperation("获取订单详情")
+    @ApiOperation("获取Id查询订单详情")
     @GetMapping("inner/getOrderDetailById/{orderId}")
-    public OrderInfo getOrderById(@PathVariable("orderId") Long orderId) {
+    public OrderInfo getOrderDetailById(@PathVariable("orderId") Long orderId) {
         return orderInfoService.getOrderInfoById(orderId);
     }
 

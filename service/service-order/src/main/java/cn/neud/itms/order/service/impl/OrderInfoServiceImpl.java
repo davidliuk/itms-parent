@@ -347,6 +347,14 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         );
     }
 
+    // 根据orderNo查询订单信息
+    @Override
+    public OrderInfo getOrderInfoByOrderId(Long id) {
+        return baseMapper.selectOne(
+                new LambdaQueryWrapper<OrderInfo>()
+                        .eq(OrderInfo::getId, id)
+        );
+    }
     @Override
     public OrderInfo getOrderDetailByOrderNo(String orderNo) {
         OrderInfo orderInfo = baseMapper.selectOne(

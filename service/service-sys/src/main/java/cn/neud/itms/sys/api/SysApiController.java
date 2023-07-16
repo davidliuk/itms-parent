@@ -67,7 +67,7 @@ public class SysApiController {
     @ApiOperation("配送退货领货")
     @PostMapping("returnTake/{orderId}")
     public Result returnTakeWorkOrder(@PathVariable Long orderId) {
-        WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.EXCHANGE);
+        WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.RETURN);
         if (workOrder == null) {
 //            return Result.fail("该订单无退货任务单，不能接单");
             throw new ItmsException(ResultCodeEnum.WORK_ORDER_NOT_EXIST);
