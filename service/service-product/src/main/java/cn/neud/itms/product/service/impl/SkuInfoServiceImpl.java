@@ -67,7 +67,6 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
         //1 添加sku基本信息
         // SkuInfoVo 复制-- SkuInfo
         SkuInfo skuInfo = new SkuInfo();
-//        skuInfo.setSkuName(skuInfoVo.getSkuName());
         BeanUtils.copyProperties(skuInfoVo, skuInfo);
         baseMapper.insert(skuInfo);
 
@@ -319,7 +318,8 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoMapper, SkuInfo> impl
     public void minusStock(Long wareId, String orderNo) {
         //从redis获取锁定库存信息
         List<SkuStockLockVo> skuStockLockVoList =
-                (List<SkuStockLockVo>) redisTemplate.opsForValue().get(RedisConstant.STOCK_INFO + orderNo);
+                (List<SkuStockLockVo>) redisTemplate.opsForValue()
+                        .get(RedisConstant.STOCK_INFO + orderNo);
         if (CollectionUtils.isEmpty(skuStockLockVoList)) {
             return;
         }

@@ -141,8 +141,8 @@ public class RegionStationController {
         if (orderInfo == null) {
             throw new ItmsException(ResultCodeEnum.ORDER_NOT_EXIST);
         }
-        if (orderInfo.getOrderStatus() != OrderStatus.OUT && orderInfo.getOrderStatus() != OrderStatus.CANCEL) {
-//            return Result.fail("订单状态不正确");
+        if (orderInfo.getOrderStatus() != OrderStatus.OUT &&
+                orderInfo.getOrderStatus() != OrderStatus.CANCEL) {
             throw new ItmsException(ResultCodeEnum.ORDER_STATUS_ERROR);
         }
         if (orderInfo.getOrderStatus() == OrderStatus.OUT) {
@@ -193,14 +193,11 @@ public class RegionStationController {
     @ApiOperation("退货出库")
     @GetMapping("/returnOrder/out/{orderId}")
     public Result returnOrderOut(@PathVariable Long orderId) {
-        // 修改订单状态
         OrderInfo orderInfo = orderFeignClient.getOrderDetailById(orderId);
         if (orderInfo == null) {
-//            return Result.fail("订单不存在");
             throw new ItmsException(ResultCodeEnum.ORDER_NOT_EXIST);
         }
         if (orderInfo.getOrderStatus() != OrderStatus.REFUND) {
-//            return Result.fail("订单状态不正确");
             throw new ItmsException(ResultCodeEnum.ORDER_STATUS_ERROR);
         }
         // 修改任务单
@@ -235,7 +232,6 @@ public class RegionStationController {
         checkOrder.setType(WorkType.RETURN);
         checkOrder.setStatus(CheckStatus.OUT);
         checkOrderService.save(checkOrder);
-
         return Result.ok(null);
     }
 
@@ -255,25 +251,7 @@ public class RegionStationController {
         workOrder.setOrderId(orderId);
         workOrder.setWorkStatus(WorkStatus.RETURN_STATION);
         workOrderService.updateByOrderId(workOrder, WorkType.RETURN);
-//        // 修改调拨单
-//        TransferOrder transferOrder = new TransferOrder();
-//        transferOrder.setOrderId(orderId);
-//        transferOrder.setOutTime(new Date());
-//        transferOrderService.save(transferOrder);
-//
-//        // 生成库存单，应该每个item一个单
-//        StorageOrder storageOrder = new StorageOrder();
-//        BeanUtils.copyProperties(workOrder, storageOrder);
-//        storageOrder.setStorageType(StorageType.OUT);
-//        storageOrderService.save(storageOrder);
-//
-//        // 生成验货单
-//        CheckOrder checkOrder = new CheckOrder();
-//        BeanUtils.copyProperties(workOrder, checkOrder);
-//        checkOrder.setOutTime(new Date());
-//        checkOrder.setType(WorkType.RETURN);
-//        checkOrder.setStatus(CheckStatus.OUT);
-//        checkOrderService.save(checkOrder);
+
         return Result.ok(null);
     }
 

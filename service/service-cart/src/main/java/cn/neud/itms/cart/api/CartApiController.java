@@ -7,6 +7,7 @@ import cn.neud.itms.common.auth.StpUserUtil;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.order.CartInfo;
 import cn.neud.itms.vo.order.OrderConfirmVo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,35 +23,34 @@ public class CartApiController {
     @Autowired
     private ActivityFeignClient activityFeignClient;
 
-    //1 根据skuId选中
+    @ApiOperation("根据skuId选中")
     @SaUserCheckLogin
     @GetMapping("checkCart/{skuId}/{isChecked}")
-    public Result checkCart(@PathVariable Long skuId,
-                            @PathVariable Integer isChecked) {
-        //获取userId
-        // Long userId = AuthContextHolder.getUserId();
+    public Result checkCart(
+            @PathVariable Long skuId,
+            @PathVariable Integer isChecked
+    ) {
         Long userId = StpUserUtil.getLoginIdAsLong();
-        //调用方法
         cartInfoService.checkCart(userId, skuId, isChecked);
         return Result.ok(null);
     }
 
-    //2 全选
+    @ApiOperation("全选")
     @SaUserCheckLogin
     @GetMapping("checkAllCart/{isChecked}")
     public Result checkAllCart(@PathVariable Integer isChecked) {
-        // Long userId = AuthContextHolder.getUserId();
         Long userId = StpUserUtil.getLoginIdAsLong();
         cartInfoService.checkAllCart(userId, isChecked);
         return Result.ok(null);
     }
 
-    //3 批量选中
+    @ApiOperation("批量选中")
     @SaUserCheckLogin
     @PostMapping("batchCheckCart/{isChecked}")
-    public Result batchCheckCart(@RequestBody List<Long> skuIdList,
-                                 @PathVariable Integer isChecked) {
-        // Long userId = AuthContextHolder.getUserId();
+    public Result batchCheckCart(
+            @RequestBody List<Long> skuIdList,
+            @PathVariable Integer isChecked
+    ) {
         Long userId = StpUserUtil.getLoginIdAsLong();
         cartInfoService.batchCheckCart(skuIdList, userId, isChecked);
         return Result.ok(null);
@@ -61,6 +61,7 @@ public class CartApiController {
      *
      * @return
      */
+    @ApiOperation("查询带优惠卷的购物车")
     @SaUserCheckLogin
     @GetMapping("activityCartList")
     public Result activityCartList() {
@@ -88,8 +89,10 @@ public class CartApiController {
     //添加内容：当前登录用户id，skuId，商品数量
     @SaUserCheckLogin
     @GetMapping("addToCart/{skuId}/{skuNum}")
-    public Result addToCart(@PathVariable("skuId") Long skuId,
-                            @PathVariable("skuNum") Integer skuNum) {
+    public Result addToCart(
+            @PathVariable("skuId") Long skuId,
+            @PathVariable("skuNum") Integer skuNum
+    ) {
         //获取当前登录用户Id
         // Long userId = AuthContextHolder.getUserId();
         Long userId = StpUserUtil.getLoginIdAsLong();
@@ -111,7 +114,6 @@ public class CartApiController {
     @SaUserCheckLogin
     @DeleteMapping("deleteAllCart")
     public Result deleteAllCart() {
-        // Long userId = AuthContextHolder.getUserId();
         Long userId = StpUserUtil.getLoginIdAsLong();
         cartInfoService.deleteAllCart(userId);
         return Result.ok(null);

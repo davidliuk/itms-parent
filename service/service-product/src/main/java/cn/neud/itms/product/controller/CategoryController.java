@@ -6,6 +6,7 @@ import cn.neud.itms.model.product.Category;
 import cn.neud.itms.product.service.CategoryService;
 import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.vo.product.CategoryQueryVo;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -43,9 +44,11 @@ public class CategoryController {
 //    params: searchObj
     @ApiOperation("商品分类列表")
     @PostMapping("{page}/{limit}")
-    public Result list(@PathVariable Long page,
-                       @PathVariable Long limit,
-                       CategoryQueryVo categoryQueryVo) {
+    public Result list(
+            @PathVariable Long page,
+            @PathVariable Long limit,
+            CategoryQueryVo categoryQueryVo
+    ) {
         Page<Category> pageParam = new Page<>(page, limit);
         IPage<Category> pageModel = categoryService.selectPageCategory(pageParam, categoryQueryVo);
         return Result.ok(pageModel);
@@ -103,7 +106,8 @@ public class CategoryController {
         // 用redis来写
         if (!redisTemplate.hasKey(RedisConstant.CATEGORY_KEY_PREFIX + "all")) {
             redisTemplate.opsForValue().set(RedisConstant.CATEGORY_KEY_PREFIX + "all",
-                    categoryService.list(),
+                    categoryService.list(new LambdaQueryWrapper<Category>()
+                            .eq(Category::getParentId, 0)),
                     RedisConstant.CATEGORY_KEY_TIMEOUT,
                     TimeUnit.SECONDS
             );

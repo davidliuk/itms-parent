@@ -36,9 +36,11 @@ public class StockReceiver {
             exchange = @Exchange(value = MqConstant.EXCHANGE_ORDER_DIRECT),
             key = {MqConstant.ROUTING_MINUS_STOCK}
     ))
-    public void minusStock(String orderNo,
-                           Message message,
-                           Channel channel) throws IOException {
+    public void minusStock(
+            String orderNo,
+            Message message,
+            Channel channel
+    ) throws IOException {
         if (!StringUtils.isEmpty(orderNo)) {
             OrderInfo order = orderFeignClient.getOrderDetailByNo(orderNo);
             skuInfoService.minusStock(order.getWareId(), orderNo);

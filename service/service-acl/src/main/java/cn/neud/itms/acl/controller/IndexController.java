@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.neud.itms.acl.service.AdminService;
 import cn.neud.itms.common.result.Result;
+import cn.neud.itms.common.utils.JwtHelper;
 import cn.neud.itms.common.utils.MD5;
 import cn.neud.itms.common.utils.MailUtil;
 import cn.neud.itms.model.acl.Admin;
@@ -34,7 +35,6 @@ public class IndexController {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    // 1 login登录
     @ApiOperation("登录")
     @PostMapping("/login")
     public Result login(@RequestBody PasswordLoginVo loginVo) {
@@ -50,8 +50,9 @@ public class IndexController {
             return Result.fail(null);
         }
         admin.setRoles(StpUtil.getRoleList());
-//        admin.setPermissions(StpUtil.getPermissionList());
+        admin.setPermissions(StpUtil.getPermissionList());
         StpUtil.login(admin.getId());
+//        String token = JwtHelper.createToken(admin.getId(), admin.getName());
         Map<String, Object> map = new HashMap<>();
         map.put("token", StpUtil.getTokenValue());
         map.put("user", admin);
@@ -82,7 +83,11 @@ public class IndexController {
     public Result emailLogin(@RequestBody EmailLoginVo loginVo) {
         // 操作admin表
         Admin admin = adminService.getAdminByEmail(loginVo.getEmail());
-        if (!Objects.equals(redisTemplate.opsForValue().get(RedisConstant.LOGIN_CODE_KEY + loginVo.getEmail()), loginVo.getCode())) {
+        if (!Objects.equals(
+                redisTemplate.opsForValue()
+                        .get(RedisConstant.LOGIN_CODE_KEY + loginVo.getEmail()),
+                loginVo.getCode()
+        )) {
             return Result.fail(null);
         }
         // 初次登录用户注册账户

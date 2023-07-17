@@ -9,9 +9,10 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Component
-public class MQProducerAckConfig implements RabbitTemplate.ReturnCallback, RabbitTemplate.ConfirmCallback {
-    //  我们发送消息使用的是 private RabbitTemplate rabbitTemplate; 对象
-    //  如果不做设置的话 当前的rabbitTemplate 与当前的配置类没有任何关系！
+public class MQProducerAckConfig implements
+        RabbitTemplate.ReturnCallback,
+        RabbitTemplate.ConfirmCallback {
+
     @Autowired
     private RabbitTemplate rabbitTemplate;
 

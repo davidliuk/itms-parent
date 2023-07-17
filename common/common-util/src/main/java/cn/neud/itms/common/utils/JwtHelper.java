@@ -33,7 +33,6 @@ public class JwtHelper {
         Claims claims = claimsJws.getBody();
         Integer userId = (Integer) claims.get("userId");
         return userId.longValue();
-        // return 1L;
     }
 
     public static String getUserName(String token) {

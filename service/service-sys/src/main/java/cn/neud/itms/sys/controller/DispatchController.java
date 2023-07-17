@@ -22,6 +22,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * <p>
  * 地区表 前端控制器
@@ -136,30 +138,25 @@ public class DispatchController {
 
     @ApiOperation("自动调度")
     @GetMapping("inner/{orderNo}}")
-    public Result autoDispatch(
-            @PathVariable String orderNo
-    ) {
+    public Result autoDispatch(@PathVariable String orderNo) {
         OrderInfo orderInfo = orderFeignClient.getOrderInfoByNo(orderNo);
         if (orderInfo == null) {
             throw new ItmsException(ResultCodeEnum.ORDER_NOT_EXIST);
         }
         if (orderInfo.getOrderStatus() != OrderStatus.PAID) {
-//            return Result.fail("订单状态不是待调度状态");
             throw new ItmsException(ResultCodeEnum.ORDER_STATUS_ERROR);
         }
         orderInfo.setOrderStatus(OrderStatus.DISPATCH);
-        // 分配运输公司
-        Logistics logistics = logisticsService.getOne(new LambdaQueryWrapper<Logistics>()
-                .eq(Logistics::getWareId, orderInfo.getWareId())
-        );
-        if (logistics == null) {
+        List<Logistics> list = logisticsService.list(new LambdaQueryWrapper<Logistics>()
+                .eq(Logistics::getWareId, orderInfo.getWareId()));
+        if (list == null || list.size() == 0) {
             return Result.fail("没有找到运输公司");
         }
+        Logistics logistics = list.get(0);
         orderInfo.setLogisticsId(logistics.getId());
         orderInfo.setLogisticsName(logistics.getName());
         orderInfo.setLogisticsPhone(logistics.getPhone());
         orderFeignClient.updateOrderInfo(orderInfo);
-
         // 生成任务单
         WorkOrder workOrder = new WorkOrder();
         workOrder.setOrderId(orderInfo.getId());
@@ -169,14 +166,12 @@ public class DispatchController {
         workOrder.setLogisticsName(logistics.getName());
         workOrder.setLogisticsPhone(logistics.getPhone());
         workOrderService.save(workOrder);
-
         // 生成调拨单
         TransferOrder transferOrder = new TransferOrder();
         BeanUtils.copyProperties(workOrder, transferOrder);
         transferOrder.setWorkOrderId(workOrder.getId());
         transferOrder.setType(WorkType.DELIVERY);
         transferOrderService.save(transferOrder);
-
         // 生成发票
         Invoice invoice = new Invoice();
         invoice.setOrderId(orderInfo.getId());

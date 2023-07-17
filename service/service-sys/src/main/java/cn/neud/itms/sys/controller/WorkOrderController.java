@@ -83,12 +83,11 @@ public class WorkOrderController {
     ) {
         WorkOrder workOrder = workOrderService.getById(workOrderId);
         if (workOrder == null) {
-//            return Result.fail("任务单不存在");
             throw new ItmsException(ResultCodeEnum.ORDER_NOT_EXIST);
         }
         // 未分配或已分配
-        if (workOrder.getWorkStatus() != WorkStatus.IN && workOrder.getWorkStatus() != WorkStatus.ASSIGN) {
-//            return Result.fail("任务单状态不正确");
+        if (workOrder.getWorkStatus() != WorkStatus.IN &&
+                workOrder.getWorkStatus() != WorkStatus.ASSIGN) {
             throw new ItmsException(ResultCodeEnum.ORDER_STATUS_ERROR);
         }
         // 修改订单状态
@@ -114,12 +113,11 @@ public class WorkOrderController {
     ) {
         WorkOrder workOrder = workOrderService.getById(workOrderId);
         if (workOrder == null) {
-//            return Result.fail("任务单不存在");
             throw new ItmsException(ResultCodeEnum.WORK_ORDER_STATUS_ERROR);
         }
         // 未分配或已分配
-        if (workOrder.getWorkStatus() != WorkStatus.RETURN_ASSIGN && workOrder.getWorkStatus() != WorkStatus.RETURN_UNASSIGNED) {
-//            return Result.fail("任务单状态不正确");
+        if (workOrder.getWorkStatus() != WorkStatus.RETURN_ASSIGN &&
+                workOrder.getWorkStatus() != WorkStatus.RETURN_UNASSIGNED) {
             throw new ItmsException(ResultCodeEnum.WORK_ORDER_STATUS_ERROR);
         }
         // 修改任务单状态

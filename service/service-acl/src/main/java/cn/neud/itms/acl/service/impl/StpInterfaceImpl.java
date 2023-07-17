@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
 /**
  * 自定义权限加载接口实现类
  */
-@Component    // 保证此类被 SpringBoot 扫描，完成 Sa-Token 的自定义权限验证扩展
+// 保证此类被 SpringBoot 扫描，完成 Sa-Token 的自定义权限验证扩展
+@Component
 public class StpInterfaceImpl implements StpInterface {
 
     @Autowired
@@ -32,7 +33,6 @@ public class StpInterfaceImpl implements StpInterface {
     @Autowired
     private RolePermissionMapper rolePermissionMapper;
 
-    //用户角色关系
     @Autowired
     private AdminRoleService adminRoleService;
 
@@ -41,40 +41,38 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getPermissionList(Object adminId, String loginType) {
-//        // 本 list 仅做模拟，实际项目中要根据具体业务逻辑来查询权限
-//        List<String> list = new ArrayList<String>();
-//        list.add("101");
-//        list.add("user.add");
-//        list.add("user.update");
-//        list.add("user.get");
-//        // list.add("user.delete");
-//        list.add("art.*");
+        // 1.1 获取所有该用户id的AdminRole集合
         List<AdminRole> adminRoleList = adminRoleService.list(
                 new LambdaQueryWrapper<AdminRole>()
-                        .eq(AdminRole::getAdminId, adminId));
+                        .eq(AdminRole::getAdminId, adminId)
+        );
 
-        //2.2 通过第一步返回集合，获取所有角色id的列表List<AdminRole> -- List<Long>
+        // 1.2 通过第一步返回集合，获取所有角色id的列表List<AdminRole> - List<Long>
         List<Long> roleIds = adminRoleList.stream()
                 .map(AdminRole::getRoleId)
                 .collect(Collectors.toList());
         if (roleIds.size() == 0) {
             return new ArrayList<>();
         }
-        System.out.println("roleIds");
-        System.out.println(roleIds);
+        // 2.1 通过第二步返回的角色id列表，获取所有角色id对应的权限id列表
         List<Long> permissionIds = rolePermissionMapper.selectList(
                         new LambdaQueryWrapper<RolePermission>()
-                                .in(RolePermission::getRoleId, roleIds)).stream()
+                                .in(RolePermission::getRoleId, roleIds)
+                ).stream()
                 .map(RolePermission::getPermissionId)
                 .collect(Collectors.toList());
         if (permissionIds.size() == 0) {
             return new ArrayList<>();
         }
+        // 2.2 通过第三步返回的权限id列表，获取所有权限id对应的权限列表List<Permission>
         List<Permission> permissions = permissionService.list(
                 new LambdaQueryWrapper<Permission>()
-                        .in(Permission::getId, permissionIds));
-
-        return permissions.stream().map(Permission::getCode).collect(Collectors.toList());
+                        .in(Permission::getId, permissionIds)
+        );
+        // 2.3 通过第四步返回的权限列表，获取所有权限code的列表
+        return permissions.stream()
+                .map(Permission::getCode)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -82,26 +80,28 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object adminId, String loginType) {
-//        // 本 list 仅做模拟，实际项目中要根据具体业务逻辑来查询角色
-//        List<String> list = new ArrayList<String>();
-//        list.add("admin");
-//        list.add("super-admin");
-        System.out.println(loginType);
+        // 1.1 获取所有该用户id的AdminRole集合
         List<AdminRole> adminRoleList = adminRoleService.list(
                 new LambdaQueryWrapper<AdminRole>()
-                        .eq(AdminRole::getAdminId, adminId));
+                        .eq(AdminRole::getAdminId, adminId)
+        );
 
-        //2.2 通过第一步返回集合，获取所有角色id的列表List<AdminRole> -- List<Long>
+        // 1.2 通过第一步返回集合，获取所有角色id的列表List<AdminRole> -- List<Long>
         List<Long> roleIds = adminRoleList.stream()
                 .map(AdminRole::getRoleId)
                 .collect(Collectors.toList());
         if (roleIds.size() == 0) {
             return new ArrayList<>();
         }
+        // 1.3 通过第二步返回集合，获取所有角色的列表
         List<Role> roles = roleMapper.selectList(
                 new LambdaQueryWrapper<Role>()
-                        .in(Role::getId, roleIds));
-        return roles.stream().map(Role::getCode).collect(Collectors.toList());
+                        .in(Role::getId, roleIds)
+        );
+        // 1.4 通过第三步返回集合，获取所有角色code的列表
+        return roles.stream()
+                .map(Role::getCode)
+                .collect(Collectors.toList());
     }
 
 }

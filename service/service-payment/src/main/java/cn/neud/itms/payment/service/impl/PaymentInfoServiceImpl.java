@@ -9,7 +9,7 @@ import cn.neud.itms.model.order.PaymentInfo;
 import cn.neud.itms.mq.constant.MqConstant;
 import cn.neud.itms.mq.service.RabbitService;
 import cn.neud.itms.order.client.OrderFeignClient;
-import cn.neud.itms.payment.mapper.PaymentInfoMappper;
+import cn.neud.itms.payment.mapper.PaymentInfoMapper;
 import cn.neud.itms.payment.service.PaymentInfoService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.Map;
 
 @Service
-public class PaymentInfoServiceImpl extends ServiceImpl<PaymentInfoMappper, PaymentInfo> implements PaymentInfoService {
+public class PaymentInfoServiceImpl extends ServiceImpl<PaymentInfoMapper, PaymentInfo> implements PaymentInfoService {
 
     @Autowired
     private OrderFeignClient orderFeignClient;

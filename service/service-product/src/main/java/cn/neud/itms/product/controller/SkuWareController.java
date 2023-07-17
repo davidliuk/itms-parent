@@ -90,10 +90,6 @@ public class SkuWareController {
         BeanUtils.copyProperties(skuInfo, purchaseOrder);
         purchaseOrder.setStatus(PurchaseStatus.PAID);
         sysFeignClient.savePurchaseOrder(purchaseOrder);
-        StorageOrder storageOrder = new StorageOrder();
-        BeanUtils.copyProperties(skuWare, storageOrder);
-        BeanUtils.copyProperties(skuInfo, storageOrder);
-        sysFeignClient.saveStorageOrder(storageOrder);
         return Result.ok(null);
     }
 
@@ -112,13 +108,16 @@ public class SkuWareController {
         if (skuWareService.count(new LambdaQueryWrapper<SkuWare>()
                 .eq(SkuWare::getSkuId, skuWare.getSkuId())
                 .eq(SkuWare::getWareId, skuWare.getWareId())) > 0) {
-//            return Result.fail("该仓库已经存在该商品库存");
             skuInfoService.addStock(skuWare.getWareId(), skuWare.getSkuId(), skuWare.getStock());
         } else {
             skuWareService.save(skuWare);
         }
         purchaseOrder.setStatus(PurchaseStatus.IN);
         sysFeignClient.updatePurchaseOrder(purchaseOrder);
+        StorageOrder storageOrder = new StorageOrder();
+        BeanUtils.copyProperties(skuWare, storageOrder);
+        BeanUtils.copyProperties(purchaseOrder, storageOrder);
+        sysFeignClient.saveStorageOrder(storageOrder);
         return Result.ok(null);
     }
 

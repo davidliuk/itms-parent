@@ -61,8 +61,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
         //2 根据用户id查询用户分配角色列表
         //2.1 根据用户id查询 用户角色关系表 admin_role 查询用户分配角色id列表
-        // List<AdminRole>
-        //设置查询条件，根据用户id adminId
         List<AdminRole> adminRoleList = adminRoleService.list(new LambdaQueryWrapper<AdminRole>()
                 .eq(AdminRole::getAdminId, adminId)
         );
@@ -97,20 +95,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     @Override
     public void saveAdminRole(Long adminId, Long[] roleIds) {
         // 1 删除用户已经分配过的角色数据
-        // 根据用户id删除admin_role表里面对应数据
         adminRoleService.remove(new LambdaQueryWrapper<AdminRole>()
                 .eq(AdminRole::getAdminId, adminId)
         );
 
         // 2 重新分配
-        //adminId:1   roleId: 2 3
-        //遍历多个角色id，得到每个角色id，拿着每个角色id + 用户id添加用户角色关系表
-//        for (Long roleId:roleIds) {
-//            AdminRole adminRole = new AdminRole();
-//            adminRole.setAdminId(adminId);
-//            adminRole.setRoleId(roleId);
-//            adminRoleService.save(adminRole);
-//        }
         List<AdminRole> list = new ArrayList<>();
         for (Long roleId : roleIds) {
             AdminRole adminRole = new AdminRole();
@@ -119,7 +108,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
             //放到list集合
             list.add(adminRole);
         }
-        //调用方法添加
+        // 3 调用批处理方法添加
         adminRoleService.saveBatch(list);
     }
 }

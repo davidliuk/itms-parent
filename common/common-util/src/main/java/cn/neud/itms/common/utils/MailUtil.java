@@ -25,7 +25,8 @@ public class MailUtil {
         // 设置邮件服务器主机名
         this.setProperty("mail.host", "smtp.163.com");
         // 发送服务器需要身份验证
-        this.setProperty("mail.smtp.auth", "true");
+//        this.setProperty("mail.smtp.auth", "true");
+        this.setProperty("mail.smtp.auth", "false");
         // 发送邮件协议名称
         this.setProperty("mail.transport.protocol", "smtp");
         // 开启SSL加密，否则会失败

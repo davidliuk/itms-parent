@@ -6,6 +6,7 @@ import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.user.Address;
 import cn.neud.itms.user.service.AddressService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import java.util.List;
  * @author david
  * @since 2023-04-04
  */
+@Api(tags = "收货地址管理")
 @RestController
 @RequestMapping("/api/user/address")
 //@CrossOrigin

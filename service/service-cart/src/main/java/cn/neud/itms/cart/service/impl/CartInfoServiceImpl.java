@@ -189,7 +189,6 @@ public class CartInfoServiceImpl implements CartInfoService {
         }
     }
 
-    //2 全选
     @Override
     public void checkAllCart(Long userId, Integer isChecked) {
         String cartKey = this.getCartKey(userId);
@@ -203,11 +202,12 @@ public class CartInfoServiceImpl implements CartInfoService {
         this.setCartKeyExpire(cartKey);
     }
 
-    //3 批量选中
     @Override
-    public void batchCheckCart(List<Long> skuIdList,
-                               Long userId,
-                               Integer isChecked) {
+    public void batchCheckCart(
+            List<Long> skuIdList,
+            Long userId,
+            Integer isChecked
+    ) {
         String cartKey = this.getCartKey(userId);
         BoundHashOperations<String, String, CartInfo> boundHashOperations =
                 redisTemplate.boundHashOps(cartKey);
@@ -241,7 +241,9 @@ public class CartInfoServiceImpl implements CartInfoService {
         List<CartInfo> cartInfoList = this.getCartCheckedList(userId);
 
         //查询list数据处理，得到skuId集合
-        List<Long> skuIdList = cartInfoList.stream().map(item -> item.getSkuId()).collect(Collectors.toList());
+        List<Long> skuIdList = cartInfoList.stream()
+                .map(item -> item.getSkuId())
+                .collect(Collectors.toList());
 
         //构建redis的key值
         // hash类型 key filed-value

@@ -1,5 +1,6 @@
 package cn.neud.itms.acl.controller;
 
+import cn.neud.itms.acl.service.PermissionService;
 import cn.neud.itms.acl.service.RoleService;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.model.acl.Role;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = "角色接口")
 @RestController
@@ -23,6 +25,29 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private PermissionService permissionService;
+
+    // 参数有用户id 和 多个角色id
+    @ApiOperation("为角色进行权限分配")
+    @PostMapping("doAssign/{roleId}")
+    public Result doAssign(
+            @PathVariable Long roleId,
+            @RequestBody Long[] permissionId
+    ) {
+        permissionService.saveRolePermission(roleId, permissionId);
+        return Result.ok(null);
+    }
+
+    // 获取所有角色，和根据用户id查询用户分配角色列表
+    @ApiOperation("获取角色权限")
+    @GetMapping("toAssign/{roleId}")
+    public Result toAssign(@PathVariable Long roleId) {
+        //返回map集合包含两部分数据：所有角色 和 为用户分配角色列表
+        Map<String, Object> map = permissionService.getPermissionByRoleId(roleId);
+        return Result.ok(map);
+    }
+
     //1 角色列表（条件分页查询）
     @ApiOperation("角色条件分页查询")
     @PostMapping("{current}/{limit}")
@@ -31,14 +56,9 @@ public class RoleController {
             @PathVariable Long limit,
             @RequestBody RoleQueryVo roleQueryVo
     ) {
-        // 1 创建page对象，传递当前页和每页记录数
-        // current：当前页
-        // limit: 每页显示记录数
         Page<Role> pageParam = new Page<>(current, limit);
         System.out.println(roleQueryVo.toString());
-        //2 调用service方法实现条件分页查询，返回分页对象
         IPage<Role> pageModel = roleService.selectRolePage(pageParam, roleQueryVo);
-
         return Result.ok(pageModel);
     }
 

@@ -66,7 +66,6 @@ public class AdminController {
         return Result.ok(pageModel);
     }
 
-    // 2 id查询用户
     @ApiOperation("根据id查询")
     @GetMapping("/{id}")
     public Result get(@PathVariable Long id) {
@@ -74,7 +73,6 @@ public class AdminController {
         return Result.ok(admin);
     }
 
-    // 2 id查询用户
     @ApiOperation("根据roleId查询")
     @GetMapping("/role/{id}")
     public Result getByRoleId(@PathVariable Long id) {
@@ -82,7 +80,6 @@ public class AdminController {
         return Result.ok(admins);
     }
 
-    // 2 id查询用户
     @ApiOperation("根据wareId查询")
     @GetMapping("/ware/{id}")
     public Result getByWareId(@PathVariable Long id) {
@@ -91,7 +88,6 @@ public class AdminController {
         return Result.ok(admins);
     }
 
-    // 2 id查询用户
     @ApiOperation("根据stationId查询")
     @GetMapping("/station/{id}")
     public Result getByStationId(@PathVariable Long id) {
@@ -124,7 +120,6 @@ public class AdminController {
         return Result.ok(null);
     }
 
-    // 5 id删除
     @ApiOperation("根据id删除用户")
     @DeleteMapping("/{id}")
     public Result remove(@PathVariable Long id) {
@@ -132,7 +127,6 @@ public class AdminController {
         return Result.ok(null);
     }
 
-    // 6 批量删除
     @ApiOperation("批量删除")
     @DeleteMapping("")
     public Result batchRemove(@RequestBody List<Long> idList) {

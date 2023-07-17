@@ -119,14 +119,11 @@ public class WareController {
     @ApiOperation("调拨出库")
     @GetMapping("/out/{orderId}")
     public Result out(@PathVariable Long orderId) {
-        // 修改订单状态
         OrderInfo orderInfo = orderFeignClient.getOrderDetailById(orderId);
         if (orderInfo == null) {
-//            return Result.fail("订单不存在");
             throw new ItmsException(ResultCodeEnum.ORDER_NOT_EXIST);
         }
         if (orderInfo.getOrderStatus() != OrderStatus.DISPATCH) {
-//            return Result.fail("订单状态不正确");
             throw new ItmsException(ResultCodeEnum.ORDER_STATUS_ERROR);
         }
         orderInfo.setId(orderId);
@@ -135,7 +132,6 @@ public class WareController {
         orderFeignClient.updateOrderInfo(orderInfo);
 
         // 修改任务单
-//        WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.DELIVERY);
         WorkOrder workOrder = new WorkOrder();
         workOrder.setOrderId(orderId);
         workOrder.setWorkStatus(WorkStatus.OUT);
@@ -147,7 +143,6 @@ public class WareController {
         transferOrder.setOutTime(new Date());
         transferOrder.setStatus(TransferStatus.OUT);
         transferOrderService.updateByOrderId(transferOrder, WorkType.DELIVERY);
-
         // 生成库存单，应该每个item一个单
         for (OrderItem orderItem : orderInfo.getOrderItemList()) {
             StorageOrder storageOrder = new StorageOrder();
@@ -156,7 +151,6 @@ public class WareController {
             storageOrder.setStorageType(StorageType.OUT);
             storageOrderService.save(storageOrder);
         }
-
         // 生成验货单
         CheckOrder checkOrder = new CheckOrder();
         BeanUtils.copyProperties(orderInfo, checkOrder);
@@ -171,21 +165,16 @@ public class WareController {
     @ApiOperation("退货入库")
     @GetMapping("/returnOrder/in/{orderId}")
     public Result in(@PathVariable Long orderId) {
-        // 修改订单状态
         OrderInfo orderInfo = orderFeignClient.getOrderDetailById(orderId);
         if (orderInfo == null) {
-//            return Result.fail("订单不存在");
             throw new ItmsException(ResultCodeEnum.ORDER_NOT_EXIST);
         }
         if (orderInfo.getOrderStatus() != OrderStatus.REFUND) {
-//            return Result.fail("订单状态不正确");
             throw new ItmsException(ResultCodeEnum.ORDER_STATUS_ERROR);
         }
-
         // 修改任务单
         WorkOrder workOrder = workOrderService.getByOrderId(orderId, WorkType.RETURN);
         if (workOrder.getWorkStatus() != WorkStatus.RETURN_OUT) {
-//            return Result.fail("任务单状态不正确");
             throw new ItmsException(ResultCodeEnum.WORK_ORDER_STATUS_ERROR);
         }
         workOrder.setOrderId(orderId);

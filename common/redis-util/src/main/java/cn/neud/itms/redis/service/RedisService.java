@@ -38,7 +38,8 @@ public class RedisService {
     // 缓存雪崩：随机过期时间 N+n
     public void set(String key, Object value, Long time, TimeUnit unit) {
         // 随机过期时间，避免缓存同时过期
-        stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(value), time + (int) (Math.random() * 60 * 60), unit);
+        stringRedisTemplate.opsForValue()
+                .set(key, JSONUtil.toJsonStr(value), time + (int) (Math.random() * 60 * 60), unit);
     }
 
     // 缓存击穿：逻辑过期
@@ -53,7 +54,10 @@ public class RedisService {
 
     // 缓存穿透：缓存空值
     public <R, ID> R queryWithPassThrough(
-            String keyPrefix, ID id, Class<R> type, Function<ID, R> dbFallback, Long time, TimeUnit unit) {
+            String keyPrefix, ID id, Class<R> type,
+            Function<ID, R> dbFallback,
+            Long time, TimeUnit unit
+    ) {
         String key = keyPrefix + id;
         // 1.从redis查询场景缓存
         String json = stringRedisTemplate.opsForValue().get(key);
@@ -73,7 +77,8 @@ public class RedisService {
         // 5.不存在，返回错误
         if (r == null) {
             // 将空值写入redis
-            stringRedisTemplate.opsForValue().set(key, "", RedisConstant.CACHE_NULL_TTL, TimeUnit.MINUTES);
+            stringRedisTemplate.opsForValue()
+                    .set(key, "", RedisConstant.CACHE_NULL_TTL, TimeUnit.MINUTES);
             // 返回错误信息
             return null;
         }
@@ -85,7 +90,10 @@ public class RedisService {
     // breakdown
     // 缓存击穿：逻辑过期
     public <R, ID> R queryWithLogicalExpire(
-            String keyPrefix, ID id, Class<R> type, Function<ID, R> dbFallback, Long time, TimeUnit unit) {
+            String keyPrefix, ID id, Class<R> type,
+            Function<ID, R> dbFallback,
+            Long time, TimeUnit unit
+    ) {
         String key = keyPrefix + id;
         // 1.从redis查询场景缓存
         String json = stringRedisTemplate.opsForValue().get(key);
@@ -103,12 +111,8 @@ public class RedisService {
             // 5.1.未过期，直接返回场景信息
             return r;
         }
-        // 5.2.已过期，需要缓存重建
         // 6.缓存重建
         // 6.1.获取互斥锁
-//        String lockKey = RedisConstant.LOCK_TRACE_KEY + id;
-//        boolean isLock = tryLock(lockKey);
-        // 创建锁对象
         RLock redisLock = redissonClient.getLock(RedisConstant.LOCK_TRACE_KEY + id);
         // 尝试获取锁
         boolean isLock = redisLock.tryLock();
@@ -124,8 +128,6 @@ public class RedisService {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 } finally {
-                    // 释放锁
-//                    unlock(lockKey);
                     redisLock.unlock();
                 }
             });
@@ -136,7 +138,10 @@ public class RedisService {
 
     // 缓存击穿：互斥锁
     public <R, ID> R queryWithMutex(
-            String keyPrefix, ID id, Class<R> type, Function<ID, R> dbFallback, Long time, TimeUnit unit) {
+            String keyPrefix, ID id, Class<R> type,
+            Function<ID, R> dbFallback,
+            Long time, TimeUnit unit
+    ) {
         String key = keyPrefix + id;
         // 1.从redis查询场景缓存
         String traceJson = stringRedisTemplate.opsForValue().get(key);
@@ -153,9 +158,6 @@ public class RedisService {
 
         // 4.实现缓存重建
         // 4.1.获取互斥锁
-//        String lockKey = RedisConstant.LOCK_TRACE_KEY + id;
-//        boolean isLock = tryLock(lockKey);
-        // 创建锁对象
         RLock redisLock = redissonClient.getLock(RedisConstant.LOCK_TRACE_KEY + id);
         // 尝试获取锁
         boolean isLock = redisLock.tryLock();
@@ -172,7 +174,8 @@ public class RedisService {
             // 5.不存在，返回错误
             if (r == null) {
                 // 将空值写入redis
-                stringRedisTemplate.opsForValue().set(key, "", RedisConstant.CACHE_NULL_TTL, TimeUnit.MINUTES);
+                stringRedisTemplate.opsForValue()
+                        .set(key, "", RedisConstant.CACHE_NULL_TTL, TimeUnit.MINUTES);
                 // 返回错误信息
                 return null;
             }
@@ -181,8 +184,6 @@ public class RedisService {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } finally {
-            // 7.释放锁
-//            unlock(lockKey);
             redisLock.unlock();
         }
         // 8.返回

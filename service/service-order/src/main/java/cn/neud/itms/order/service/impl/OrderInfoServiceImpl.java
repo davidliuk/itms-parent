@@ -90,7 +90,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         Long userId = StpUserUtil.getLoginIdAsLong();
 
         // 获取用户对应配送员信息
-        CourierAddressVo courierAddressVo = userFeignClient.getUserAddressByUserId(userId);
+//        CourierAddressVo courierAddressVo = userFeignClient.getUserAddressByUserId(userId);
         AddressVo addressVo = userFeignClient.getAddressByUserId(userId);
 
         // 获取购物车里面选中的商品
@@ -98,13 +98,14 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 
         // 唯一标识订单
         String orderNo = String.valueOf(System.currentTimeMillis());
-        redisTemplate.opsForValue().set(RedisConstant.ORDER_REPEAT + orderNo, orderNo,
+        redisTemplate.opsForValue().set(
+                RedisConstant.ORDER_REPEAT + orderNo, orderNo,
                 24, TimeUnit.HOURS);
 
-        // 获取购物车满足条件活动和优惠卷信息
+//        // 获取购物车满足条件活动和优惠卷信息
         OrderConfirmVo orderConfirmVo = activityFeignClient.findCartActivityAndCoupon(cartInfoList, userId);
         // 封装其他值
-        orderConfirmVo.setCourierAddressVo(courierAddressVo);
+//        orderConfirmVo.setCourierAddressVo(courierAddressVo);
         orderConfirmVo.setAddressVo(addressVo);
         orderConfirmVo.setOrderNo(orderNo);
 
@@ -129,7 +130,9 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         }
 
         // 2 拿着orderNo 到 redis进行查询，
-        String script = "if(redis.call('get', KEYS[1]) == ARGV[1]) then return redis.call('del', KEYS[1]) else return 0 end";
+        String script = "if(redis.call('get', KEYS[1]) == ARGV[1]) " +
+                "then return redis.call('del', KEYS[1]) " +
+                "else return 0 end";
         // 3 如果redis有相同orderNo，表示正常提交订单，把redis的orderNo删除
         Boolean flag = (Boolean) redisTemplate
                 .execute(new DefaultRedisScript(script, Boolean.class),
@@ -197,15 +200,18 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         // Long userId = AuthContextHolder.getUserId();
         Long userId = StpUserUtil.getLoginIdAsLong();
 //        CourierAddressVo courierAddressVo = userFeignClient.getUserAddressByUserId(userId);
-        AddressVo addressVo = orderParamVo.getAddress() != null ? orderParamVo.getAddress() : userFeignClient.getAddressByUserId(userId);
+        AddressVo addressVo = orderParamVo.getAddress() != null ?
+                orderParamVo.getAddress() : userFeignClient.getAddressByUserId(userId);
         if (addressVo == null) {
             throw new ItmsException(ResultCodeEnum.DATA_ERROR);
         }
         // 计算金额
         // 营销活动金额
-        Map<String, BigDecimal> activitySplitAmount = this.computeActivitySplitAmount(cartInfoList);
+        Map<String, BigDecimal> activitySplitAmount =
+                this.computeActivitySplitAmount(cartInfoList);
         //优惠卷金额
-        Map<String, BigDecimal> couponInfoSplitAmount = this.computeCouponInfoSplitAmount(cartInfoList, orderParamVo.getCouponId());
+        Map<String, BigDecimal> couponInfoSplitAmount =
+                this.computeCouponInfoSplitAmount(cartInfoList, orderParamVo.getCouponId());
 
         // 封装订单项数据
         List<OrderItem> orderItemList = new ArrayList<>();
@@ -355,6 +361,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                         .eq(OrderInfo::getId, id)
         );
     }
+
     @Override
     public OrderInfo getOrderDetailByOrderNo(String orderNo) {
         OrderInfo orderInfo = baseMapper.selectOne(
@@ -384,9 +391,11 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         this.updateOrderStatus(orderInfo.getId());
 
         // 扣减库存
-        rabbitService.sendMessage(MqConstant.EXCHANGE_ORDER_DIRECT,
+        rabbitService.sendMessage(
+                MqConstant.EXCHANGE_ORDER_DIRECT,
                 MqConstant.ROUTING_MINUS_STOCK,
-                orderNo);
+                orderNo
+        );
 
         sysFeignClient.autoDispatch(orderNo);
     }

@@ -5,13 +5,17 @@ import cn.neud.itms.model.product.Category;
 import cn.neud.itms.model.product.SkuInfo;
 import cn.neud.itms.product.service.CategoryService;
 import cn.neud.itms.product.service.SkuInfoService;
+import cn.neud.itms.redis.constant.RedisConstant;
 import cn.neud.itms.vo.product.SkuInfoVo;
 import cn.neud.itms.vo.product.SkuStockLockVo;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/api/product")
@@ -23,11 +27,30 @@ public class ProductApiController {
     @Autowired
     private SkuInfoService skuInfoService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @ApiOperation("获取sku信息")
     @GetMapping("/skuInfo/{id}")
     public Result get(@PathVariable Long id) {
         SkuInfoVo skuInfoVo = skuInfoService.getSkuInfo(id);
         return Result.ok(skuInfoVo);
+    }
+
+    // 查询所有商品分类
+    @ApiOperation("查询所有商品分类")
+    @GetMapping("findAllList")
+    public Result findAllList() {
+        // 用redis来写
+        if (!redisTemplate.hasKey(RedisConstant.CATEGORY_KEY_PREFIX + "all")) {
+            redisTemplate.opsForValue().set(RedisConstant.CATEGORY_KEY_PREFIX + "all",
+                    categoryService.list(new LambdaQueryWrapper<Category>()
+                            .eq(Category::getParentId, 0)),
+                    RedisConstant.CATEGORY_KEY_TIMEOUT,
+                    TimeUnit.SECONDS
+            );
+        }
+        return Result.ok(redisTemplate.opsForValue().get(RedisConstant.CATEGORY_KEY_PREFIX + "all"));
     }
 
     //根据分类id获取分类信息

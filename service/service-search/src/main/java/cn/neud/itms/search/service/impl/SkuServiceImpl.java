@@ -89,7 +89,10 @@ public class SkuServiceImpl implements SkuService {
                             pageable);
         }
 
-        //3 查询商品参加优惠活动
+        return pageModel;
+    }
+
+    //3 查询商品参加优惠活动
 //        List<SkuEs> skuEsList = pageModel.getContent();
 //
 //        if (!CollectionUtils.isEmpty(skuEsList)) {
@@ -98,14 +101,14 @@ public class SkuServiceImpl implements SkuService {
 //                    skuEsList.stream()
 //                            .map(SkuEs::getId)
 //                            .collect(Collectors.toList());
-        //根据skuId列表远程调用，调用service-activity里面的接口得到数据
-        //返回Map<Long,List<String>>
-        //// map集合key就是skuId值，Long类型
-        //// map集合value是List集合，sku参与活动里面多个规则名称列表
-        ///// 一个商品参加一个活动，一个活动里面可以有多个规则
-        ////// 比如有活动：中秋节满减活动
-        ////// 一个活动可以有多个规则：
-        ////// 中秋节满减活动有两个规则：满20元减1元，满58元减5元
+    //根据skuId列表远程调用，调用service-activity里面的接口得到数据
+    //返回Map<Long,List<String>>
+    //// map集合key就是skuId值，Long类型
+    //// map集合value是List集合，sku参与活动里面多个规则名称列表
+    ///// 一个商品参加一个活动，一个活动里面可以有多个规则
+    ////// 比如有活动：中秋节满减活动
+    ////// 一个活动可以有多个规则：
+    ////// 中秋节满减活动有两个规则：满20元减1元，满58元减5元
 //            Map<Long, List<String>> skuIdToRuleListMap =
 //                    activityFeignClient.findActivity(skuIdList);//远程调用
 //            //封装获取数据到skuEs里面 ruleList属性里面
@@ -115,8 +118,6 @@ public class SkuServiceImpl implements SkuService {
 //                });
 //            }
 //        }
-        return pageModel;
-    }
 
     //上架
     @Override
@@ -141,10 +142,6 @@ public class SkuServiceImpl implements SkuService {
         skuEs.setIsNewPerson(skuInfo.getIsNewPerson());
         skuEs.setImgUrl(skuInfo.getImgUrl());
         skuEs.setTitle(skuInfo.getSkuName());
-        System.out.println("+++++++++");
-        System.out.println(skuEs);
-        System.out.println(skuInfo);
-        System.out.println("+++++++++");
         if (Objects.equals(skuInfo.getSkuType(), SkuType.COMMON.getCode())) { //普通商品
             skuEs.setSkuType(0);
             skuEs.setPrice(skuInfo.getPrice().doubleValue());

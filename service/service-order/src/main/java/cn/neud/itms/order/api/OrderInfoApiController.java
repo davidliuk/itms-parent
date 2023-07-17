@@ -3,8 +3,10 @@ package cn.neud.itms.order.api;
 
 import cn.neud.itms.common.auth.SaUserCheckLogin;
 import cn.neud.itms.common.auth.StpUserUtil;
+import cn.neud.itms.common.exception.ItmsException;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.common.result.ResultCodeEnum;
+import cn.neud.itms.enums.OrderStatus;
 import cn.neud.itms.model.order.OrderInfo;
 import cn.neud.itms.model.user.Address;
 import cn.neud.itms.order.service.OrderInfoService;
@@ -49,8 +51,6 @@ public class OrderInfoApiController {
             @ApiParam(name = "orderVo", value = "查询对象", required = false)
             OrderUserQueryVo orderUserQueryVo
     ) {
-        // 获取userId
-        // Long userId = AuthContextHolder.getUserId();
         Long userId = StpUserUtil.getLoginIdAsLong();
         orderUserQueryVo.setUserId(userId);
 
@@ -103,16 +103,21 @@ public class OrderInfoApiController {
     }
 
     @ApiOperation("修改订单地址")
-//    @SaUserCheckLogin
-    // 根据orderNo查询订单信息
+    @SaUserCheckLogin
     @PutMapping("auth/changeOrderAddress/{orderNo}")
-    public Result changeOrderAddress(@PathVariable("orderNo") String orderNo, @RequestBody Address address) {
+    public Result changeOrderAddress(
+            @PathVariable("orderNo") String orderNo,
+            @RequestBody Address address
+    ) {
         OrderInfo orderInfo = orderInfoService.getById(orderNo);
         if (orderInfo == null) {
             return Result.fail("订单不存在");
         }
         if (orderInfo.getUserId() != StpUserUtil.getLoginIdAsLong()) {
             return Result.fail("订单不属于当前用户");
+        }
+        if (orderInfo.getOrderStatus() != OrderStatus.ASSIGN) {
+            throw new ItmsException(ResultCodeEnum.ORDER_STATUS_ERROR);
         }
         BeanUtils.copyProperties(address, orderInfo);
         orderInfoService.updateById(orderInfo);
