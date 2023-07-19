@@ -28,9 +28,9 @@ public class ItemServiceImpl implements ItemService {
     @Resource
     private ThreadPoolExecutor threadPoolExecutor;
 
-    //详情
+    //详情A
     @Override
-    public Map<String, Object> item(Long skuId, Long userId) {
+    public Map<String, Object> item(Long skuId) {
         Map<String, Object> result = new HashMap<>();
 
         // skuId 查询
@@ -42,13 +42,6 @@ public class ItemServiceImpl implements ItemService {
                     return skuInfoVo;
                 }, threadPoolExecutor);
 
-//        // sku 对应优惠卷信息
-//        CompletableFuture<Void> activityCompletableFuture = CompletableFuture.runAsync(() -> {
-//            // 远程调用获取优惠卷
-//            Map<String, Object> activityMap = activityFeignClient.findActivityAndCoupon(skuId, userId);
-//            result.putAll(activityMap);
-//        }, threadPoolExecutor);
-
         // 更新商品热度
         CompletableFuture<Void> hotCompletableFuture = CompletableFuture.runAsync(() -> {
             // 远程调用更新热度
@@ -58,7 +51,6 @@ public class ItemServiceImpl implements ItemService {
         // 任务组合
         CompletableFuture.allOf(
                 skuInfocompletableFuture,
-//                activityCompletableFuture,
                 hotCompletableFuture
         ).join();
         return result;

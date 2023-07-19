@@ -40,9 +40,6 @@ public class HomeServiceImpl implements HomeService {
         Map<String, Object> result = new HashMap<>();
         // 1 根据userId获取当前登录用户提货地址信息
         // 远程调用service-user模块接口获取需要数据
-//        CourierAddressVo courierAddressVo = userFeignClient.getUserAddressByUserId(userId);
-//        result.put("courierAddressVo", courierAddressVo);
-        // 远程调用service-user模块接口获取需要数据
         CompletableFuture<Void> addressVoCompletableFuture =
                 CompletableFuture.runAsync(() -> {
                     AddressVo addressVo = userFeignClient.getAddressByUserId(userId);
@@ -71,7 +68,7 @@ public class HomeServiceImpl implements HomeService {
                     result.put("newPersonSkuList", newPersonSkuInfoList);
                 }, threadPoolExecutor);
 
-        //3 获取新人专享商品
+        //4 获取新商品
         // 远程调用service-product模块接口
         CompletableFuture<Void> newSkuInfoListCompletableFuture =
                 CompletableFuture.runAsync(() -> {
@@ -79,7 +76,7 @@ public class HomeServiceImpl implements HomeService {
                     result.put("newSkuList", newSkuInfoList);
                 }, threadPoolExecutor);
 
-        //4 获取爆款商品
+        //5 获取爆款商品
         // 远程调用service-search模块接口
         // hotscore 热门评分降序排序
         CompletableFuture<Void> hotSkuListCompletableFuture =

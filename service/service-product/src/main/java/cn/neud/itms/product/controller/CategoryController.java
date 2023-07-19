@@ -65,14 +65,13 @@ public class CategoryController {
             );
         }
         return Result.ok(redisTemplate.opsForValue().get(RedisConstant.CATEGORY_KEY_PREFIX + id));
-//        Category category = categoryService.getById(id);
-//        return Result.ok(category);
     }
 
     @ApiOperation(value = "新增商品分类")
     @PostMapping("")
     public Result save(@RequestBody Category category) {
         categoryService.save(category);
+        redisTemplate.delete(RedisConstant.CATEGORY_KEY_PREFIX + "all");
         return Result.ok(null);
     }
 
@@ -80,6 +79,7 @@ public class CategoryController {
     @PutMapping("")
     public Result updateById(@RequestBody Category category) {
         categoryService.updateById(category);
+        redisTemplate.delete(RedisConstant.CATEGORY_KEY_PREFIX + "all");
         return Result.ok(null);
     }
 
@@ -87,6 +87,7 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public Result remove(@PathVariable Long id) {
         categoryService.removeById(id);
+        redisTemplate.delete(RedisConstant.CATEGORY_KEY_PREFIX + "all");
         return Result.ok(null);
     }
 
@@ -94,6 +95,7 @@ public class CategoryController {
     @DeleteMapping("")
     public Result batchRemove(@RequestBody List<Long> idList) {
         categoryService.removeByIds(idList);
+        redisTemplate.delete(RedisConstant.CATEGORY_KEY_PREFIX + "all");
         return Result.ok(null);
     }
 

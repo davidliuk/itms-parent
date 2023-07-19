@@ -46,8 +46,9 @@ public interface ProductFeignClient {
     public List<SkuInfo> findSkuInfoByKeyword(@PathVariable("keyword") String keyword);
 
     //验证和锁定库存
-    @PostMapping("/api/product/inner/checkAndLock/{orderNo}")
+    @PostMapping("/api/product/inner/checkAndLock/{wareId}/{orderNo}")
     public Boolean checkAndLock(@RequestBody List<SkuStockLockVo> skuStockLockVoList,
+                                @PathVariable("wareId") Long wareId,
                                 @PathVariable("orderNo") String orderNo);
 
     @GetMapping("/api/product/inner/findNewSkuInfoList")

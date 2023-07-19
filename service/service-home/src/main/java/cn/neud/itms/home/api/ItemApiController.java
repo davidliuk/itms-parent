@@ -1,5 +1,6 @@
 package cn.neud.itms.home.api;
 
+import cn.neud.itms.common.auth.SaUserCheckLogin;
 import cn.neud.itms.common.auth.StpUserUtil;
 import cn.neud.itms.common.result.Result;
 import cn.neud.itms.home.service.ItemService;
@@ -24,9 +25,7 @@ public class ItemApiController {
     @ApiOperation("商品详情")
     @GetMapping("item/{id}")
     public Result index(@PathVariable Long id) {
-        // Long userId = AuthContextHolder.getUserId();
-        Long userId = StpUserUtil.getLoginIdAsLong();
-        Map<String, Object> map = itemService.item(id, userId);
+        Map<String, Object> map = itemService.item(id);
         return Result.ok(map);
     }
 }

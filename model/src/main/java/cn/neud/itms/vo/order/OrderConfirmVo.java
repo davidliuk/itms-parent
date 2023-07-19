@@ -1,6 +1,7 @@
 package cn.neud.itms.vo.order;
 
 import cn.neud.itms.model.activity.CouponInfo;
+import cn.neud.itms.model.order.CartInfo;
 import cn.neud.itms.vo.user.AddressVo;
 import cn.neud.itms.vo.user.CourierAddressVo;
 import io.swagger.annotations.ApiModelProperty;
@@ -31,8 +32,11 @@ public class OrderConfirmVo implements Serializable {
     @ApiModelProperty(value = "用户地址")
     private AddressVo addressVo;
 
+//    @ApiModelProperty(value = "购物项列表")
+//    private List<CartInfoVo> carInfoVoList;
+
     @ApiModelProperty(value = "购物项列表")
-    private List<CartInfoVo> carInfoVoList;
+    private List<CartInfo> carInfoList;
 
     @ApiModelProperty(value = "订单优惠券列表")
     private List<CouponInfo> couponInfoList;

@@ -103,7 +103,9 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                 24, TimeUnit.HOURS);
 
 //        // 获取购物车满足条件活动和优惠卷信息
-        OrderConfirmVo orderConfirmVo = activityFeignClient.findCartActivityAndCoupon(cartInfoList, userId);
+//        OrderConfirmVo orderConfirmVo = activityFeignClient.findCartActivityAndCoupon(cartInfoList, userId);
+        OrderConfirmVo orderConfirmVo = new OrderConfirmVo();
+        orderConfirmVo.setCarInfoList(cartInfoList);
         // 封装其他值
 //        orderConfirmVo.setCourierAddressVo(courierAddressVo);
         orderConfirmVo.setAddressVo(addressVo);
@@ -166,7 +168,8 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 
             //4、远程调用service-product模块实现锁定商品
             // 验证库存并锁定库存，保证具备原子性
-            Boolean isLockSuccess = productFeignClient.checkAndLock(commonStockLockVoList, orderNo);
+            Boolean isLockSuccess = productFeignClient
+                    .checkAndLock(commonStockLockVoList, orderParamVo.getWareId(), orderNo);
             if (!isLockSuccess) {//库存锁定失败
                 throw new ItmsException(ResultCodeEnum.ORDER_STOCK_FALL);
             }
