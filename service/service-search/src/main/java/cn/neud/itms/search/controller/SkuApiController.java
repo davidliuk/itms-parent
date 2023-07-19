@@ -5,6 +5,7 @@ import cn.neud.itms.model.search.SkuEs;
 import cn.neud.itms.search.service.SkuService;
 import cn.neud.itms.vo.search.SkuEsQueryVo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +23,7 @@ public class SkuApiController {
     private SkuService skuService;
 
     // 查询分类商品
+    @ApiOperation(value = "查询分类商品")
     @PostMapping("{page}/{limit}")
     public Result listSku(
             @PathVariable Integer page,
@@ -35,6 +37,7 @@ public class SkuApiController {
     }
 
     // 上架
+    @ApiOperation(value = "上架")
     @GetMapping("inner/upperSku/{skuId}")
     public Result upperSku(@PathVariable Long skuId) {
         skuService.upperSku(skuId);
@@ -42,6 +45,7 @@ public class SkuApiController {
     }
 
     // 下架
+    @ApiOperation(value = "下架")
     @GetMapping("inner/lowerSku/{skuId}")
     public Result lowerSku(@PathVariable Long skuId) {
         skuService.lowerSku(skuId);

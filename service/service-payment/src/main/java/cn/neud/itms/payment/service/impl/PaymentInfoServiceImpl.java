@@ -83,8 +83,10 @@ public class PaymentInfoServiceImpl extends ServiceImpl<PaymentInfoMapper, Payme
         baseMapper.updateById(paymentInfo);
 
         //3 整合RabbitMQ实现 修改订单记录已经支付，库存扣减
-        rabbitService.sendMessage(MqConstant.EXCHANGE_PAY_DIRECT,
-                MqConstant.ROUTING_PAY_SUCCESS, orderNo);
+        rabbitService.sendMessage(
+                MqConstant.EXCHANGE_PAY_DIRECT,
+                MqConstant.ROUTING_PAY_SUCCESS, orderNo
+        );
     }
 
 }

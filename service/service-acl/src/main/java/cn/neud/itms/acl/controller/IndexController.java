@@ -105,6 +105,11 @@ public class IndexController {
         Map<String, Object> map = new HashMap<>();
         map.put("user", admin);
         map.put("token", StpUtil.getTokenValue());
+        redisTemplate.opsForValue()
+                .set(RedisConstant.ADMIN_LOGIN_KEY_PREFIX + admin.getId(),
+                        admin,
+                        RedisConstant.USER_KEY_TIMEOUT,
+                        TimeUnit.DAYS);
         return Result.ok(map);
     }
 
