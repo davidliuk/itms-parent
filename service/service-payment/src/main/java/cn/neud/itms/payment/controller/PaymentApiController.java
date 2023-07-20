@@ -28,7 +28,7 @@ public class PaymentApiController {
     public Result queryPayStatus(@PathVariable("orderNo") String orderNo) {
         //1 调用微信支付系统接口查询订单支付状态
         //3 如果微信支付系统返回值，判断支付成功
-        paymentInfoService.paySuccess(orderNo, new HashMap<>());
+        paymentInfoService.paySuccess(orderNo);
         return Result.ok(null);
     }
 

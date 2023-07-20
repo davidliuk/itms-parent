@@ -89,4 +89,21 @@ public class PaymentInfoServiceImpl extends ServiceImpl<PaymentInfoMapper, Payme
         );
     }
 
+    @Override
+    public void paySuccess(String orderNo) {
+        //1 查询当前订单支付记录表状态是否是已经支付
+        PaymentInfo paymentInfo = new PaymentInfo();
+
+        //2 如果支付记录表支付状态没有支付，更新
+        paymentInfo.setPaymentStatus(PaymentStatus.PAID);
+        paymentInfo.setOrderNo(orderNo);
+        baseMapper.insert(paymentInfo);
+
+        //3 整合RabbitMQ实现 修改订单记录已经支付，库存扣减
+        rabbitService.sendMessage(
+                MqConstant.EXCHANGE_PAY_DIRECT,
+                MqConstant.ROUTING_PAY_SUCCESS, orderNo
+        );
+    }
+
 }

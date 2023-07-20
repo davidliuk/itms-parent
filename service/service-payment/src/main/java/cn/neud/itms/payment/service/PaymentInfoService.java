@@ -16,4 +16,6 @@ public interface PaymentInfoService extends IService<PaymentInfo> {
     //3.1 支付成功，修改支付记录表状态：已经支付
     //3.2 支付成功，修改订单记录已经支付，库存扣减
     void paySuccess(String out_trade_no, Map<String, String> resultMap);
+
+    void paySuccess(String orderNo);
 }
