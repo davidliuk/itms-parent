@@ -5,6 +5,7 @@ import cn.neud.itms.common.result.ResultCodeEnum;
 import cn.neud.itms.payment.service.PaymentInfoService;
 import cn.neud.itms.payment.service.WeixinService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ public class WeixinController {
     private PaymentInfoService paymentInfoService;
 
     //调用微信支付系统生成预付单
+    @ApiOperation(value = "生成微信支付二维码")
     @GetMapping("/createJsapi/{orderNo}")
     public Result createJsapi(@PathVariable("orderNo") String orderNo) {
         Map<String, String> map = weixinService.createJsapi(orderNo);

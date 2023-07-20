@@ -83,7 +83,7 @@ public class WeixinServiceImpl implements WeixinService {
             String sign = WXPayUtil.generateSignature(parameterMap, ConstantPropertiesUtils.PARTNERKEY);
 
             //返回结果
-            Map<String, String> result = new HashMap();
+            Map<String, String> result = new HashMap<>();
             result.put("timeStamp", parameterMap.get("timeStamp"));
             result.put("nonceStr", parameterMap.get("nonceStr"));
             result.put("signType", "MD5");

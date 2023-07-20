@@ -28,13 +28,14 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
     //平台属性分组列表
     @Override
     public IPage<AttrGroup> selectPageAttrGroup(Page<AttrGroup> pageParam, AttrGroupQueryVo attrGroupQueryVo) {
+        Long id = attrGroupQueryVo.getId();
         String name = attrGroupQueryVo.getName();
-        LambdaQueryWrapper<AttrGroup> wrapper = new LambdaQueryWrapper<>();
-        if (!StringUtils.isEmpty(name)) {
-            wrapper.like(AttrGroup::getName, name);
-        }
-        IPage<AttrGroup> pageModel = baseMapper.selectPage(pageParam, wrapper);
-        return pageModel;
+        String remark = attrGroupQueryVo.getRemark();
+        return baseMapper.selectPage(pageParam, new LambdaQueryWrapper<AttrGroup>()
+                .eq(!StringUtils.isEmpty(id), AttrGroup::getId, id)
+                .like(!StringUtils.isEmpty(name), AttrGroup::getName, name)
+                .like(!StringUtils.isEmpty(remark), AttrGroup::getRemark, remark)
+        );
     }
 
     //查询所有平台属性分组列表
@@ -43,7 +44,6 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
         //LambdaQueryWrapper<AttrGroup> wrapper = new LambdaQueryWrapper<>();
         QueryWrapper<AttrGroup> wrapper = new QueryWrapper<>();
         wrapper.orderByDesc("id");
-        List<AttrGroup> list = baseMapper.selectList(wrapper);
-        return list;
+        return baseMapper.selectList(wrapper);
     }
 }

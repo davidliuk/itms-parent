@@ -53,6 +53,7 @@ public class ItemServiceImpl implements ItemService {
                 skuInfocompletableFuture,
                 hotCompletableFuture
         ).join();
+
         return result;
     }
 }

@@ -60,20 +60,20 @@ public class OrderInfoApiController {
         return Result.ok(pageModel);
     }
 
-    @ApiOperation(value = "查询支付状态")
-    @GetMapping("/queryPayStatus/{orderNo}")
-    public Result queryPayStatus(
-            @ApiParam(name = "orderNo", value = "订单No", required = true)
-            @PathVariable("orderNo") String orderNo
-    ) {
-        System.out.println(new Date().toLocaleString());
-        for (int i = 0; i <= 3; i++) {
-            if (i == 3) {
-                return Result.ok(ResultCodeEnum.SUCCESS);
-            }
-        }
-        return Result.ok(ResultCodeEnum.URL_ENCODE_ERROR);
-    }
+//    @ApiOperation(value = "查询支付状态")
+//    @GetMapping("/queryPayStatus/{orderNo}")
+//    public Result queryPayStatus(
+//            @ApiParam(name = "orderNo", value = "订单No", required = true)
+//            @PathVariable("orderNo") String orderNo
+//    ) {
+//        System.out.println(new Date().toLocaleString());
+//        for (int i = 0; i <= 3; i++) {
+//            if (i == 3) {
+//                return Result.ok(ResultCodeEnum.SUCCESS);
+//            }
+//        }
+//        return Result.ok(ResultCodeEnum.URL_ENCODE_ERROR);
+//    }
 
     @ApiOperation("确认订单")
     @GetMapping("auth/confirmOrder")

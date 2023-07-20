@@ -109,8 +109,8 @@ public class UserApiController {
         // 配送员    courier表
         AddressVo addressVo = userService.getAddressByUserId(user.getId());
 
-        //6 使用JWT工具根据userId和userName生成token字符串
-        String token = JwtHelper.createToken(user.getId(), user.getNickName());
+//        //6 使用JWT工具根据userId和userName生成token字符串
+//        String token = JwtHelper.createToken(user.getId(), user.getNickName());
 
         //7 获取当前登录用户信息，放到Redis里面，设置有效时间
         UserVo userVo = userService.getUserLoginVo(user.getId());

@@ -26,9 +26,13 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     @Override
     public IPage<Category> selectPageCategory(Page<Category> pageParam,
                                               CategoryQueryVo categoryQueryVo) {
+        Long id = categoryQueryVo.getId();
         String name = categoryQueryVo.getName();
+        Integer status = categoryQueryVo.getStatus();
         return baseMapper.selectPage(pageParam, new LambdaQueryWrapper<Category>()
+                .eq(!StringUtils.isEmpty(id), Category::getId, id)
                 .like(!StringUtils.isEmpty(name), Category::getName, name)
+                .eq(status != null, Category::getStatus, status)
         );
     }
 }
