@@ -44,8 +44,7 @@ public class ProductApiController {
         // 用redis来写
         if (!redisTemplate.hasKey(RedisConstant.CATEGORY_KEY_PREFIX + "all")) {
             redisTemplate.opsForValue().set(RedisConstant.CATEGORY_KEY_PREFIX + "all",
-                    categoryService.list(new LambdaQueryWrapper<Category>()
-                            .eq(Category::getParentId, 0)),
+                    categoryService.list(),
                     RedisConstant.CATEGORY_KEY_TIMEOUT,
                     TimeUnit.SECONDS
             );
